@@ -1,0 +1,11 @@
+.o-app-header {
+	font-family: oFontsGetFontFamilyWithFallbacks(HelveticaNeue);
+}
+
+.o-app-header__toggle {
+	padding: (($o-app-header-height - $o-app-header-nav-link-line-height) / 2) 0;
+}
+
+.o-app-header__collapse {
+	z-index: 1000;
+}

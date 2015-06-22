@@ -1,0 +1,55 @@
+<div class="o-header__container">
+
+	<!-- Head -->
+	<div class="o-header__head">
+		<div class="o-header__brand">
+			<a href="" data-link="home">
+				<div class="o-header__logo o-header__logo--pearson"></div>
+			</a>
+		</div>
+		<a href="#"
+			class="o-header__toggle o-app-header__toggle"
+			data-toggle="o-collapse"
+			data-target="#o-app-header-menu"
+			aria-expanded="false"
+			aria-controls="o-app-header-menu"
+			data-i18n>
+			Menu
+		</a>
+	</div>
+
+	<!-- Collapse -->
+	<div id="o-app-header-menu" class="o-app-header__collapse o-header__collapse" data-o-component="o-collapse">
+
+		<!-- Primary -->
+		<div class="o-header__primary">
+		</div>
+
+		<!-- User -->
+		<div class="o-header__user">
+			<nav class="o-header__nav o-header__nav--right">
+				<ul>
+					<li class="o-header__nav-item" data-show="state:signed-out">
+						<a href="#" data-action="sign-in" data-i18n>Sign In</a>
+					</li>
+					<li class="o-header__nav-item" data-show="state:signed-in">
+						<a href="" data-link="help" data-i18n>Help</a>
+					</li>
+					<li class="o-header__nav-item" data-show="state:signed-in">
+						<div class="o-dropdown-menu o-dropdown-menu--right o-dropdown-menu--inverse o-header__nav-dropdown-menu" data-o-component="o-dropdown-menu">
+							<a href="#" id="o-app-header-menu-act" class="o-dropdown-menu__toggle" data-toggle="dropdown-menu" aria-haspopup="true" aria-expanded="false">
+								<span class="o-app-header__username"></span>
+							</a>
+							<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-menu-act">
+								<li class="o-dropdown-menu__menu-item" role="presentation"><a role="menuitem" href="" data-link="my-account" data-i18n>My Account</a></li>
+								<li class="o-dropdown-menu__menu-item" role="presentation"><a role="menuitem" href="#" data-action="sign-out" data-i18n>Sign Out</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+
+</div>

@@ -1,8 +1,7 @@
 ////
 /// @group o-app-header
-/// @link http://registry.origami.ft.com/components/o-app-header
+/// @link https://origami.pearsoned.com/registry/components/o-app-header
 ////
 
-/// Silent mode
-/// @type Bool
-$o-app-header-is-silent: true !default;
+$o-app-header-height: $o-header-height !default;
+$o-app-header-nav-link-line-height: $o-header-nav-link-line-height !default;

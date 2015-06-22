@@ -1,6 +1,13 @@
 /*global require, module*/
 'use strict';
 
-module.exports = {
-	foo: require('./src/js/foo')
+var AppHeader = require('./src/js/AppHeader');
+
+var construct = function () {
+	AppHeader.init();
+	document.removeEventListener('o.DOMContentLoaded', construct);
 };
+
+document.addEventListener('o.DOMContentLoaded', construct);
+
+module.exports = AppHeader;

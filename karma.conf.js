@@ -1,7 +1,5 @@
-/*global module*/
+/*global module, process*/
 'use strict';
-
-var istanbul = require('browserify-istanbul');
 
 module.exports = function(config) {
 	config.set({
@@ -12,13 +10,13 @@ module.exports = function(config) {
 
 		// frameworks to use
 		// available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-		frameworks: ['mocha', 'browserify'],
+		frameworks: ['mocha', 'sinon', 'browserify'],
 
 
 		// list of files / patterns to load in the browser
 		files: [
 			// Polyfill PhantomJS as it's a similar Webkit version
-			'http://polyfill.webservices.ft.com/v1/polyfill.js?ua=safari/4',
+			'http://polyfill.webservices.ft.com/v1/polyfill.js?ua=safari/4&features=default,WeakMap',
 			'test/*.test.js'
 		],
 
@@ -35,6 +33,20 @@ module.exports = function(config) {
 		},
 
 
+		// browserify preprocessor options
+		browserify: {
+			debug: true,
+			transform: [
+				'debowerify',
+				require('browserify-istanbul')({
+					ignore: ['node_modules/**', 'test/**']
+				}),
+				require('textrequireify').create({
+					rootDirectory: process.cwd()
+				})]
+		},
+
+
 		// test results reporter to use
 		// possible values: 'dots', 'progress'
 		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
@@ -43,7 +55,8 @@ module.exports = function(config) {
 		coverageReporter: {
 			dir : 'build/reports/coverage',
 			reporters: [
-				{type: 'lcovonly', subdir: '.', file:'coverage.lcov'}
+				{ type: 'lcovonly', subdir: '.', file:'coverage.lcov' },
+				{ type: 'html', subdir: 'report-html' }
 			]
 		},
 
@@ -72,14 +85,7 @@ module.exports = function(config) {
 
 		// Continuous Integration mode
 		// if true, Karma captures browsers, runs the tests and exits
-		singleRun: true,
-
-		browserify: {
-			debug: true,
-			transform: [ 'debowerify', istanbul({
-				ignore: ['node_modules/**', 'test/**']
-			})]
-		}
+		singleRun: true
 
 	});
 };

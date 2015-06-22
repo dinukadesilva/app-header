@@ -1,0 +1,8 @@
+{
+  "registry": {
+    "search": [
+      "http://origami-dev.pearsoned.com/registry",
+      "https://bower.herokuapp.com"
+    ]
+  }
+}

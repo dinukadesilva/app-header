@@ -1,12 +1,17 @@
 language: node_js
 sudo: false
 node_js:
-  - "0.12"
+- '0.12'
 before_install:
-  # obt v3 cannot be installed with npm > 2.7.5
-  - npm install -g npm@2.7.5
-  - npm install -g Financial-Times/origami-build-tools#node12
-  - obt install
+- npm install -g npm@2.7.5
+- npm install -g Financial-Times/origami-build-tools#node12
+- obt install
 script:
-  - obt test
-  - obt verify
+- obt test
+- obt verify
+notifications:
+  hipchat:
+    rooms:
+      secure: GNGp3urbnPLEL5j0s85z11TUUnn+syzwJFKYlaW5a64ytHGJ+5u45+YrQQxYCm3Ah0zdRC+PZaGaulu8QdE2TV67a4iGdMPiiy+mgGOcqnM6jrLQFDHdhnRCMW2VCLqRn8l/Uc4uxa7iuhxwAHkqzko4jBaRBmcOyjRASDzFNRYj4mqfA9qIruoUSL24/tC+DiDS4kiP65jK7B/4BnbeTSc6K5ecPNmAjyqnilJowokjRkNAl4MM7ip3hpbw9azF7rVX5oun5V7S19XnvEifR02jTIIeZlduYPusaLh2veRq7DB183p/MxgnMebURVlMZC2JvHY/rohr73IY5cPjUyLuutC38CzC6wlFao8zpd0+8Y0+Z+52z8pfGHi6lvcuCFdysYpymK0yM+WDN0xjXRVmLr9WGELKdu3O5oXgKvUU0GnjJuxfAN92cnVTlRR1qK46gDovFHbLCvoNQMcADKOhXDihJ8hqLFbLRwZwOgFla4fCJuURvucvzYSGsUTYNs/sGFmXlgQeygbGiCIIw11cAvTAFf2BlmdjVoM/gz6ZBqbIP6lhXuUBzzBH2NQK6KLJns1qM8z/zNe2yBTiS1uccEtCd/KoCxb5TqY0z3d5+VCVHG/kJ8YegAoznDxMccpQd4wygX+iAyzHj1VD3RL1IrpJJRU0OWbZbC+KCOA=
+    template:
+    - "%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}"

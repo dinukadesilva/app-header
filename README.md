@@ -65,6 +65,7 @@ The following languages are supported:
 - `ko` Korean
 - `nl` Dutch
 - `pl` Polish
+- `pt` Portuguese
 - `ru` Russian
 - `tr` Turkish
 - `zh-Hans` Chinese (simplified)

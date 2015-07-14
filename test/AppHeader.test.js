@@ -131,6 +131,145 @@ describe('AppHeader', function () {
 			expect(appHeaderEl.querySelector('[data-link="home"]').href).to.be(resolveLink('home'));
 		});
 
+		it('should insert the page nav', function () {
+			var navEl = document.createElement('nav');
+			navEl.classList.add('o-app-header__page-nav');
+			navEl.innerHTML = '<ul><li><a href="#">Item 1</a></li><li><a href="#">Item 2</a></li></ul>';
+			document.body.appendChild(navEl);
+
+			AppHeader.init();
+
+			var appHeaderEl = getHeaderEl();
+			var appHeaderNavEl = appHeaderEl.querySelector('.o-app-header__page-nav-container .o-header__nav');
+
+			expect(appHeaderNavEl.querySelector('ul').childElementCount).to.be(2);
+		});
+
+	});
+
+	describe('.setNav(navElement)', function () {
+
+		it('should find the nav element on the page when the navElement argument is undefined', function () {
+			AppHeader.init();
+			var navEl = document.createElement('nav');
+			navEl.classList.add('o-app-header__page-nav');
+			navEl.innerHTML = '<ul><li><a href="#">2ee29043</a></li></ul>';
+			document.body.appendChild(navEl);
+
+			AppHeader.setNav();
+
+			var headerEl = getHeaderEl();
+			var navContainerEl = getNavContainerEl(headerEl);
+
+			expect(navContainerEl.childElementCount).to.be(1);
+			expect(navContainerEl.childNodes[0].childNodes[0].textContent).to.be('2ee29043');
+		});
+
+		it('should build the nav element when the navElement argument is an object', function () {
+			var nav = {
+				navItems: {
+					Foo: 'http://example.com/foo',
+					Bar: 'http://example.com/bar'
+				}
+			};
+
+			AppHeader.init();
+			AppHeader.setNav(nav);
+
+			var headerEl = getHeaderEl();
+			var navContainerEl = getNavContainerEl(headerEl);
+			var navListEl = navContainerEl.querySelector('.o-header__nav ul');
+
+			expect(navContainerEl.childElementCount).to.be(1);
+			expect(navListEl.childElementCount).to.be(2);
+			expect(navListEl.childNodes[0].textContent).to.be('Foo');
+			expect(navListEl.childNodes[0].firstChild.href).to.be(nav.navItems.Foo);
+			expect(navListEl.childNodes[1].textContent).to.be('Bar');
+			expect(navListEl.childNodes[1].firstChild.href).to.be(nav.navItems.Bar);
+		});
+
+		it('should add a click event listener when the navElement argument is an object and the navItems key value is a function', function () {
+			var nav = {
+				navItems: {
+					Foo: 'http://example.com/foo',
+					Bar: sinon.spy()
+				}
+			};
+
+			AppHeader.init();
+			AppHeader.setNav(nav);
+
+			var headerEl = getHeaderEl();
+			var navContainerEl = getNavContainerEl(headerEl);
+			var navListEl = navContainerEl.querySelector('ul');
+
+			dispatchEvent(navListEl.childNodes[1].querySelector('a'), 'click');
+
+			expect(nav.navItems.Bar.calledOnce).to.be(true);
+		});
+
+		it('should use the provided element when the navElement argument is an instance of HTMLElement', function () {
+			AppHeader.init();
+			var navEl = document.createElement('nav');
+			navEl.innerHTML = 'a8f4af5D';
+
+			AppHeader.setNav(navEl);
+
+			var headerEl = getHeaderEl();
+			var navContainerEl = getNavContainerEl(headerEl);
+
+			expect(navContainerEl.childElementCount).to.be(1);
+			expect(navContainerEl.childNodes[0].textContent).to.be('a8f4af5D');
+		});
+
+		it('should select the element when the navElement argument is a string', function () {
+			AppHeader.init();
+			var navEl = document.createElement('nav');
+			navEl.id = 'a25642c2';
+			navEl.innerHTML = 'a25642c2';
+			document.body.appendChild(navEl);
+
+			AppHeader.setNav('#a25642c2');
+
+			var headerEl = getHeaderEl();
+			var navContainerEl = getNavContainerEl(headerEl);
+
+			expect(navContainerEl.childElementCount).to.be(1);
+			expect(navContainerEl.firstChild.textContent).to.be('a25642c2');
+		});
+
+		it('should replace the existing content of the container', function () {
+			AppHeader.init();
+			var navEl = document.createElement('nav');
+			navEl.innerHTML = '<ul><li>Item 1</li></ul>';
+			AppHeader.setNav(navEl);
+
+			// Create a new nav element
+			navEl = document.createElement('nav');
+			navEl.innerHTML = '<ul><li>Item A</li><li>Item B</li></ul>';
+			AppHeader.setNav(navEl);
+
+			var headerEl = getHeaderEl();
+			var navContainerEl = getNavContainerEl(headerEl);
+
+			expect(navContainerEl.childElementCount).to.be(1);
+			expect(navContainerEl.querySelector('.o-header__nav ul').childElementCount).to.be(2);
+		});
+
+		it('should remove the id from the cloned node', function () {
+			AppHeader.init();
+			var navEl = document.createElement('nav');
+			navEl.id = 'ad1527b9';
+			document.body.appendChild(navEl);
+
+			AppHeader.setNav('#ad1527b9');
+
+			var headerEl = getHeaderEl();
+			var navContainerEl = getNavContainerEl(headerEl);
+
+			expect(navContainerEl.firstChild.id).to.be('');
+		});
+
 	});
 
 	describe('session', function () {
@@ -242,6 +381,10 @@ function dispatchEvent(element, name, data) {
 
 function getHeaderEl() {
 	return document.querySelector('[data-o-component="o-header"]');
+}
+
+function getNavContainerEl(headerEl) {
+	return headerEl.querySelector('.o-app-header__page-nav-container');
 }
 
 function isHeaderInState(headerEl, state) {

@@ -9,3 +9,9 @@
 .o-app-header__collapse {
 	z-index: 1000;
 }
+
+.o-app-header__page-nav-container {
+	@media (min-width: $o-app-header-grid-float-breakpoint) {
+		display: none;
+	}
+}

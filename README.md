@@ -97,6 +97,18 @@ AppHeader.setNav({
 });
 ```
 
+### Events
+
+| Event Name               | Description                                         |
+|--------------------------|-----------------------------------------------------|
+| oAppHeader.help.toggle   | Fires when the **Help** nav item is clicked and it is not a link. |
+
+```js
+document.addEventListener('oAppHeader.help.toggle', function (e) {
+	// Do something
+});
+```
+
 ## i18n
 
 Setting the `locale` configuration property will render the header with the translated strings, if the locale is supported.

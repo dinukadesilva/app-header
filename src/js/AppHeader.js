@@ -4,6 +4,7 @@ var Header = require('o-header');
 var Collapse = require('o-collapse');
 var DropdownMenu = require('o-dropdown-menu');
 var assign = require('object-assign/index');
+var dispatchEvent = require('./utils').dispatchEvent;
 var forEach = require('./utils').forEach;
 var get = require('./utils').get;
 var I18n = require('./I18n');
@@ -16,8 +17,8 @@ var AppHeader = module.exports = {
 	},
 
 	linkMap: {
-		'home': '{consoleBaseUrl}/console/home',
-		'help': 'https://example.com/help',
+		help: null,
+		home: '{consoleBaseUrl}/console/home',
 		'my-account': '{consoleBaseUrl}/account/manage/account'
 	},
 
@@ -90,6 +91,10 @@ var AppHeader = module.exports = {
 				item.href = resolveLink(item.getAttribute('data-link'));
 			});
 
+			if (typeof AppHeader.linkMap.help !== 'string') {
+				rootEl.querySelector('[data-link="help"]').addEventListener('click', handleHelpClick);
+			}
+
 			// Actions
 			rootEl.querySelector('[data-action="sign-in"]').addEventListener('click', handleSignIn);
 			rootEl.querySelector('[data-action="sign-out"]').addEventListener('click', handleSignOut);
@@ -161,6 +166,11 @@ var AppHeader = module.exports = {
 		function handleSignOut(e) {
 			e.preventDefault();
 			session.logout(window.location.href);
+		}
+
+		function handleHelpClick(e) {
+			e.preventDefault();
+			dispatchEvent(rootEl, 'oAppHeader.help.toggle');
 		}
 
 		function handleSessionStateKnown(e) {

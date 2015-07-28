@@ -2,6 +2,7 @@
 'use strict';
 
 var expect = require('expect.js');
+var dispatchEvent = require('../src/js/utils').dispatchEvent;
 var forEach = require('../src/js/utils').forEach;
 var AppHeader = require('../src/js/AppHeader');
 
@@ -129,6 +130,17 @@ describe('AppHeader', function () {
 
 			expect(appHeaderEl.querySelector('[data-link="my-account"]').href).to.be(resolveLink('my-account'));
 			expect(appHeaderEl.querySelector('[data-link="home"]').href).to.be(resolveLink('home'));
+		});
+
+		it('should emit oAppHeader.help.toggle when the Help nav item is clicked', function (done) {
+			AppHeader.init();
+
+			var appHeaderEl = getHeaderEl();
+			var helpNavEl = appHeaderEl.querySelector('[data-link="help"]');
+
+			appHeaderEl.addEventListener('oAppHeader.help.toggle', done.bind(null, null));
+
+			dispatchEvent(helpNavEl, 'click');
 		});
 
 		it('should insert the page nav', function () {
@@ -365,19 +377,6 @@ describe('AppHeader', function () {
 	});
 
 });
-
-function dispatchEvent(element, name, data) {
-	if (document.createEvent && element.dispatchEvent) {
-		var event = document.createEvent('Event');
-		event.initEvent(name, true, true);
-
-		if (data) {
-			event.detail = data;
-		}
-
-		element.dispatchEvent(event);
-	}
-}
 
 function getHeaderEl() {
 	return document.querySelector('[data-o-component="o-header"]');

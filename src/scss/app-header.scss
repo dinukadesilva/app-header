@@ -1,5 +1,6 @@
 .o-app-header {
 	font-family: oFontsGetFontFamilyWithFallbacks(HelveticaNeue);
+	z-index: $o-app-header-z-index;
 }
 
 .o-app-header__toggle {

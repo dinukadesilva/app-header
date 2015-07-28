@@ -145,7 +145,7 @@ var AppHeader = module.exports = {
 		}
 
 		function initSession() {
-			var sessionState = session.hasValidSession();
+			var sessionState = session.hasValidSession(0);
 
 			if (sessionState === session.Success) {
 				setState('signed-in');
@@ -174,7 +174,7 @@ var AppHeader = module.exports = {
 		}
 
 		function handleSessionStateKnown(e) {
-			if (session.hasValidSession() === session.Success) {
+			if (session.hasValidSession(0) === session.Success) {
 				getUsername(handleGetUsername);
 			} else {
 				setState('signed-out');

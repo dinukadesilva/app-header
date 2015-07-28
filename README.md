@@ -34,7 +34,7 @@ Configuration properties may be passed as an object argument to the `init()` met
 
 Refer to the [options object](#api-methods-init) for a list of properties.
 
-## Responsive design
+## Responsive
 
 The application header defines a default breakpoint, which is defined by `$o-app-header-grid-float-breakpoint`, at which navigation items collapse into a toggleable sub menu. If required, page-specific navigation items can be rendered in the menu using declarative or imperative syntax.
 

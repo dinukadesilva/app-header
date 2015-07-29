@@ -61,7 +61,7 @@ describe('AppHeader', function () {
 			});
 
 			var ready = document.createEvent('Event');
-			ready.initEvent('o.DOMContentLoaded');
+			ready.initEvent('o.DOMContentLoaded', true, true);
 			document.dispatchEvent(ready);
 		});
 

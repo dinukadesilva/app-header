@@ -5,8 +5,8 @@ node_js:
 
 env:
   matrix:
-    - BROWSER=Chrome
-    - BROWSER=Firefox
+    - BROWSER=chrome  BVER=stable CHROME_BIN=./browsers/bin/chrome-stable
+    - BROWSER=firefox BVER=stable FIREFOX_BIN=./browsers/bin/firefox-stable
 
 matrix:
   fast_finish: true
@@ -23,7 +23,7 @@ before_script:
 
 script:
 - obt verify
-- npm test -- --browsers $BROWSER
+- npm test -- --browsers $BROWSER --reporter dots
 
 after_failure:
   - for file in *.log; do echo $file; echo "======================"; cat $file; done || true

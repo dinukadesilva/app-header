@@ -83,6 +83,17 @@ module.exports = function(config) {
 		browsers: ['PhantomJS'],
 
 
+		// Alias launchers
+		customLaunchers: {
+			chrome: {
+				base: 'Chrome'
+			},
+			firefox: {
+				base: 'Firefox'
+			}
+		},
+
+
 		// Continuous Integration mode
 		// if true, Karma captures browsers, runs the tests and exits
 		singleRun: true

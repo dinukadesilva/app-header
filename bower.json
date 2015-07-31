@@ -5,7 +5,7 @@
     "o-collapse": "0.2.0",
     "o-dropdown-menu": "0.3.0",
     "o-fonts": "0.1.0",
-    "o-header": "0.4.0"
+    "o-header": "0.5.0"
   },
   "main": [
     "main.scss",

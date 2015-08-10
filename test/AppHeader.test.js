@@ -110,12 +110,12 @@ describe('AppHeader', function () {
 			expect(appHeaderEl.nodeName.toLowerCase()).to.be('header');
 		});
 
-		it('should set aria-role="banner"', function () {
+		it('should set role="banner"', function () {
 			AppHeader.init();
 
 			var appHeaderEl = getHeaderEl();
 
-			expect(appHeaderEl.getAttribute('aria-role')).to.be('banner');
+			expect(appHeaderEl.getAttribute('role')).to.be('banner');
 		});
 
 		it('should resolve the nav links', function () {

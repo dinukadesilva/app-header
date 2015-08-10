@@ -64,7 +64,7 @@ var AppHeader = module.exports = {
 			var rootEl = document.createElement('header');
 
 			rootEl.setAttribute('data-o-component', 'o-header');
-			rootEl.setAttribute('aria-role', 'banner');
+			rootEl.setAttribute('role', 'banner');
 			rootEl.classList.add('o-header');
 			rootEl.classList.add('o-header--fixed');
 			rootEl.classList.add('o-app-header');

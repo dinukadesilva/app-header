@@ -67,7 +67,7 @@ describe('AppHeader', function () {
 
 	});
 
-	describe('#init(element)', function () {
+	describe('#init(element, options)', function () {
 
 		it('should prepend to document.body when element is undefined', function () {
 			AppHeader.init();
@@ -118,14 +118,31 @@ describe('AppHeader', function () {
 			expect(appHeaderEl.getAttribute('role')).to.be('banner');
 		});
 
+		it('should set the light theme', function () {
+			var options = { theme: 'light' };
+
+			AppHeader.init(options);
+
+			var appHeaderEl = getHeaderEl();
+
+			expect(appHeaderEl.classList.contains('o-header--theme-light')).to.be(true);
+		});
+
 		it('should resolve the nav links', function () {
 			var consoleBaseUrl = 'https://example.org';
-			AppHeader.init({ consoleBaseUrl: consoleBaseUrl });
+			var options = {
+				consoleBaseUrl: consoleBaseUrl,
+				links: {
+					home: '{consoleBaseUrl}/home',
+					'my-account': '{consoleBaseUrl}/my-account'
+				}
+			};
+			AppHeader.init(options);
 
 			var appHeaderEl = getHeaderEl();
 
 			function resolveLink(key) {
-				return AppHeader.linkMap[key].replace('{consoleBaseUrl}', consoleBaseUrl);
+				return options.links[key].replace('{consoleBaseUrl}', consoleBaseUrl);
 			}
 
 			expect(appHeaderEl.querySelector('[data-link="my-account"]').href).to.be(resolveLink('my-account'));
@@ -133,17 +150,38 @@ describe('AppHeader', function () {
 		});
 
 		it('should register a click handler when link target is a function', function (done) {
-			sandbox.stub(AppHeader.linkMap, 'home', function handleClick(e) {
+			function handleHomeClick(e) {
 				e.preventDefault();
 				done();
-			});
+			}
 
-			AppHeader.init();
+			AppHeader.init({
+				links: {
+					home: handleHomeClick
+				}
+			});
 
 			var appHeaderEl = getHeaderEl();
 			var homeEl = appHeaderEl.querySelector('[data-link="home"]');
 
 			dispatchEvent(homeEl, 'click');
+		});
+
+		it('should merge the links object', function () {
+			var consoleBaseUrl = 'https://example.com';
+			var options = {
+				consoleBaseUrl: consoleBaseUrl,
+				links: {
+					home: 'https://example.com/home'
+				}
+			};
+
+			AppHeader.init(options);
+
+			var appHeaderEl = getHeaderEl();
+			var myAccountLinkEl = appHeaderEl.querySelector('[data-link="my-account"]');
+
+			expect(myAccountLinkEl.href).to.be(AppHeader.defaultSettings.links['my-account'].replace('{consoleBaseUrl}', consoleBaseUrl));
 		});
 
 		it('should emit oAppHeader.help.toggle when the Help nav item is clicked', function (done) {
@@ -157,143 +195,137 @@ describe('AppHeader', function () {
 			dispatchEvent(helpNavEl, 'click');
 		});
 
-		it('should insert the page nav', function () {
-			var navEl = document.createElement('nav');
-			navEl.classList.add('o-app-header__page-nav');
-			navEl.innerHTML = '<ul><li><a href="#">Item 1</a></li><li><a href="#">Item 2</a></li></ul>';
-			document.body.appendChild(navEl);
+		describe('Help nav item dropdown menu', function () {
 
-			AppHeader.init();
+			it('should render the Help nav item as a dropdown menu when the link is an object', function () {
+				var options = {
+					links: {
+						help: {
+							'Foo': 'https://example.org/foo',
+							'Bar': 'https://example.org/bar'
+						}
+					}
+				};
 
-			var appHeaderEl = getHeaderEl();
-			var appHeaderNavEl = appHeaderEl.querySelector('.o-app-header__page-nav-container .o-header__nav');
+				AppHeader.init(options);
 
-			expect(appHeaderNavEl.querySelector('ul').childElementCount).to.be(2);
+				var appHeaderEl = getHeaderEl();
+				var helpNavItemEl = getHelpNavItemEl(appHeaderEl);
+
+				expect(helpNavItemEl.firstChild.classList.contains('o-dropdown-menu')).to.be(true);
+			});
+
+			it('should handle an object value', function () {
+				var options = {
+					links: {
+						help: {
+							'Foo': { href: 'https://example.org/foo', target: '_blank' }
+						}
+					}
+				};
+
+				AppHeader.init(options);
+
+				var appHeaderEl = getHeaderEl();
+				var helpNavItemEl = getHelpNavItemEl(appHeaderEl);
+				var menuItemLinkEl = helpNavItemEl.querySelector('.o-dropdown-menu__menu-item a');
+
+				expect(menuItemLinkEl.href).to.be(options.links.help.Foo.href);
+				expect(menuItemLinkEl.getAttribute('target')).to.be(options.links.help.Foo.target);
+			});
+
+			it('should handle a function value', function (done) {
+				var options = {
+					links: {
+						help: {
+							'Foo': done.bind(null, null)
+						}
+					}
+				};
+
+				AppHeader.init(options);
+
+				var appHeaderEl = getHeaderEl();
+				var helpNavItemEl = getHelpNavItemEl(appHeaderEl);
+				var menuItemLinkEl = helpNavItemEl.querySelector('.o-dropdown-menu__menu-item a');
+
+				expect(menuItemLinkEl.getAttribute('href')).to.be('#');
+
+				dispatchEvent(menuItemLinkEl, 'click');
+			});
+
 		});
 
 	});
 
-	describe('.setNav(navElement)', function () {
+	describe('.setMenu(options)', function () {
 
-		it('should find the nav element on the page when the navElement argument is undefined', function () {
-			AppHeader.init();
-			var navEl = document.createElement('nav');
-			navEl.classList.add('o-app-header__page-nav');
-			navEl.innerHTML = '<ul><li><a href="#">2ee29043</a></li></ul>';
-			document.body.appendChild(navEl);
-
-			AppHeader.setNav();
-
-			var headerEl = getHeaderEl();
-			var navContainerEl = getNavContainerEl(headerEl);
-
-			expect(navContainerEl.childElementCount).to.be(1);
-			expect(navContainerEl.childNodes[0].childNodes[0].textContent).to.be('2ee29043');
-		});
-
-		it('should build the nav element when the navElement argument is an object', function () {
-			var nav = {
-				navItems: {
-					Foo: 'http://example.com/foo',
-					Bar: 'http://example.com/bar'
+		it('should inject the app nav menu items when options.appNav is an object', function () {
+			var options = {
+				appNav: {
+					items: {
+						Foo: 'http://example.com/foo',
+						Bar: 'http://example.com/bar'
+					}
 				}
 			};
 
 			AppHeader.init();
-			AppHeader.setNav(nav);
+			AppHeader.setMenu(options);
 
 			var headerEl = getHeaderEl();
-			var navContainerEl = getNavContainerEl(headerEl);
-			var navListEl = navContainerEl.querySelector('.o-header__nav ul');
+			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
 
-			expect(navContainerEl.childElementCount).to.be(1);
-			expect(navListEl.childElementCount).to.be(2);
-			expect(navListEl.childNodes[0].textContent).to.be('Foo');
-			expect(navListEl.childNodes[0].firstChild.href).to.be(nav.navItems.Foo);
-			expect(navListEl.childNodes[1].textContent).to.be('Bar');
-			expect(navListEl.childNodes[1].firstChild.href).to.be(nav.navItems.Bar);
+			expect(appNavMenuItemEls.length).to.be(2);
+			expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
+			expect(appNavMenuItemEls[0].querySelector('a').href).to.be(options.appNav.items.Foo);
+			expect(appNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
+			expect(appNavMenuItemEls[1].querySelector('a').href).to.be(options.appNav.items.Bar);
 		});
 
-		it('should add a click event listener when the navElement argument is an object and the navItems key value is a function', function () {
-			var nav = {
-				navItems: {
-					Foo: 'http://example.com/foo',
-					Bar: sinon.spy()
+		it('should replace the existing app nav menu items on each invocation', function () {
+			var options = {
+				appNav: {
+					items: {
+						Foo: 'http://example.com/foo',
+						Bar: 'http://example.com/bar'
+					}
 				}
 			};
 
 			AppHeader.init();
-			AppHeader.setNav(nav);
+			AppHeader.setMenu(options);
+			AppHeader.setMenu(options);
 
 			var headerEl = getHeaderEl();
-			var navContainerEl = getNavContainerEl(headerEl);
-			var navListEl = navContainerEl.querySelector('ul');
+			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
 
-			dispatchEvent(navListEl.childNodes[1].querySelector('a'), 'click');
-
-			expect(nav.navItems.Bar.calledOnce).to.be(true);
+			expect(appNavMenuItemEls.length).to.be(2);
+			expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
+			expect(appNavMenuItemEls[0].querySelector('a').href).to.be(options.appNav.items.Foo);
+			expect(appNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
+			expect(appNavMenuItemEls[1].querySelector('a').href).to.be(options.appNav.items.Bar);
 		});
 
-		it('should use the provided element when the navElement argument is an instance of HTMLElement', function () {
-			AppHeader.init();
-			var navEl = document.createElement('nav');
-			navEl.innerHTML = 'a8f4af5D';
+		it('should add a click event listener when the item\'s value is a function', function () {
+			var options = {
+				appNav: {
+					items: {
+						Foo: 'http://example.com/foo',
+						Bar: sinon.spy()
+					}
+				}
+			};
 
-			AppHeader.setNav(navEl);
+			AppHeader.init();
+			AppHeader.setMenu(options);
 
 			var headerEl = getHeaderEl();
-			var navContainerEl = getNavContainerEl(headerEl);
+			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
 
-			expect(navContainerEl.childElementCount).to.be(1);
-			expect(navContainerEl.childNodes[0].textContent).to.be('a8f4af5D');
-		});
+			dispatchEvent(appNavMenuItemEls[1].querySelector('a'), 'click');
 
-		it('should select the element when the navElement argument is a string', function () {
-			AppHeader.init();
-			var navEl = document.createElement('nav');
-			navEl.id = 'a25642c2';
-			navEl.innerHTML = 'a25642c2';
-			document.body.appendChild(navEl);
-
-			AppHeader.setNav('#a25642c2');
-
-			var headerEl = getHeaderEl();
-			var navContainerEl = getNavContainerEl(headerEl);
-
-			expect(navContainerEl.childElementCount).to.be(1);
-			expect(navContainerEl.firstChild.textContent).to.be('a25642c2');
-		});
-
-		it('should replace the existing content of the container', function () {
-			AppHeader.init();
-			var navEl = document.createElement('nav');
-			navEl.innerHTML = '<ul><li>Item 1</li></ul>';
-			AppHeader.setNav(navEl);
-
-			// Create a new nav element
-			navEl = document.createElement('nav');
-			navEl.innerHTML = '<ul><li>Item A</li><li>Item B</li></ul>';
-			AppHeader.setNav(navEl);
-
-			var headerEl = getHeaderEl();
-			var navContainerEl = getNavContainerEl(headerEl);
-
-			expect(navContainerEl.childElementCount).to.be(1);
-			expect(navContainerEl.querySelector('.o-header__nav ul').childElementCount).to.be(2);
-		});
-
-		it('should remove the id from the cloned node', function () {
-			AppHeader.init();
-			var navEl = document.createElement('nav');
-			navEl.id = 'ad1527b9';
-			document.body.appendChild(navEl);
-
-			AppHeader.setNav('#ad1527b9');
-
-			var headerEl = getHeaderEl();
-			var navContainerEl = getNavContainerEl(headerEl);
-
-			expect(navContainerEl.firstChild.id).to.be('');
+			expect(options.appNav.items.Bar.calledOnce).to.be(true);
 		});
 
 	});
@@ -388,6 +420,17 @@ describe('AppHeader', function () {
 			expect(isHeaderInState(headerEl, 'signed-out')).to.be(true);
 		});
 
+		it('should not display the Sign In nav item when the session option is false', function () {
+			var options = {
+				session: false
+			};
+
+			AppHeader.init(options);
+			var headerEl = getHeaderEl();
+
+			expect(getAccountMenuEl(headerEl)).to.be(null);
+		});
+
 	});
 
 });
@@ -396,8 +439,16 @@ function getHeaderEl() {
 	return document.querySelector('.o-app-header');
 }
 
-function getNavContainerEl(headerEl) {
-	return headerEl.querySelector('.o-app-header__page-nav-container');
+function getAccountMenuEl(headerEl) {
+	return headerEl.querySelector('.o-app-header__menu-account');
+}
+
+function getAppNavMenuItemEls(headerEl) {
+	return getAccountMenuEl(headerEl).querySelectorAll('.o-app-header__menu-app-nav .o-dropdown-menu__menu-item');
+}
+
+function getHelpNavItemEl(headerEl) {
+	return headerEl.querySelector('.o-app-header__nav-item-help');
 }
 
 function isHeaderInState(headerEl, state) {

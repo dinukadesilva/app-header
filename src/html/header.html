@@ -1,59 +1,33 @@
 <div class="o-header__container">
-
-	<!-- Head -->
-	<div class="o-header__head">
+	<section class="o-header__section">
 		<div class="o-header__brand">
-			<a href="" data-link="home">
+			<a href="" data-link="home" data-show="state:signed-in">
 				<div class="o-header__logo o-header__logo--pearson"></div>
 			</a>
+			<div class="o-header__logo o-header__logo--pearson" data-show="state:signed-out"></div>
 		</div>
-		<a href="#"
-			class="o-header__toggle o-app-header__toggle"
-			data-toggle="o-collapse"
-			data-target="#o-app-header-menu"
-			aria-expanded="false"
-			aria-controls="o-app-header-menu"
-			data-i18n>
-			Menu
-		</a>
-	</div>
-
-	<!-- Collapse -->
-	<div id="o-app-header-menu" class="o-app-header__collapse o-header__collapse" data-o-component="o-collapse">
-
-		<!-- Page nav -->
-		<div class="o-app-header__page-nav-container">
-		</div>
-
-		<!-- Primary -->
-		<div class="o-header__primary">
-		</div>
-
-		<!-- User -->
-		<div class="o-header__user">
-			<nav class="o-header__nav o-header__nav--right">
-				<ul>
-					<li class="o-header__nav-item" data-show="state:signed-out">
-						<a href="#" data-action="sign-in" data-i18n>Sign In</a>
-					</li>
-					<li class="o-header__nav-item" data-show="state:signed-in">
-						<a href="" data-link="help" data-i18n>Help</a>
-					</li>
-					<li class="o-header__nav-item" data-show="state:signed-in">
-						<div class="o-dropdown-menu o-dropdown-menu--right o-dropdown-menu--inverse o-header__nav-dropdown-menu">
-							<a href="#" id="o-app-header-menu-act" class="o-dropdown-menu__toggle" data-toggle="dropdown-menu" aria-haspopup="true" aria-expanded="false">
-								<span class="o-app-header__username"></span>
-							</a>
-							<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-menu-act">
-								<li class="o-dropdown-menu__menu-item" role="presentation"><a role="menuitem" tabindex="-1" href="" data-link="my-account" data-i18n>My Account</a></li>
-								<li class="o-dropdown-menu__menu-item" role="presentation"><a role="menuitem" tabindex="-1" href="#" data-action="sign-out" data-i18n>Sign Out</a></li>
-							</ul>
-						</div>
-					</li>
-				</ul>
-			</nav>
-		</div>
-
-	</div>
-
+	</section>
+	<section class="o-header__section o-header__section--right">
+		<nav class="o-header__nav">
+			<ul class="o-header__nav-items">
+				<li class="o-header__nav-item o-app-header__nav-item-help"><a href="" data-link="help" data-i18n>Help</a></li>
+				<li class="o-header__nav-item o-app-header__nav-item-menu" data-show="state:signed-out"><a href="#" data-action="sign-in" data-i18n>Sign In</a></li>
+				<li class="o-header__nav-item o-app-header__nav-item-menu" data-show="state:signed-in">
+					<div class="o-dropdown-menu o-dropdown-menu--right o-app-header__menu-account">
+						<a href="#" id="o-app-header-menu-act" class="o-dropdown-menu__toggle" data-toggle="dropdown-menu" aria-haspopup="true" aria-expanded="false">
+							<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible"></span>
+							<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden" data-i18n>Menu <i class="o-app-header__icon o-app-header__icon-chevron-down"></i></span>
+						</a>
+						<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-menu-act">
+							<li class="o-app-header__menu-app-nav o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden" role="presentation">
+								<ul></ul>
+							</li>
+							<li class="o-dropdown-menu__menu-item" role="presentation"><a role="menuitem" href="" tabindex="-1" data-link="my-account" data-i18n>My Account</a></li>
+							<li class="o-dropdown-menu__menu-item" role="presentation"><a role="menuitem" href="#" tabindex="-1" data-action="sign-out" data-i18n>Sign Out</a></li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</nav>
+	</section>
 </div>

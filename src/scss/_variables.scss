@@ -7,6 +7,8 @@ $o-app-header-height: $o-header-height !default;
 $o-app-header-nav-link-line-height: $o-header-nav-link-line-height !default;
 $o-app-header-z-index: 1000 !default;
 
-/// Responsive breakpoint
-$o-app-header-grid-float-breakpoint: $o-header-grid-float-breakpoint !default;
-$o-app-header-grid-float-breakpoint-max: $o-header-grid-float-breakpoint-max !default;
+// TODO: replace with o-colors
+$o-app-header-menu-app-nav-bg: #666666 !default;
+
+// Light theme
+$o-app-header-menu-app-nav-bg-light: #cccccc !default;

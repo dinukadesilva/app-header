@@ -1,18 +1,77 @@
 .o-app-header {
 	font-family: oFontsGetFontFamilyWithFallbacks(HelveticaNeue);
+	-webkit-font-smoothing: antialiased;
 	z-index: $o-app-header-z-index;
 }
 
-.o-app-header__toggle {
-	padding: (($o-app-header-height - $o-app-header-nav-link-line-height) / 2) 0;
+.o-app-header__username {
+	max-width: 240px;
+
+	@media (min-width: $o-header-desktop-min) {
+		max-width: 400px;
+	}
 }
 
-.o-app-header__collapse {
-	z-index: 1000;
+// Responsive utilities
+// TODO: move to o-visibility
+.o-app-header--truncate {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-.o-app-header__page-nav-container {
-	@media (min-width: $o-app-header-grid-float-breakpoint) {
-		display: none;
+// Icons
+// TODO: replace with o-icons
+.o-app-header__icon {
+	font-style: normal;
+	margin: 0 5px;
+	font: normal 12px/12px helvetica;
+}
+
+.o-app-header__icon-chevron-up,
+.o-app-header__icon-chevron-down {
+	&:before {
+		display: inline-block;
+		transform: scale(2, 1) translateY(-2px);
+	}
+}
+
+.o-app-header__icon-chevron-up {
+	&:before {
+		content: '\2227';
+	}
+}
+
+.o-app-header__icon-chevron-down {
+	&:before {
+		content: '\2228';
+	}
+}
+
+// Menu
+.o-app-header__menu-account {
+
+	.o-dropdown-menu__menu-items {
+		@media (min-width: $o-header-phone-min) {
+			width: 250px;
+		}
+	}
+}
+
+.o-app-header__menu-app-nav {
+	> ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		background-color: $o-app-header-menu-app-nav-bg;
+	}
+}
+
+// Light theme
+.o-header--theme-light {
+	.o-app-header__menu-app-nav {
+		> ul {
+			background-color: $o-app-header-menu-app-nav-bg-light;
+		}
 	}
 }

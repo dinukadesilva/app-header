@@ -1,7 +1,6 @@
 'use strict';
 
 var Header = require('o-header');
-var Collapse = require('o-collapse');
 var DropdownMenu = require('o-dropdown-menu');
 var assign = require('object-assign/index');
 var dispatchEvent = require('./utils').dispatchEvent;
@@ -10,17 +9,17 @@ var get = require('./utils').get;
 var I18n = require('./I18n');
 
 var rootElInternal;
+var accountMenuElInternal;
 var usernameElInternal;
 
 var defaultSettingsInternal = {
 	session: 'piSession',
-	consoleBaseUrl: 'https://console.pearson.com'
-};
-
-var linkMapInternal = {
-	help: null,
-	home: '{consoleBaseUrl}/console/home',
-	'my-account': '{consoleBaseUrl}/account/manage/account'
+	consoleBaseUrl: 'https://console.pearson.com',
+	links: {
+		home: '{consoleBaseUrl}/console/home',
+		'my-account': '{consoleBaseUrl}/account/manage/account'
+	},
+	menu: {}
 };
 
 var initInternal = function (element, options) {
@@ -30,34 +29,39 @@ var initInternal = function (element, options) {
 	}
 	if (!element) element = document.body;
 	if (!(element instanceof HTMLElement)) element = document.querySelector(element);
+	options = options || {};
 
 	var settings = getSettings();
 	var session = (typeof settings.session === 'string') ? window[settings.session] : settings.session;
 	rootElInternal = constructRootEl();
+	accountMenuElInternal = rootElInternal.querySelector('.o-app-header__menu-account');
 	usernameElInternal = rootElInternal.querySelector('.o-app-header__username');
 
 	render('initializing');
-	initSession();
-	setNavInternal(settings.nav || document.querySelector('.o-app-header__page-nav'));
+	if (settings.session) initSession(); else render('signed-out');
+	setMenuInternal(settings.menu);
 
 	function getSettings() {
-		return assign({}, defaultSettingsInternal, getGlobalSettings(), options);
+		// Merge links object
+		var globalSettings = getGlobalSettings();
+		var links = assign({}, defaultSettingsInternal.links, globalSettings.links, options.links);
+
+		return assign({}, defaultSettingsInternal, globalSettings, options, { links: links });
 	}
 
 	function getGlobalSettings() {
 		var configEl = document.querySelector('[data-o-app-header-config]');
 		var config = {};
 
-		if (!configEl) return;
-		try { config = JSON.parse(configEl.textContent); } catch (e) {}
+		if (!configEl) return config;
+		try { config = JSON.parse(configEl.textContent); } catch (e) { throw new Error('Unable to parse configuration object: invalid JSON'); }
 		return config;
 	}
 
 	function resolveLink(key) {
-		if (!linkMapInternal[key]) return '';
+		if (!settings.links[key] || typeof settings.links[key] !== 'string') return;
 
-		return linkMapInternal[key]
-			.replace('{consoleBaseUrl}', settings.consoleBaseUrl);
+		return settings.links[key].replace('{consoleBaseUrl}', settings.consoleBaseUrl);
 	}
 
 	function constructRootEl() {
@@ -66,6 +70,7 @@ var initInternal = function (element, options) {
 		rootElInternal.setAttribute('role', 'banner');
 		rootElInternal.classList.add('o-header');
 		rootElInternal.classList.add('o-header--fixed');
+		if (settings.theme === 'light') rootElInternal.classList.add('o-header--theme-light');
 		rootElInternal.classList.add('o-app-header');
 		rootElInternal.innerHTML = requireText('../html/header.html');
 
@@ -77,27 +82,80 @@ var initInternal = function (element, options) {
 			element.parentNode.removeChild(element);
 		}
 
-		// Header
-		new Header(rootElInternal);
-
-		// Collapse
-		new Collapse(rootElInternal.querySelector('[data-o-component="o-collapse"]'));
-
-		// Dropdown menus
-		DropdownMenu.init(rootElInternal);
-
 		// Links
+		var links = settings.links;
+
 		forEach(rootElInternal.querySelectorAll('[data-link]'), function (idx, item) {
 			var link = item.getAttribute('data-link');
 
-			if (linkMapInternal[link] && typeof linkMapInternal[link] === 'function') {
-				item.addEventListener('click', linkMapInternal[link]);
+			if (links[link] && typeof links[link] === 'function') {
+				item.addEventListener('click', links[link]);
 			} else {
 				item.href = resolveLink(link);
 			}
 		});
 
-		if (typeof linkMapInternal.help !== 'string') {
+		if (typeof links.help === 'object') {
+			// Turn the help nav item into a dropdown menu
+			var helpNavItemEl = rootElInternal.querySelector('.o-app-header__nav-item-help');
+			var helpMenuEl = document.createElement('div');
+			var helpMenuTriggerEl = document.createElement('a');
+			var helpMenuItemsEl = document.createElement('ul');
+
+			helpMenuEl.classList.add('o-dropdown-menu');
+			helpMenuEl.classList.add('o-dropdown-menu--right');
+
+			helpMenuTriggerEl.href = '#';
+			helpMenuTriggerEl.classList.add('o-dropdown-menu__toggle');
+			helpMenuTriggerEl.setAttribute('data-toggle', 'dropdown-menu');
+			helpMenuTriggerEl.setAttribute('aria-haspopup', 'true');
+			helpMenuTriggerEl.setAttribute('aria-expanded', 'false');
+			helpMenuTriggerEl.setAttribute('data-i18n', '');
+			helpMenuTriggerEl.textContent = 'Help';
+
+			helpMenuItemsEl.classList.add('o-dropdown-menu__menu-items');
+			helpMenuItemsEl.setAttribute('role', 'menu');
+			// helpMenuItemsEl.setAttribute('aria-labelledby', '?');
+
+			Object.keys(links.help).forEach(function (key) {
+				var link = links.help[key];
+				var helpMenuItemEl = document.createElement('li');
+				var helpMenuItemLinkEl = document.createElement('a');
+
+				helpMenuItemEl.classList.add('o-dropdown-menu__menu-item');
+				helpMenuItemEl.setAttribute('role', 'presentation');
+
+				helpMenuItemLinkEl.setAttribute('role', 'menuitem');
+				helpMenuItemLinkEl.setAttribute('tabindex', '-1');
+
+				if (typeof link === 'object') {
+					Object.keys(link).forEach(function (key) {
+						if (key === 'href') {
+							helpMenuItemLinkEl.href = link.href;
+						} else {
+							helpMenuItemLinkEl.setAttribute(key, link[key]);
+						}
+					});
+
+				} else if (typeof link === 'function') {
+					helpMenuItemLinkEl.href = '#';
+					helpMenuItemLinkEl.addEventListener('click', link);
+				} else {
+					helpMenuItemLinkEl.href = links.help[key];
+				}
+
+				helpMenuItemLinkEl.textContent = key;
+
+				helpMenuItemEl.appendChild(helpMenuItemLinkEl);
+				helpMenuItemsEl.appendChild(helpMenuItemEl);
+			});
+
+			helpMenuEl.appendChild(helpMenuTriggerEl);
+			helpMenuEl.appendChild(helpMenuItemsEl);
+
+			helpNavItemEl.innerHTML = '';
+			helpNavItemEl.appendChild(helpMenuEl);
+		} else if (typeof links.help !== 'string') {
 			rootElInternal.querySelector('[data-link="help"]').addEventListener('click', handleHelpClick);
 		}
 
@@ -110,6 +168,34 @@ var initInternal = function (element, options) {
 		forEach(rootElInternal.querySelectorAll('[data-i18n]'), function (idx, item) {
 			item.textContent = i18n.translate(item.textContent.trim());
 		});
+
+		// Header
+		new Header(rootElInternal);
+
+		// Dropdown menus
+		DropdownMenu.init(rootElInternal);
+
+		if (!settings.session) {
+			forEach(rootElInternal.querySelectorAll('.o-app-header__nav-item-menu'), function (idx, item) {
+				item.parentElement.removeChild(item);
+			});
+		} else {
+			var menuEl = rootElInternal.querySelector('.o-app-header__menu-account');
+
+			menuEl.addEventListener('oDropdownMenu.expand', function (e) {
+				forEach(e.target.querySelectorAll('.o-app-header__icon'), function (idx, item) {
+					item.classList.remove('o-app-header__icon-chevron-down');
+					item.classList.add('o-app-header__icon-chevron-up');
+				});
+			});
+
+			menuEl.addEventListener('oDropdownMenu.collapse', function (e) {
+				forEach(e.target.querySelectorAll('.o-app-header__icon'), function (idx, item) {
+					item.classList.remove('o-app-header__icon-chevron-up');
+					item.classList.add('o-app-header__icon-chevron-down');
+				});
+			});
+		}
 
 		return rootElInternal;
 	}
@@ -147,7 +233,13 @@ var initInternal = function (element, options) {
 	}
 
 	function renderUsername(username) {
-		usernameElInternal.textContent = username;
+		var iconEl = document.createElement('i');
+
+		iconEl.classList.add('o-app-header__icon');
+		iconEl.classList.add('o-app-header__icon-chevron-down');
+
+		usernameElInternal.innerHTML = username + ' ';
+		usernameElInternal.appendChild(iconEl);
 	}
 
 	function initSession() {
@@ -203,65 +295,50 @@ var initInternal = function (element, options) {
 
 };
 
-var setNavInternal = function (navEl) {
-	if (!rootElInternal) return;
-	if (typeof navEl === 'string') navEl = document.querySelector(navEl);
-	if (!navEl) navEl = document.querySelector('.o-app-header__page-nav');
-	if (!navEl) return;
+var setMenuInternal = function (options) {
+	if (!rootElInternal || !accountMenuElInternal) return;
+	if (!options || typeof options !== 'object') return;
 
-	var navContainerEl = rootElInternal.querySelector('.o-app-header__page-nav-container');
-	var navItemEls;
+	var menuItemEls = [];
+	var appNavItems = (options.appNav || {}).items;
 
-	if (navEl instanceof HTMLElement) {
-		// Make a deep copy
-		navEl = navEl.cloneNode(true);
-		navEl.id = '';
-		navEl.className = '';
-		navEl.classList.add('o-header__nav');
+	if (!appNavItems) return;
 
-		navItemEls = navEl.querySelectorAll('ul > li');
+	Object.keys(appNavItems).forEach(function (key) {
+		var menuItemEl = document.createElement('li');
+		var menuItemLinkEl = document.createElement('a');
 
-		for (var i = 0, l = navItemEls.length; i < l; i++) {
-			navItemEls[i].className = '';
-			navItemEls[i].classList.add('o-header__nav-item');
+		menuItemEl.classList.add('o-dropdown-menu__menu-item');
+		menuItemEl.setAttribute('role', 'presentation');
+		menuItemLinkEl.setAttribute('role', 'menuitem');
+		menuItemLinkEl.setAttribute('tabindex', '-1');
+		menuItemLinkEl.href = typeof appNavItems[key] === 'string' ? appNavItems[key] : '#';
+		menuItemLinkEl.textContent = key;
+
+		if (typeof appNavItems[key] === 'function') {
+			menuItemLinkEl.addEventListener('click', appNavItems[key]);
 		}
-	} else if (typeof navEl === 'object') {
-		var navItems = navEl.navItems || {};
 
-		navEl = document.createElement('nav');
-		navEl.classList.add('o-header__nav');
+		menuItemEl.appendChild(menuItemLinkEl);
+		menuItemEls.push(menuItemEl);
+	});
 
-		var navListEl = document.createElement('ul');
-		navEl.appendChild(navListEl);
+	var menuItemsEl = accountMenuElInternal.querySelector('.o-app-header__menu-app-nav > ul');
 
-		Object.keys(navItems).forEach(function (key) {
-			var navListItemEl = document.createElement('li');
-			var navItemHref = typeof navItems[key] === 'string' ? navItems[key] : '#';
+	// Clear existing menu items
+	menuItemsEl.innerHTML = '';
 
-			navListItemEl.classList.add('o-header__nav-item');
-			navListItemEl.innerHTML = '<a href="' + navItemHref + '">' + key + '</a>';
+	// Inject the page nav menu items
+	var referenceNode = menuItemsEl.firstChild;
 
-			if (typeof navItems[key] === 'function') {
-				navListItemEl.firstChild.addEventListener('click', navItems[key]);
-			}
-
-			navListEl.appendChild(navListItemEl);
-		});
-	}
-
-	navContainerEl.innerHTML = '';
-
-	if (navEl) {
-		navContainerEl.appendChild(navEl);
-	}
-
-	return navEl;
+	menuItemEls.forEach(function (menuItemEl) {
+		menuItemsEl.insertBefore(menuItemEl, referenceNode);
+	});
 };
 
 // Export the public API
 module.exports = {
 	defaultSettings: defaultSettingsInternal,
-	linkMap: linkMapInternal,
 	init: initInternal,
-	setNav: setNavInternal
+	setMenu: setMenuInternal
 };

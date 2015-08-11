@@ -34,29 +34,7 @@ Configuration properties may be passed as an object argument to the `init()` met
 
 Refer to the [options object](#api-methods-init) for a list of properties.
 
-## Responsive
-
-The application header defines a default breakpoint, which is defined by `$o-app-header-grid-float-breakpoint`, at which navigation items collapse into a toggleable sub menu. If required, page-specific navigation items can be rendered in the menu using declarative or imperative syntax.
-
-### Declarative
-
-By grouping the elements into a single `nav` element on the page that has the `o-app-header__page-nav` class, the application header will find and clone this node and insert it into the header's DOM:
-
-```html
-<nav class="o-app-header__page-nav">
-  <ul>
-  	<li><a href="#">Foo</a></li>
-  	<li><a href="#">Bar</a></li>
-  	<li><a href="#">Baz</a></li>
-  </ul>
-</nav>
-```
-
-If there is more than one element with `o-app-header__page-nav`, only the first instance will be included in the sub menu.
-
-### Imperative using JavaScript
-
-To update the menu directly, use the [setNav](#api-methods-setNav) method.
+<!-- ## Responsive -->
 
 ## API
 
@@ -72,27 +50,34 @@ To update the menu directly, use the [setNav](#api-methods-setNav) method.
 |--------------------------|------------------------|-----------------------------------|
 | consoleBaseUrl           | `string`               | The Console application base URL (default: https://console.pearson.com) |
 | locale                   | `string`               | The user's preferred locale (refer to the [i18n](#i18n) section). |
-| session                  | `string` or `Object`   | The session object, or the name of the session object in the global scope. |
+| session                  | `string` or `Object`   | The session object, or the name of the session object in the global scope. If set to `false`, the session controls will not be rendered. |
 | user                     | `Object` or `Function` | An object with a property `givenName` that contains the user's given name as a string; or a function in the form of `function(callback)` that returns the user object via `callback`, which is a function in the form of `function(error, user)`. The value of `givenName` is displayed in the desktop view in the user menu for an authenticated user. The value of this property will be ignored if it is a function when defined in a [global configuration block](#configuration) on the page. |
+| menu                     | `Object`               | Takes the same options as the [setMenu](#api-methods-setMenu) method. |
 
-<a name="api-methods-init"></a>
-`setNav([navElement])`
+<a name="api-methods-setMenu"></a>
+`setMenu(options)`
 
-- `navElement` (optional): an `HTMLElement` or selector string for the element on the page that contains the navigation items, or an object with the following properties:
+- `options`: an object with the following properties:
 
 | Property                 | Type                   | Description                       |
 |--------------------------|------------------------|-----------------------------------|
-| navItems                 | `Object`               | A set of key-value pairs, where the key is the nav item text, and the value is a `string` that contains a URL or a `Function` that will be called when the item is clicked.|
+| appNav                   | `Object`               | Options for setting page-oriented navigation menu items. |
+| appNav.items             | `Object`               | The key defines the menu item text content. The value is a `String` (URL), click handler callback `Function`, or an `Object`.|
+| appNav.items.href        | `String`               | URL.                              |
 
-If no argument is provided, this method will attempt to locate an element on the page that contains the `o-app-header__page-nav` class.
+<!--| appNav.items.active      | `Boolean`              | If true, the menu is rendered as active. |-->
 
 Example:
 
 ```js
-AppHeader.setNav({
-	navItems: {
-		'Foo Bar': 'https://example.com/foo-bar',
-		'Baz': function () { alert('You clicked "Baz"'); }
+AppHeader.setMenu({
+	appNav: {
+		items: {
+			// Menu item is a link
+			'Foo': 'https://example.com/foo',
+			// Menu item will execute the callback function on click
+			'Bar': function () { alert('You clicked "Bar"'); }
+		}
 	}
 });
 ```

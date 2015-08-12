@@ -122,10 +122,6 @@ var AppHeader = module.exports = {
 			}
 		}
 
-		function setUsername(username) {
-			usernameEl.textContent = username;
-		}
-
 		function render(state) {
 			var selector = '[data-show="state:signed-in"],[data-show="state:signed-out"]';
 			var elements = rootEl.querySelectorAll(selector);
@@ -143,6 +139,10 @@ var AppHeader = module.exports = {
 					el.style.display = el.getAttribute('data-show') === 'state:signed-out' ? '' : 'none';
 				});
 			}
+		}
+
+		function renderUsername(username) {
+			usernameEl.textContent = username;
 		}
 
 		function initSession() {
@@ -184,7 +184,7 @@ var AppHeader = module.exports = {
 
 		function handleGetUsername(error, username) {
 			if (error) return;
-			setUsername(username);
+			renderUsername(username);
 			render('signed-in');
 		}
 

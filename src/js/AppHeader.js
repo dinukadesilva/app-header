@@ -36,7 +36,7 @@ var AppHeader = module.exports = {
 		var rootEl = this.element = constructRootEl();
 		var usernameEl = rootEl.querySelector('.o-app-header__username');
 
-		setState('initializing');
+		render('initializing');
 		initSession();
 		appHeader.setNav(settings.nav || document.querySelector('.o-app-header__page-nav'));
 
@@ -126,7 +126,7 @@ var AppHeader = module.exports = {
 			usernameEl.textContent = username;
 		}
 
-		function setState(state) {
+		function render(state) {
 			var selector = '[data-show="state:signed-in"],[data-show="state:signed-out"]';
 			var elements = rootEl.querySelectorAll(selector);
 
@@ -149,9 +149,9 @@ var AppHeader = module.exports = {
 			var sessionState = session.hasValidSession(0);
 
 			if (sessionState === session.Success) {
-				setState('signed-in');
+				render('signed-in');
 			} else if (sessionState === session.NoSession || sessionState === session.NoToken) {
-				setState('signed-out');
+				render('signed-out');
 			}
 
 			session.on(session.SessionStateKnownEvent, handleSessionStateKnown);
@@ -178,14 +178,14 @@ var AppHeader = module.exports = {
 			if (session.hasValidSession(0) === session.Success) {
 				getUsername(handleGetUsername);
 			} else {
-				setState('signed-out');
+				render('signed-out');
 			}
 		}
 
 		function handleGetUsername(error, username) {
 			if (error) return;
 			setUsername(username);
-			setState('signed-in');
+			render('signed-in');
 		}
 
 		function handleSessionLogin(e) {
@@ -193,7 +193,7 @@ var AppHeader = module.exports = {
 		}
 
 		function handleSessionLogout(e) {
-			setState('signed-out');
+			render('signed-out');
 		}
 
 	},

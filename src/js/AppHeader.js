@@ -9,250 +9,254 @@ var forEach = require('./utils').forEach;
 var get = require('./utils').get;
 var I18n = require('./I18n');
 
-var AppHeader = module.exports = {
+var rootElInternal;
+var usernameElInternal;
 
-	defaultSettings: {
-		session: 'piSession',
-		consoleBaseUrl: 'https://console.pearson.com'
-	},
+var defaultSettingsInternal = {
+	session: 'piSession',
+	consoleBaseUrl: 'https://console.pearson.com'
+};
 
-	linkMap: {
-		help: null,
-		home: '{consoleBaseUrl}/console/home',
-		'my-account': '{consoleBaseUrl}/account/manage/account'
-	},
+var linkMapInternal = {
+	help: null,
+	home: '{consoleBaseUrl}/console/home',
+	'my-account': '{consoleBaseUrl}/account/manage/account'
+};
 
-	init: function (element, options) {
-		if (typeof element === 'object' && !(element instanceof HTMLElement)) {
-			options = element;
-			element = null;
-		}
-		if (!element) element = document.body;
-		if (!(element instanceof HTMLElement)) element = document.querySelector(element);
+var initInternal = function (element, options) {
+	if (typeof element === 'object' && !(element instanceof HTMLElement)) {
+		options = element;
+		element = null;
+	}
+	if (!element) element = document.body;
+	if (!(element instanceof HTMLElement)) element = document.querySelector(element);
 
-		var appHeader = this;
-		var settings = getSettings();
-		var session = (typeof settings.session === 'string') ? window[settings.session] : settings.session;
-		var rootEl = this.element = constructRootEl();
-		var usernameEl = rootEl.querySelector('.o-app-header__username');
+	var settings = getSettings();
+	var session = (typeof settings.session === 'string') ? window[settings.session] : settings.session;
+	rootElInternal = constructRootEl();
+	usernameElInternal = rootElInternal.querySelector('.o-app-header__username');
 
-		render('initializing');
-		initSession();
-		appHeader.setNav(settings.nav || document.querySelector('.o-app-header__page-nav'));
+	render('initializing');
+	initSession();
+	setNavInternal(settings.nav || document.querySelector('.o-app-header__page-nav'));
 
-		function getSettings() {
-			return assign({}, AppHeader.defaultSettings, getGlobalSettings(), options);
-		}
+	function getSettings() {
+		return assign({}, defaultSettingsInternal, getGlobalSettings(), options);
+	}
 
-		function getGlobalSettings() {
-			var configEl = document.querySelector('[data-o-app-header-config]');
-			var config = {};
+	function getGlobalSettings() {
+		var configEl = document.querySelector('[data-o-app-header-config]');
+		var config = {};
 
-			if (!configEl) return;
-			try { config = JSON.parse(configEl.textContent); } catch (e) {}
-			return config;
-		}
+		if (!configEl) return;
+		try { config = JSON.parse(configEl.textContent); } catch (e) {}
+		return config;
+	}
 
-		function resolveLink(key) {
-			if (!AppHeader.linkMap[key]) return '';
+	function resolveLink(key) {
+		if (!linkMapInternal[key]) return '';
 
-			return AppHeader.linkMap[key]
-				.replace('{consoleBaseUrl}', settings.consoleBaseUrl);
-		}
+		return linkMapInternal[key]
+			.replace('{consoleBaseUrl}', settings.consoleBaseUrl);
+	}
 
-		function constructRootEl() {
-			var rootEl = document.createElement('header');
+	function constructRootEl() {
+		var rootElInternal = document.createElement('header');
 
-			rootEl.setAttribute('data-o-component', 'o-header');
-			rootEl.setAttribute('role', 'banner');
-			rootEl.classList.add('o-header');
-			rootEl.classList.add('o-header--fixed');
-			rootEl.classList.add('o-app-header');
-			rootEl.innerHTML = requireText('../html/header.html');
+		rootElInternal.setAttribute('data-o-component', 'o-header');
+		rootElInternal.setAttribute('role', 'banner');
+		rootElInternal.classList.add('o-header');
+		rootElInternal.classList.add('o-header--fixed');
+		rootElInternal.classList.add('o-app-header');
+		rootElInternal.innerHTML = requireText('../html/header.html');
 
-			if (element === document.body) {
-				element.insertBefore(rootEl, element.firstChild);
-			} else {
-				// Replace the passed in element with the header element
-				element.parentElement.insertBefore(rootEl, element);
-				element.parentNode.removeChild(element);
-			}
-
-			// Header
-			new Header(rootEl);
-
-			// Collapse
-			new Collapse(rootEl.querySelector('[data-o-component="o-collapse"]'));
-
-			// Dropdown menus
-			DropdownMenu.init(rootEl);
-
-			// Links
-			forEach(rootEl.querySelectorAll('[data-link]'), function (idx, item) {
-				item.href = resolveLink(item.getAttribute('data-link'));
-			});
-
-			if (typeof AppHeader.linkMap.help !== 'string') {
-				rootEl.querySelector('[data-link="help"]').addEventListener('click', handleHelpClick);
-			}
-
-			// Actions
-			rootEl.querySelector('[data-action="sign-in"]').addEventListener('click', handleSignIn);
-			rootEl.querySelector('[data-action="sign-out"]').addEventListener('click', handleSignOut);
-
-			// i18n
-			var i18n = new I18n({ locale: settings.locale });
-			forEach(rootEl.querySelectorAll('[data-i18n]'), function (idx, item) {
-				item.textContent = i18n.translate(item.textContent.trim());
-			});
-
-			return rootEl;
+		if (element === document.body) {
+			element.insertBefore(rootElInternal, element.firstChild);
+		} else {
+			// Replace the passed in element with the header element
+			element.parentElement.insertBefore(rootElInternal, element);
+			element.parentNode.removeChild(element);
 		}
 
-		function getUsername(callback) {
-			var user = settings.user;
+		// Header
+		new Header(rootElInternal);
 
-			if (typeof user === 'function') {
-				user(function handleGetUser(error, user) {
-					if (error) return callback(error);
-					return callback(null, get(user, 'givenName'));
-				});
-			} else {
+		// Collapse
+		new Collapse(rootElInternal.querySelector('[data-o-component="o-collapse"]'));
+
+		// Dropdown menus
+		DropdownMenu.init(rootElInternal);
+
+		// Links
+		forEach(rootElInternal.querySelectorAll('[data-link]'), function (idx, item) {
+			item.href = resolveLink(item.getAttribute('data-link'));
+		});
+
+		if (typeof linkMapInternal.help !== 'string') {
+			rootElInternal.querySelector('[data-link="help"]').addEventListener('click', handleHelpClick);
+		}
+
+		// Actions
+		rootElInternal.querySelector('[data-action="sign-in"]').addEventListener('click', handleSignIn);
+		rootElInternal.querySelector('[data-action="sign-out"]').addEventListener('click', handleSignOut);
+
+		// i18n
+		var i18n = new I18n({ locale: settings.locale });
+		forEach(rootElInternal.querySelectorAll('[data-i18n]'), function (idx, item) {
+			item.textContent = i18n.translate(item.textContent.trim());
+		});
+
+		return rootElInternal;
+	}
+
+	function getUsername(callback) {
+		var user = settings.user;
+
+		if (typeof user === 'function') {
+			user(function handleGetUser(error, user) {
+				if (error) return callback(error);
 				return callback(null, get(user, 'givenName'));
-			}
+			});
+		} else {
+			return callback(null, get(user, 'givenName'));
 		}
+	}
 
-		function render(state) {
-			var selector = '[data-show="state:signed-in"],[data-show="state:signed-out"]';
-			var elements = rootEl.querySelectorAll(selector);
+	function render(state) {
+		var selector = '[data-show="state:signed-in"],[data-show="state:signed-out"]';
+		var elements = rootElInternal.querySelectorAll(selector);
 
-			if (state === 'initializing') {
-				forEach(elements, function (idx, el) {
-					el.style.display = 'none';
-				});
-			} else if (state === 'signed-in') {
-				forEach(elements, function (idx, el) {
-					el.style.display = el.getAttribute('data-show') === 'state:signed-in' ? '' : 'none';
-				});
-			} else if (state === 'signed-out') {
-				forEach(elements, function (idx, el) {
-					el.style.display = el.getAttribute('data-show') === 'state:signed-out' ? '' : 'none';
-				});
-			}
+		if (state === 'initializing') {
+			forEach(elements, function (idx, el) {
+				el.style.display = 'none';
+			});
+		} else if (state === 'signed-in') {
+			forEach(elements, function (idx, el) {
+				el.style.display = el.getAttribute('data-show') === 'state:signed-in' ? '' : 'none';
+			});
+		} else if (state === 'signed-out') {
+			forEach(elements, function (idx, el) {
+				el.style.display = el.getAttribute('data-show') === 'state:signed-out' ? '' : 'none';
+			});
 		}
+	}
 
-		function renderUsername(username) {
-			usernameEl.textContent = username;
-		}
+	function renderUsername(username) {
+		usernameElInternal.textContent = username;
+	}
 
-		function initSession() {
-			var sessionState = session.hasValidSession(0);
+	function initSession() {
+		var sessionState = session.hasValidSession(0);
 
-			if (sessionState === session.Success) {
-				render('signed-in');
-			} else if (sessionState === session.NoSession || sessionState === session.NoToken) {
-				render('signed-out');
-			}
-
-			session.on(session.SessionStateKnownEvent, handleSessionStateKnown);
-			session.on(session.LoginEvent, handleSessionLogin);
-			session.on(session.LogoutEvent, handleSessionLogout);
-		}
-
-		function handleSignIn(e) {
-			e.preventDefault();
-			session.login(window.location.href);
-		}
-
-		function handleSignOut(e) {
-			e.preventDefault();
-			session.logout(window.location.href);
-		}
-
-		function handleHelpClick(e) {
-			e.preventDefault();
-			dispatchEvent(rootEl, 'oAppHeader.help.toggle');
-		}
-
-		function handleSessionStateKnown(e) {
-			if (session.hasValidSession(0) === session.Success) {
-				getUsername(handleGetUsername);
-			} else {
-				render('signed-out');
-			}
-		}
-
-		function handleGetUsername(error, username) {
-			if (error) return;
-			renderUsername(username);
+		if (sessionState === session.Success) {
 			render('signed-in');
-		}
-
-		function handleSessionLogin(e) {
-			getUsername(handleGetUsername);
-		}
-
-		function handleSessionLogout(e) {
+		} else if (sessionState === session.NoSession || sessionState === session.NoToken) {
 			render('signed-out');
 		}
 
-	},
-
-	setNav: function (navEl) {
-		var element = this.element;
-
-		if (!element) return;
-		if (typeof navEl === 'string') navEl = document.querySelector(navEl);
-		if (!navEl) navEl = document.querySelector('.o-app-header__page-nav');
-		if (!navEl) return;
-
-		var navContainerEl = element.querySelector('.o-app-header__page-nav-container');
-		var navItemEls;
-
-		if (navEl instanceof HTMLElement) {
-			// Make a deep copy
-			navEl = navEl.cloneNode(true);
-			navEl.id = '';
-			navEl.className = '';
-			navEl.classList.add('o-header__nav');
-
-			navItemEls = navEl.querySelectorAll('ul > li');
-
-			for (var i = 0, l = navItemEls.length; i < l; i++) {
-				navItemEls[i].className = '';
-				navItemEls[i].classList.add('o-header__nav-item');
-			}
-		} else if (typeof navEl === 'object') {
-			var navItems = navEl.navItems || {};
-
-			navEl = document.createElement('nav');
-			navEl.classList.add('o-header__nav');
-
-			var navListEl = document.createElement('ul');
-			navEl.appendChild(navListEl);
-
-			Object.keys(navItems).forEach(function (key) {
-				var navListItemEl = document.createElement('li');
-				var navItemHref = typeof navItems[key] === 'string' ? navItems[key] : '#';
-
-				navListItemEl.classList.add('o-header__nav-item');
-				navListItemEl.innerHTML = '<a href="' + navItemHref + '">' + key + '</a>';
-
-				if (typeof navItems[key] === 'function') {
-					navListItemEl.firstChild.addEventListener('click', navItems[key]);
-				}
-
-				navListEl.appendChild(navListItemEl);
-			});
-		}
-
-		navContainerEl.innerHTML = '';
-
-		if (navEl) {
-			navContainerEl.appendChild(navEl);
-		}
-
-		return navEl;
+		session.on(session.SessionStateKnownEvent, handleSessionStateKnown);
+		session.on(session.LoginEvent, handleSessionLogin);
+		session.on(session.LogoutEvent, handleSessionLogout);
 	}
 
+	function handleSignIn(e) {
+		e.preventDefault();
+		session.login(window.location.href);
+	}
+
+	function handleSignOut(e) {
+		e.preventDefault();
+		session.logout(window.location.href);
+	}
+
+	function handleHelpClick(e) {
+		e.preventDefault();
+		dispatchEvent(rootElInternal, 'oAppHeader.help.toggle');
+	}
+
+	function handleSessionStateKnown(e) {
+		if (session.hasValidSession(0) === session.Success) {
+			getUsername(handleGetUsername);
+		} else {
+			render('signed-out');
+		}
+	}
+
+	function handleGetUsername(error, username) {
+		if (error) return;
+		renderUsername(username);
+		render('signed-in');
+	}
+
+	function handleSessionLogin(e) {
+		getUsername(handleGetUsername);
+	}
+
+	function handleSessionLogout(e) {
+		render('signed-out');
+	}
+
+};
+
+var setNavInternal = function (navEl) {
+	if (!rootElInternal) return;
+	if (typeof navEl === 'string') navEl = document.querySelector(navEl);
+	if (!navEl) navEl = document.querySelector('.o-app-header__page-nav');
+	if (!navEl) return;
+
+	var navContainerEl = rootElInternal.querySelector('.o-app-header__page-nav-container');
+	var navItemEls;
+
+	if (navEl instanceof HTMLElement) {
+		// Make a deep copy
+		navEl = navEl.cloneNode(true);
+		navEl.id = '';
+		navEl.className = '';
+		navEl.classList.add('o-header__nav');
+
+		navItemEls = navEl.querySelectorAll('ul > li');
+
+		for (var i = 0, l = navItemEls.length; i < l; i++) {
+			navItemEls[i].className = '';
+			navItemEls[i].classList.add('o-header__nav-item');
+		}
+	} else if (typeof navEl === 'object') {
+		var navItems = navEl.navItems || {};
+
+		navEl = document.createElement('nav');
+		navEl.classList.add('o-header__nav');
+
+		var navListEl = document.createElement('ul');
+		navEl.appendChild(navListEl);
+
+		Object.keys(navItems).forEach(function (key) {
+			var navListItemEl = document.createElement('li');
+			var navItemHref = typeof navItems[key] === 'string' ? navItems[key] : '#';
+
+			navListItemEl.classList.add('o-header__nav-item');
+			navListItemEl.innerHTML = '<a href="' + navItemHref + '">' + key + '</a>';
+
+			if (typeof navItems[key] === 'function') {
+				navListItemEl.firstChild.addEventListener('click', navItems[key]);
+			}
+
+			navListEl.appendChild(navListItemEl);
+		});
+	}
+
+	navContainerEl.innerHTML = '';
+
+	if (navEl) {
+		navContainerEl.appendChild(navEl);
+	}
+
+	return navEl;
+};
+
+// Export the public API
+module.exports = {
+	defaultSettings: defaultSettingsInternal,
+	linkMap: linkMapInternal,
+	init: initInternal,
+	setNav: setNavInternal
 };

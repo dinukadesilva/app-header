@@ -89,7 +89,13 @@ var initInternal = function (element, options) {
 
 		// Links
 		forEach(rootElInternal.querySelectorAll('[data-link]'), function (idx, item) {
-			item.href = resolveLink(item.getAttribute('data-link'));
+			var link = item.getAttribute('data-link');
+
+			if (linkMapInternal[link] && typeof linkMapInternal[link] === 'function') {
+				item.addEventListener('click', linkMapInternal[link]);
+			} else {
+				item.href = resolveLink(link);
+			}
 		});
 
 		if (typeof linkMapInternal.help !== 'string') {

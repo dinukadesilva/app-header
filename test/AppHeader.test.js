@@ -132,6 +132,20 @@ describe('AppHeader', function () {
 			expect(appHeaderEl.querySelector('[data-link="home"]').href).to.be(resolveLink('home'));
 		});
 
+		it('should register a click handler when link target is a function', function (done) {
+			sandbox.stub(AppHeader.linkMap, 'home', function handleClick(e) {
+				e.preventDefault();
+				done();
+			});
+
+			AppHeader.init();
+
+			var appHeaderEl = getHeaderEl();
+			var homeEl = appHeaderEl.querySelector('[data-link="home"]');
+
+			dispatchEvent(homeEl, 'click');
+		});
+
 		it('should emit oAppHeader.help.toggle when the Help nav item is clicked', function (done) {
 			AppHeader.init();
 

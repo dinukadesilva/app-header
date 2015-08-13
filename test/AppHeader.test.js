@@ -393,7 +393,7 @@ describe('AppHeader', function () {
 });
 
 function getHeaderEl() {
-	return document.querySelector('[data-o-component="o-header"]');
+	return document.querySelector('.o-app-header');
 }
 
 function getNavContainerEl(headerEl) {

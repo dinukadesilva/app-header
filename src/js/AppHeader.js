@@ -63,7 +63,6 @@ var initInternal = function (element, options) {
 	function constructRootEl() {
 		var rootElInternal = document.createElement('header');
 
-		rootElInternal.setAttribute('data-o-component', 'o-header');
 		rootElInternal.setAttribute('role', 'banner');
 		rootElInternal.classList.add('o-header');
 		rootElInternal.classList.add('o-header--fixed');

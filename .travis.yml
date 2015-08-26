@@ -6,7 +6,7 @@ node_js:
 env:
   matrix:
     - BROWSER=chrome  BVER=stable CHROME_BIN=./browsers/bin/chrome-stable
-    - BROWSER=firefox BVER=stable FIREFOX_BIN=./browsers/bin/firefox-stable
+#    - BROWSER=firefox BVER=stable FIREFOX_BIN=./browsers/bin/firefox-stable
 
 matrix:
   fast_finish: true

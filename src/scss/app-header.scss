@@ -51,6 +51,10 @@
 // Menu
 .o-app-header__menu-account {
 
+	i {
+		color: inherit;
+	}
+
 	.o-dropdown-menu__menu-items {
 		@media (min-width: $o-header-phone-min) {
 			width: 250px;

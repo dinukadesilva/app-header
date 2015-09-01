@@ -1,3 +1,20 @@
+<a name="0.1.0"></a>
+# [0.1.0](//compare/v0.0.5...v0.1.0) (2015-09-01)
+
+
+### Bug Fixes
+
+* change aria-role to role 26dbd90
+* remove menu items from the tab order a98e46a
+
+### Features
+
+* bump o-dropdown-menu version 2cda8da
+* redesign 4e94a84
+* register click handler when linkMap value is a function 28f98b0
+
+
+
 <a name"0.0.5"></a>
 ### 0.0.5 (2015-07-31)
 

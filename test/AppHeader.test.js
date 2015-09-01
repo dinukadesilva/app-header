@@ -69,6 +69,10 @@ describe('AppHeader', function () {
 
 	describe('#init(element, options)', function () {
 
+		it ('should throw an error when options.session is a string and the session object is undefined in the global scope', function () {
+			expect(AppHeader.init.bind(null, { session: 'nonexistent' })).to.throwException(/unable to find window\[\'nonexistent\'\]/);
+		});
+
 		it('should prepend to document.body when element is undefined', function () {
 			AppHeader.init();
 

@@ -32,13 +32,23 @@ var initInternal = function (element, options) {
 	options = options || {};
 
 	var settings = getSettings();
-	var session = (typeof settings.session === 'string') ? window[settings.session] : settings.session;
+
 	rootElInternal = constructRootEl();
 	accountMenuElInternal = rootElInternal.querySelector('.o-app-header__menu-account');
 	usernameElInternal = rootElInternal.querySelector('.o-app-header__username');
 
 	render('initializing');
-	if (settings.session) initSession(); else render('signed-out');
+
+	var session;
+
+	if (!settings.session) {
+		render('signed-out');
+	} else {
+		session = (typeof settings.session === 'string') ? window[settings.session] : settings.session;
+		if (!session) throw new TypeError('Invalid configuration for \'session\': unable to find window[\'' + settings.session + '\']');
+		initSession();
+	}
+
 	setMenuInternal(settings.menu);
 
 	function getSettings() {

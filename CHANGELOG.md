@@ -1,3 +1,17 @@
+<a name="0.2.0"></a>
+# [0.2.0](//compare/v0.1.0...v0.2.0) (2015-09-01)
+
+
+### Bug Fixes
+
+* i elements in the account menu should inherit color 6736ef2
+
+### Features
+
+* update o-header version to 0.10.0 48b79b6
+
+
+
 <a name="0.1.0"></a>
 # [0.1.0](//compare/v0.0.5...v0.1.0) (2015-09-01)
 

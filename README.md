@@ -62,6 +62,9 @@ Refer to the [options object](#api-methods-init) for a list of properties.
 | Property                 | Type                   | Description                       |
 |--------------------------|------------------------|-----------------------------------|
 | appNav                   | `Object`               | Options for setting page-oriented navigation menu items. |
+| appNav.heading           | `Object`               | Options for rendering a heading menu item. |
+| appNav.heading.title     | `String`               | The heading title.                |
+| appNav.heading.href      | `String`               | URL.                              |
 | appNav.items             | `Object`               | The key is the menu item text content. The value can be a `String`, which is the URL of the menu item's link, or an `Object`. |
 | appNav.items.href        | `String`               | URL.                              |
 | appNav.items.active      | `Boolean`              | If true, the menu is rendered as active. |
@@ -72,6 +75,11 @@ Example:
 ```js
 AppHeader.setMenu({
 	appNav: {
+		// Render a heading menu item
+		heading: {
+			title: 'Psychology 101',
+			href: 'https://example.com/psychology-101'
+		},
 		items: {
 			// Active menu item
 			'Foo': { active: true, href: 'https://example.com/foo' },

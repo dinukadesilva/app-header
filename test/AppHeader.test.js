@@ -383,6 +383,29 @@ describe('AppHeader', function () {
 			expect(AppHeader.setMenu.bind(AppHeader, options)).to.throwException(/Click handler must be a function/);
 		});
 
+		it('should insert a heading menu item when the heading option is defined', function () {
+			var text = 'Foo';
+			var href = 'https://example.com/';
+			var options = {
+				appNav: {
+					heading: {
+						text: text,
+						href: href
+					}
+				}
+			};
+
+			AppHeader.init();
+			AppHeader.setMenu(options);
+
+			var headerEl = getHeaderEl();
+			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+
+			expect(appNavMenuItemEls[0].classList.contains('o-dropdown-menu__heading')).to.be(true);
+			expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be(text);
+			expect(appNavMenuItemEls[0].querySelector('a').href).to.be(href);
+		});
+
 	});
 
 	describe('session', function () {

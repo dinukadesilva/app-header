@@ -309,42 +309,76 @@ var setMenuInternal = function (options) {
 	if (!rootElInternal || !accountMenuElInternal) return;
 	if (!options || typeof options !== 'object') return;
 
-	var menuItemEls = [];
-	var appNavItems = (options.appNav || {}).items;
+	options.appNav = options.appNav || {};
 
-	if (!appNavItems) return;
+	function createDropdownMenuItemEl(options) {
+		options = options || {};
 
-	Object.keys(appNavItems).forEach(function (key) {
 		var menuItemEl = document.createElement('li');
 		var menuItemLinkEl = document.createElement('a');
 
-		menuItemEl.classList.add('o-dropdown-menu__menu-item');
 		menuItemEl.setAttribute('role', 'presentation');
+		menuItemEl.classList.add('o-dropdown-menu__menu-item');
+		if (options.isHeading) menuItemEl.classList.add('o-dropdown-menu__heading');
+
 		menuItemLinkEl.setAttribute('role', 'menuitem');
 		menuItemLinkEl.setAttribute('tabindex', '-1');
-		menuItemLinkEl.textContent = key;
-
-		if (typeof appNavItems[key] === 'string') {
-			menuItemLinkEl.href = appNavItems[key];
-		} else if (typeof appNavItems[key] === 'object') {
-			var itemOptions = appNavItems[key];
-
-			menuItemLinkEl.href = itemOptions.href;
-
-			if (itemOptions.active) {
-				menuItemEl.classList.add('o-dropdown-menu__menu-item--disabled');
-			}
-
-			if (itemOptions.onClick) {
-				if (typeof itemOptions.onClick !== 'function') throw new TypeError('Click handler must be a function');
-				menuItemLinkEl.href = '#';
-				menuItemLinkEl.addEventListener('click', itemOptions.onClick);
-			}
-		}
+		menuItemLinkEl.textContent = options.link.textContent;
+		menuItemLinkEl.href = options.link.href;
 
 		menuItemEl.appendChild(menuItemLinkEl);
+
+		return menuItemEl;
+	}
+
+	var menuItemEls = [];
+
+	if (options.appNav.heading) {
+		var appNavHeaderOptions = options.appNav.heading;
+
+		var menuItemEl = createDropdownMenuItemEl({
+			isHeading: true,
+			link: { textContent: appNavHeaderOptions.text, href: appNavHeaderOptions.href }
+		});
+
 		menuItemEls.push(menuItemEl);
-	});
+	}
+
+	if (options.appNav && typeof options.appNav.items === 'object') {
+		var appNavItems = options.appNav.items;
+
+		Object.keys(options.appNav.items).forEach(function (key) {
+			var menuItemEl = document.createElement('li');
+			var menuItemLinkEl = document.createElement('a');
+
+			menuItemEl.classList.add('o-dropdown-menu__menu-item');
+			menuItemEl.setAttribute('role', 'presentation');
+			menuItemLinkEl.setAttribute('role', 'menuitem');
+			menuItemLinkEl.setAttribute('tabindex', '-1');
+			menuItemLinkEl.textContent = key;
+
+			if (typeof appNavItems[key] === 'string') {
+				menuItemLinkEl.href = appNavItems[key];
+			} else if (typeof appNavItems[key] === 'object') {
+				var itemOptions = appNavItems[key];
+
+				menuItemLinkEl.href = itemOptions.href;
+
+				if (itemOptions.active) {
+					menuItemEl.classList.add('o-dropdown-menu__menu-item--disabled');
+				}
+
+				if (itemOptions.onClick) {
+					if (typeof itemOptions.onClick !== 'function') throw new TypeError('Click handler must be a function');
+					menuItemLinkEl.href = '#';
+					menuItemLinkEl.addEventListener('click', itemOptions.onClick);
+				}
+			}
+
+			menuItemEl.appendChild(menuItemLinkEl);
+			menuItemEls.push(menuItemEl);
+		});
+	}
 
 	var menuItemsEl = accountMenuElInternal.querySelector('.o-app-header__menu-app-nav > ul');
 

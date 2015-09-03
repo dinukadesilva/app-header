@@ -71,7 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			},
 			appNav: {
 				heading: {
-					'U.S. History 201': 'https://example.com/us-history-101'
+					text: 'U.S. History 201',
+					href: 'https://example.com/us-history-201'
 				},
 				items: {
 					'Assignments': 'https://example.com/assignments',

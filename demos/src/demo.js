@@ -63,12 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		locale: locale,
 		menu: {
 			homeLink: '',
-			siteNav: {
-				items: {
-					'World History': 'https://example.com/world-history',
-					'Intro to Sociology 123-9876': 'https://example.com/intro-to-sociology'
-				}
-			},
 			appNav: {
 				heading: {
 					text: 'U.S. History 201',

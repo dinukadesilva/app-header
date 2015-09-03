@@ -62,10 +62,10 @@ Refer to the [options object](#api-methods-init) for a list of properties.
 | Property                 | Type                   | Description                       |
 |--------------------------|------------------------|-----------------------------------|
 | appNav                   | `Object`               | Options for setting page-oriented navigation menu items. |
-| appNav.items             | `Object`               | The key defines the menu item text content. The value is a `String` (URL), click handler callback `Function`, or an `Object`.|
+| appNav.items             | `Object`               | The key is the menu item text content. The value can be a `String`, which is the URL of the menu item's link, or an `Object`. |
 | appNav.items.href        | `String`               | URL.                              |
-
-<!--| appNav.items.active      | `Boolean`              | If true, the menu is rendered as active. |-->
+| appNav.items.active      | `Boolean`              | If true, the menu is rendered as active. |
+| appNav.items.onClick     | `Function`             | A callback function that will be called when the menu item is clicked. |
 
 Example:
 
@@ -73,10 +73,10 @@ Example:
 AppHeader.setMenu({
 	appNav: {
 		items: {
-			// Menu item is a link
-			'Foo': 'https://example.com/foo',
+			// Active menu item
+			'Foo': { active: true, href: 'https://example.com/foo' },
 			// Menu item will execute the callback function on click
-			'Bar': function () { alert('You clicked "Bar"'); }
+			'Bar': { onClick: function () { alert('You clicked "Bar"'); } }
 		}
 	}
 });

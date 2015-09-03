@@ -322,11 +322,24 @@ var setMenuInternal = function (options) {
 		menuItemEl.setAttribute('role', 'presentation');
 		menuItemLinkEl.setAttribute('role', 'menuitem');
 		menuItemLinkEl.setAttribute('tabindex', '-1');
-		menuItemLinkEl.href = typeof appNavItems[key] === 'string' ? appNavItems[key] : '#';
 		menuItemLinkEl.textContent = key;
 
-		if (typeof appNavItems[key] === 'function') {
-			menuItemLinkEl.addEventListener('click', appNavItems[key]);
+		if (typeof appNavItems[key] === 'string') {
+			menuItemLinkEl.href = appNavItems[key];
+		} else if (typeof appNavItems[key] === 'object') {
+			var itemOptions = appNavItems[key];
+
+			menuItemLinkEl.href = itemOptions.href;
+
+			if (itemOptions.active) {
+				menuItemEl.classList.add('o-dropdown-menu__menu-item--disabled');
+			}
+
+			if (itemOptions.onClick) {
+				if (typeof itemOptions.onClick !== 'function') throw new TypeError('Click handler must be a function');
+				menuItemLinkEl.href = '#';
+				menuItemLinkEl.addEventListener('click', itemOptions.onClick);
+			}
 		}
 
 		menuItemEl.appendChild(menuItemLinkEl);

@@ -311,12 +311,12 @@ describe('AppHeader', function () {
 			expect(appNavMenuItemEls[1].querySelector('a').href).to.be(options.appNav.items.Bar);
 		});
 
-		it('should add a click event listener when the item\'s value is a function', function () {
+		it('should render the menu item as a link when the href option is a string', function () {
+			var href = 'http://example.com/foo';
 			var options = {
 				appNav: {
 					items: {
-						Foo: 'http://example.com/foo',
-						Bar: sinon.spy()
+						Foo: { href: href },
 					}
 				}
 			};
@@ -327,9 +327,60 @@ describe('AppHeader', function () {
 			var headerEl = getHeaderEl();
 			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
 
-			dispatchEvent(appNavMenuItemEls[1].querySelector('a'), 'click');
+			expect(appNavMenuItemEls[0].querySelector('a').href).to.be(href);
+		});
 
-			expect(options.appNav.items.Bar.calledOnce).to.be(true);
+		it('should render the menu item as disabled when the active option is true', function () {
+			var options = {
+				appNav: {
+					items: {
+						Foo: { href: 'http://example.com/foo', active: true },
+					}
+				}
+			};
+
+			AppHeader.init();
+			AppHeader.setMenu(options);
+
+			var headerEl = getHeaderEl();
+			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+
+			expect(appNavMenuItemEls[0].classList.contains('o-dropdown-menu__menu-item--disabled')).to.be(true);
+		});
+
+		it('should add a click handler when the onClick option is a function', function () {
+			var handler = sinon.spy();
+			var options = {
+				appNav: {
+					items: {
+						Foo: { onClick: handler }
+					}
+				}
+			};
+
+			AppHeader.init();
+			AppHeader.setMenu(options);
+
+			var headerEl = getHeaderEl();
+			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+
+			dispatchEvent(appNavMenuItemEls[0].querySelector('a'), 'click');
+
+			expect(handler.calledOnce).to.be(true);
+		});
+
+		it('should throw an error when the onClick option is not a function', function () {
+			var options = {
+				appNav: {
+					items: {
+						Foo: { onClick: 'invalid' }
+					}
+				}
+			};
+
+			AppHeader.init();
+
+			expect(AppHeader.setMenu.bind(AppHeader, options)).to.throwException(/Click handler must be a function/);
 		});
 
 	});

@@ -60,6 +60,12 @@
 			width: 250px;
 		}
 	}
+
+	.o-dropdown-menu__menu-item--disabled {
+		> a {
+			color: $o-app-header-menu-app-nav-menu-item-disabled-color;
+		}
+	}
 }
 
 .o-app-header__menu-app-nav {
@@ -73,6 +79,15 @@
 
 // Light theme
 .o-header--theme-light {
+	// scss-lint:disable SelectorDepth
+
+	.o-app-header__menu-account {
+
+		.o-dropdown-menu__menu-item--disabled > a {
+			color: $o-app-header-menu-app-nav-menu-item-disabled-color-light;
+		}
+	}
+
 	.o-app-header__menu-app-nav {
 		> ul {
 			background-color: $o-app-header-menu-app-nav-bg-light;

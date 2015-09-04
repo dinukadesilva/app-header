@@ -57,17 +57,21 @@ Refer to the [options object](#api-methods-init) for a list of properties.
 <a name="api-methods-setMenu"></a>
 `setMenu(options)`
 
-- `options`: an object with the following properties:
+- `options`: an object with the following optional properties:
 
 | Property                 | Type                   | Description                       |
 |--------------------------|------------------------|-----------------------------------|
 | enableAllCoursesMenuItem | `Boolean`              | If true, the menu will include an item with a link to return to the page that displays the user's course list. |
+| appAbout                 | `Object`               | Options for rendering a menu item that links to or initiates an action to display information about the current application. |
+| appAbout.title           | `String`               | The text that will be rendered for the menu item. |
+| appAbout.href            | `String`               | URL. If defined, the menu item will be rendered as a link. |
+| appAbout.onClick         | `Function`             | A callback function that will be called when the menu item is clicked. |
 | appNav                   | `Object`               | Options for setting page-oriented navigation menu items. |
 | appNav.heading           | `Object`               | Options for rendering a heading menu item. |
 | appNav.heading.title     | `String`               | The heading title.                |
-| appNav.heading.href      | `String`               | URL.                              |
+| appNav.heading.href      | `String`               | URL. If defined, the menu item will be rendered as a link. |
 | appNav.items             | `Object`               | The key is the menu item text content. The value can be a `String`, which is the URL of the menu item's link, or an `Object`. |
-| appNav.items.href        | `String`               | URL.                              |
+| appNav.items.href        | `String`               | URL. If defined, the menu item will be rendered as a link. |
 | appNav.items.active      | `Boolean`              | If true, the menu is rendered as active. |
 | appNav.items.onClick     | `Function`             | A callback function that will be called when the menu item is clicked. |
 

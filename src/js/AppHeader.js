@@ -318,11 +318,11 @@ var setMenuInternal = function (options) {
 		options = options || {};
 
 		var menuItemEl = document.createElement('li');
-		var menuItemLinkEl = document.createElement('a');
 
 		menuItemEl.setAttribute('role', 'presentation');
 		menuItemEl.classList.add('o-dropdown-menu__menu-item');
 		if (options.isHeading) menuItemEl.classList.add('o-dropdown-menu__heading');
+		if (options.isDivider) menuItemEl.classList.add('o-dropdown-menu__divider');
 
 		if (options.cssClasses) {
 			options.cssClasses.forEach(function (cssClass) {
@@ -330,12 +330,23 @@ var setMenuInternal = function (options) {
 			});
 		}
 
-		menuItemLinkEl.setAttribute('role', 'menuitem');
-		menuItemLinkEl.setAttribute('tabindex', '-1');
-		menuItemLinkEl.textContent = options.link.textContent;
-		menuItemLinkEl.href = options.link.href;
+		if (options.link) {
+			var menuItemLinkEl = document.createElement('a');
 
-		menuItemEl.appendChild(menuItemLinkEl);
+			menuItemLinkEl.setAttribute('role', 'menuitem');
+			menuItemLinkEl.setAttribute('tabindex', '-1');
+
+			if (options.link.onClick) {
+				if (typeof options.link.onClick !== 'function') throw new TypeError('Click handler must be a function');
+				menuItemLinkEl.href = '#';
+				menuItemLinkEl.addEventListener('click', options.link.onClick);
+			} else {
+				menuItemLinkEl.textContent = options.link.textContent;
+				menuItemLinkEl.href = options.link.href;
+			}
+
+			menuItemEl.appendChild(menuItemLinkEl);
+		}
 
 		return menuItemEl;
 	}
@@ -356,6 +367,26 @@ var setMenuInternal = function (options) {
 
 		// Insert the menu item
 		accountMenuItemsEl.insertBefore(allCoursesMenuItemEl, accountMenuItemsEl.firstChild);
+	}
+
+	// App about menu item
+	if (options.appAbout) {
+		var appAboutMenuItemOptions = { link: {} };
+
+		if (options.appAbout.onClick) {
+			appAboutMenuItemOptions.link.onClick = options.appAbout.onClick;
+		} else {
+			appAboutMenuItemOptions.link.textContent = options.appAbout.title;
+			appAboutMenuItemOptions.link.href = options.appAbout.href;
+		}
+
+		var appAboutMenuItemEl = createDropdownMenuItemEl(appAboutMenuItemOptions);
+
+		// Insert before the My Account menu item
+		var myAccountMenuItemEl = accountMenuItemsEl.querySelector('[data-link="my-account"]').parentElement;
+
+		accountMenuItemsEl.insertBefore(appAboutMenuItemEl, myAccountMenuItemEl);
+		accountMenuItemsEl.insertBefore(createDropdownMenuItemEl({ isDivider: true }), myAccountMenuItemEl);
 	}
 
 	// App nav menu items

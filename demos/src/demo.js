@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		locale: locale,
 		menu: {
 			showAllCoursesMenuItem: true,
+			appAbout: { title: 'About this app', href: 'https://example.com/about' },
 			appNav: {
 				heading: {
 					text: 'U.S. History 201',
@@ -105,8 +106,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		config.user.givenName = 'XXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
 	}
 
-	if (localStorage.getItem('disable_all_courses_menu')) {
+	if (localStorage.getItem('disable_all_courses_menu_item')) {
 		config.menu.showAllCoursesMenuItem = false;
+	}
+
+	if (localStorage.getItem('disable_app_about_menu_item')) {
+		delete config.menu.appAbout;
 	}
 
 	var configEl = document.createElement('script');
@@ -123,7 +128,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		'* Disable user session: localStorage.setItem(\'disable_session\', true);' + '\n' +
 		'* Change the Help nav item to a dropdown menu: localStorage.setItem(\'nav_help_menu\', true);' + '\n' +
 		'* Change the username to a long string: localStorage.setItem(\'long_username\', true);' + '\n' +
-		'* Hide the \'All courses\' menu item: localStorage.setItem(\'disable_all_courses_menu\', true);' + '\n' +
+		'* Disable the \'All courses\' menu item: localStorage.setItem(\'disable_all_courses_menu_item\', true);' + '\n' +
+		'* Disable the app about menu item: localStorage.setItem(\'disable_app_about_menu_item\', true);' + '\n' +
 		'* Clear all settings: localStorage.clear();'
 	);
 });

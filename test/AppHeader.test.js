@@ -451,6 +451,55 @@ describe('AppHeader', function () {
 			expect(accountMenuItemEls[0].querySelector('a').href).to.be(expectedUrl);
 		});
 
+		it('should render a menu item with a link to the app info when the appAbout option is defined', function () {
+			var title = 'About Foo';
+			var href = 'https://example.com/about';
+			var options = {
+				appAbout: {
+					title: title,
+					href: href
+				}
+			};
+
+			AppHeader.init();
+			AppHeader.setMenu(options);
+
+			var headerEl = getHeaderEl();
+			var appAboutMenuItemEl = getAppAboutMenuItemEl(headerEl);
+
+			expect(appAboutMenuItemEl.classList.contains('o-dropdown-menu__menu-item')).to.be(true);
+			expect(appAboutMenuItemEl.querySelector('a').textContent).to.be(title);
+			expect(appAboutMenuItemEl.querySelector('a').href).to.be(href);
+		});
+
+		it('should register a click handler when the appAbout option is defined and appAbout.onClick is a function', function (done) {
+			var options = {
+				appAbout: {
+					onClick: done.bind(null, null)
+				}
+			};
+
+			AppHeader.init();
+			AppHeader.setMenu(options);
+
+			var headerEl = getHeaderEl();
+			var appAboutMenuItemEl = getAppAboutMenuItemEl(headerEl);
+
+			dispatchEvent(appAboutMenuItemEl.querySelector('a'), 'click');
+		});
+
+		it('should throw an error when the appAbout option is defined and appAbout.onClick is not a function', function () {
+			var options = {
+				appAbout: {
+					onClick: 'invalid'
+				}
+			};
+
+			AppHeader.init();
+
+			expect(AppHeader.setMenu.bind(AppHeader, options)).to.throwException(/Click handler must be a function/);
+		});
+
 	});
 
 	describe('session', function () {
@@ -572,6 +621,13 @@ function getAccountMenuItemEls(headerEl) {
 
 function getAppNavMenuItemEls(headerEl) {
 	return getAccountMenuEl(headerEl).querySelectorAll('.o-app-header__menu-app-nav .o-dropdown-menu__menu-item');
+}
+
+function getAppAboutMenuItemEl(headerEl) {
+	return getAccountMenuEl(headerEl).querySelector('[data-link="my-account"]')
+		.parentElement
+		.previousElementSibling
+		.previousElementSibling;
 }
 
 function getHelpNavItemEl(headerEl) {

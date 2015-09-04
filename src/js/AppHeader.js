@@ -11,6 +11,7 @@ var I18n = require('./I18n');
 var rootElInternal;
 var accountMenuElInternal;
 var usernameElInternal;
+var settingsInternal;
 
 var defaultSettingsInternal = {
 	session: 'piSession',
@@ -19,7 +20,15 @@ var defaultSettingsInternal = {
 		home: '{consoleBaseUrl}/console/home',
 		'my-account': '{consoleBaseUrl}/account/manage/account'
 	},
-	menu: {}
+	menu: {
+		showAllCoursesMenuItem: false
+	}
+};
+
+var resolveLinkInternal = function (key) {
+	if (!settingsInternal.links[key] || typeof settingsInternal.links[key] !== 'string') return;
+
+	return settingsInternal.links[key].replace('{consoleBaseUrl}', settingsInternal.consoleBaseUrl);
 };
 
 var initInternal = function (element, options) {
@@ -31,7 +40,7 @@ var initInternal = function (element, options) {
 	if (!(element instanceof HTMLElement)) element = document.querySelector(element);
 	options = options || {};
 
-	var settings = getSettings();
+	settingsInternal = getSettings();
 
 	rootElInternal = constructRootEl();
 	accountMenuElInternal = rootElInternal.querySelector('.o-app-header__menu-account');
@@ -41,15 +50,15 @@ var initInternal = function (element, options) {
 
 	var session;
 
-	if (!settings.session) {
+	if (!settingsInternal.session) {
 		render('signed-out');
 	} else {
-		session = (typeof settings.session === 'string') ? window[settings.session] : settings.session;
-		if (!session) throw new TypeError('Invalid configuration for \'session\': unable to find window[\'' + settings.session + '\']');
+		session = (typeof settingsInternal.session === 'string') ? window[settingsInternal.session] : settingsInternal.session;
+		if (!session) throw new TypeError('Invalid configuration for \'session\': unable to find window[\'' + settingsInternal.session + '\']');
 		initSession();
 	}
 
-	setMenuInternal(settings.menu);
+	setMenuInternal(settingsInternal.menu);
 
 	function getSettings() {
 		// Merge links object
@@ -68,19 +77,13 @@ var initInternal = function (element, options) {
 		return config;
 	}
 
-	function resolveLink(key) {
-		if (!settings.links[key] || typeof settings.links[key] !== 'string') return;
-
-		return settings.links[key].replace('{consoleBaseUrl}', settings.consoleBaseUrl);
-	}
-
 	function constructRootEl() {
 		var rootElInternal = document.createElement('header');
 
 		rootElInternal.setAttribute('role', 'banner');
 		rootElInternal.classList.add('o-header');
 		rootElInternal.classList.add('o-header--fixed');
-		if (settings.theme === 'light') rootElInternal.classList.add('o-header--theme-light');
+		if (settingsInternal.theme === 'light') rootElInternal.classList.add('o-header--theme-light');
 		rootElInternal.classList.add('o-app-header');
 		rootElInternal.innerHTML = requireText('../html/header.html');
 
@@ -93,7 +96,7 @@ var initInternal = function (element, options) {
 		}
 
 		// Links
-		var links = settings.links;
+		var links = settingsInternal.links;
 
 		forEach(rootElInternal.querySelectorAll('[data-link]'), function (idx, item) {
 			var link = item.getAttribute('data-link');
@@ -101,7 +104,7 @@ var initInternal = function (element, options) {
 			if (links[link] && typeof links[link] === 'function') {
 				item.addEventListener('click', links[link]);
 			} else {
-				item.href = resolveLink(link);
+				item.href = resolveLinkInternal(link);
 			}
 		});
 
@@ -174,7 +177,7 @@ var initInternal = function (element, options) {
 		rootElInternal.querySelector('[data-action="sign-out"]').addEventListener('click', handleSignOut);
 
 		// i18n
-		var i18n = new I18n({ locale: settings.locale });
+		var i18n = new I18n({ locale: settingsInternal.locale });
 		forEach(rootElInternal.querySelectorAll('[data-i18n]'), function (idx, item) {
 			item.textContent = i18n.translate(item.textContent.trim());
 		});
@@ -185,7 +188,7 @@ var initInternal = function (element, options) {
 		// Dropdown menus
 		DropdownMenu.init(rootElInternal);
 
-		if (!settings.session) {
+		if (!settingsInternal.session) {
 			forEach(rootElInternal.querySelectorAll('.o-app-header__nav-item-menu'), function (idx, item) {
 				item.parentElement.removeChild(item);
 			});
@@ -211,7 +214,7 @@ var initInternal = function (element, options) {
 	}
 
 	function getUsername(callback) {
-		var user = settings.user;
+		var user = settingsInternal.user;
 
 		if (typeof user === 'function') {
 			user(function handleGetUser(error, user) {
@@ -321,6 +324,12 @@ var setMenuInternal = function (options) {
 		menuItemEl.classList.add('o-dropdown-menu__menu-item');
 		if (options.isHeading) menuItemEl.classList.add('o-dropdown-menu__heading');
 
+		if (options.cssClasses) {
+			options.cssClasses.forEach(function (cssClass) {
+				menuItemEl.classList.add(cssClass);
+			});
+		}
+
 		menuItemLinkEl.setAttribute('role', 'menuitem');
 		menuItemLinkEl.setAttribute('tabindex', '-1');
 		menuItemLinkEl.textContent = options.link.textContent;
@@ -331,17 +340,36 @@ var setMenuInternal = function (options) {
 		return menuItemEl;
 	}
 
-	var menuItemEls = [];
+	var accountMenuItemsEl = accountMenuElInternal.querySelector('.o-dropdown-menu__menu-items');
+
+	// All courses menu item
+	if (options.showAllCoursesMenuItem) {
+		var allCoursesMenuItemEl = createDropdownMenuItemEl({
+			cssClasses: ['o-header__viewport-tablet--hidden', 'o-header__viewport-desktop--hidden'],
+			link: { textContent: 'All courses', href: resolveLinkInternal('home') }
+		});
+
+		// Prepend the left arrow icon
+		var allCoursesMenuItemLinkEl = allCoursesMenuItemEl.querySelector('a');
+
+		allCoursesMenuItemLinkEl.innerHTML = '<span class="o-app-header__icon-left-arrow"></span> ' + allCoursesMenuItemLinkEl.innerHTML;
+
+		// Insert the menu item
+		accountMenuItemsEl.insertBefore(allCoursesMenuItemEl, accountMenuItemsEl.firstChild);
+	}
+
+	// App nav menu items
+	var appNavMenuItemEls = [];
 
 	if (options.appNav.heading) {
 		var appNavHeaderOptions = options.appNav.heading;
 
-		var menuItemEl = createDropdownMenuItemEl({
+		var appNavHeadingMenuItemEl = createDropdownMenuItemEl({
 			isHeading: true,
 			link: { textContent: appNavHeaderOptions.text, href: appNavHeaderOptions.href }
 		});
 
-		menuItemEls.push(menuItemEl);
+		appNavMenuItemEls.push(appNavHeadingMenuItemEl);
 	}
 
 	if (options.appNav && typeof options.appNav.items === 'object') {
@@ -376,20 +404,20 @@ var setMenuInternal = function (options) {
 			}
 
 			menuItemEl.appendChild(menuItemLinkEl);
-			menuItemEls.push(menuItemEl);
+			appNavMenuItemEls.push(menuItemEl);
 		});
 	}
 
-	var menuItemsEl = accountMenuElInternal.querySelector('.o-app-header__menu-app-nav > ul');
+	var appNavMenuItemsEl = accountMenuElInternal.querySelector('.o-app-header__menu-app-nav > ul');
 
 	// Clear existing menu items
-	menuItemsEl.innerHTML = '';
+	appNavMenuItemsEl.innerHTML = '';
 
 	// Inject the page nav menu items
-	var referenceNode = menuItemsEl.firstChild;
+	var referenceNode = appNavMenuItemsEl.firstChild;
 
-	menuItemEls.forEach(function (menuItemEl) {
-		menuItemsEl.insertBefore(menuItemEl, referenceNode);
+	appNavMenuItemEls.forEach(function (menuItemEl) {
+		appNavMenuItemsEl.insertBefore(menuItemEl, referenceNode);
 	});
 };
 

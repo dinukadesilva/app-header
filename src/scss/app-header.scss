@@ -48,6 +48,12 @@
 	}
 }
 
+.o-app-header__icon-left-arrow {
+	&:before {
+		content: '\2190';
+	}
+}
+
 // Menu
 .o-app-header__menu-account {
 

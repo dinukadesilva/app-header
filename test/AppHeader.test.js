@@ -406,6 +406,51 @@ describe('AppHeader', function () {
 			expect(appNavMenuItemEls[0].querySelector('a').href).to.be(href);
 		});
 
+		it('should render a menu item with a link to the course listing page when the showAllCoursesMenuItem option is true', function () {
+			var options = {
+				showAllCoursesMenuItem: true
+			};
+
+			AppHeader.init();
+			AppHeader.setMenu(options);
+
+			var headerEl = getHeaderEl();
+			var accountMenuItemEls = getAccountMenuItemEls(headerEl);
+
+			expect(accountMenuItemEls[0].querySelector('a').textContent).to.match(/All courses$/);
+		});
+
+		it('should hide the menu item in tablet and wider viewports', function () {
+			var options = {
+				showAllCoursesMenuItem: true
+			};
+
+			AppHeader.init();
+			AppHeader.setMenu(options);
+
+			var headerEl = getHeaderEl();
+			var accountMenuItemEls = getAccountMenuItemEls(headerEl);
+
+			expect(accountMenuItemEls[0].classList.contains('o-header__viewport-tablet--hidden')).to.be(true);
+			expect(accountMenuItemEls[0].classList.contains('o-header__viewport-desktop--hidden')).to.be(true);
+		});
+
+		it('should resolve the link to the course listing page using the consoleBaseUrl setting when the showAllCoursesMenuItem option is true', function () {
+			var options = {
+				showAllCoursesMenuItem: true
+			};
+
+			AppHeader.init({ consoleBaseUrl: 'https://example.com' });
+			AppHeader.setMenu(options);
+
+			var headerEl = getHeaderEl();
+			var accountMenuItemEls = getAccountMenuItemEls(headerEl);
+
+			var expectedUrl = AppHeader.defaultSettings.links.home.replace('{consoleBaseUrl}', 'https://example.com');
+
+			expect(accountMenuItemEls[0].querySelector('a').href).to.be(expectedUrl);
+		});
+
 	});
 
 	describe('session', function () {
@@ -519,6 +564,10 @@ function getHeaderEl() {
 
 function getAccountMenuEl(headerEl) {
 	return headerEl.querySelector('.o-app-header__menu-account');
+}
+
+function getAccountMenuItemEls(headerEl) {
+	return getAccountMenuEl(headerEl).querySelectorAll('.o-dropdown-menu__menu-item');
 }
 
 function getAppNavMenuItemEls(headerEl) {

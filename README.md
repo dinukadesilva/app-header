@@ -61,6 +61,7 @@ Refer to the [options object](#api-methods-init) for a list of properties.
 
 | Property                 | Type                   | Description                       |
 |--------------------------|------------------------|-----------------------------------|
+| enableAllCoursesMenuItem | `Boolean`              | If true, the menu will include an item with a link to return to the page that displays the user's course list. |
 | appNav                   | `Object`               | Options for setting page-oriented navigation menu items. |
 | appNav.heading           | `Object`               | Options for rendering a heading menu item. |
 | appNav.heading.title     | `String`               | The heading title.                |

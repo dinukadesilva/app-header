@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		user: { givenName: 'XXXXXXXXXXXXXXXX' },
 		locale: locale,
 		menu: {
-			homeLink: '',
+			showAllCoursesMenuItem: true,
 			appNav: {
 				heading: {
 					text: 'U.S. History 201',
@@ -105,6 +105,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		config.user.givenName = 'XXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
 	}
 
+	if (localStorage.getItem('disable_all_courses_menu')) {
+		config.menu.showAllCoursesMenuItem = false;
+	}
+
 	var configEl = document.createElement('script');
 	configEl.setAttribute('data-o-app-header-config', '');
 	configEl.type = 'application/json';
@@ -119,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		'* Disable user session: localStorage.setItem(\'disable_session\', true);' + '\n' +
 		'* Change the Help nav item to a dropdown menu: localStorage.setItem(\'nav_help_menu\', true);' + '\n' +
 		'* Change the username to a long string: localStorage.setItem(\'long_username\', true);' + '\n' +
+		'* Hide the \'All courses\' menu item: localStorage.setItem(\'disable_all_courses_menu\', true);' + '\n' +
 		'* Clear all settings: localStorage.clear();'
 	);
 });

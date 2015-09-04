@@ -153,7 +153,7 @@ describe('AppHeader', function () {
 			expect(appHeaderEl.querySelector('[data-link="home"]').href).to.be(resolveLink('home'));
 		});
 
-		it('should register a click handler when link target is a function', function (done) {
+		it('should add a click handler when link target is a function', function (done) {
 			function handleHomeClick(e) {
 				e.preventDefault();
 				done();
@@ -264,240 +264,252 @@ describe('AppHeader', function () {
 
 	describe('.setMenu(options)', function () {
 
-		it('should inject the app nav menu items when options.appNav is an object', function () {
-			var options = {
-				appNav: {
-					items: {
-						Foo: 'http://example.com/foo',
-						Bar: 'http://example.com/bar'
-					}
-				}
-			};
+		describe('options.showAllCoursesMenuItem', function () {
 
-			AppHeader.init();
-			AppHeader.setMenu(options);
+			it('should render a menu item with a link to the course listing page when the showAllCoursesMenuItem option is true', function () {
+				var options = {
+					showAllCoursesMenuItem: true
+				};
 
-			var headerEl = getHeaderEl();
-			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+				AppHeader.init();
+				AppHeader.setMenu(options);
 
-			expect(appNavMenuItemEls.length).to.be(2);
-			expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
-			expect(appNavMenuItemEls[0].querySelector('a').href).to.be(options.appNav.items.Foo);
-			expect(appNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
-			expect(appNavMenuItemEls[1].querySelector('a').href).to.be(options.appNav.items.Bar);
+				var headerEl = getHeaderEl();
+				var accountMenuItemEls = getAccountMenuItemEls(headerEl);
+
+				expect(accountMenuItemEls[0].querySelector('a').textContent).to.match(/All courses$/);
+			});
+
+			it('should hide the course listing menu item in tablet and wider viewports when the showAllCoursesMenuItem option is true', function () {
+				var options = {
+					showAllCoursesMenuItem: true
+				};
+
+				AppHeader.init();
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var accountMenuItemEls = getAccountMenuItemEls(headerEl);
+
+				expect(accountMenuItemEls[0].classList.contains('o-header__viewport-tablet--hidden')).to.be(true);
+				expect(accountMenuItemEls[0].classList.contains('o-header__viewport-desktop--hidden')).to.be(true);
+			});
+
+			it('should resolve the link to the course listing page using the consoleBaseUrl setting when the showAllCoursesMenuItem option is true', function () {
+				var options = {
+					showAllCoursesMenuItem: true
+				};
+
+				AppHeader.init({ consoleBaseUrl: 'https://example.com' });
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var accountMenuItemEls = getAccountMenuItemEls(headerEl);
+
+				var expectedUrl = AppHeader.defaultSettings.links.home.replace('{consoleBaseUrl}', 'https://example.com');
+
+				expect(accountMenuItemEls[0].querySelector('a').href).to.be(expectedUrl);
+			});
+
 		});
 
-		it('should replace the existing app nav menu items on each invocation', function () {
-			var options = {
-				appNav: {
-					items: {
-						Foo: 'http://example.com/foo',
-						Bar: 'http://example.com/bar'
+		describe('options.appNav', function () {
+
+			it('should inject the app nav menu items when options.appNav is an object', function () {
+				var options = {
+					appNav: {
+						items: {
+							Foo: 'http://example.com/foo',
+							Bar: 'http://example.com/bar'
+						}
 					}
-				}
-			};
+				};
 
-			AppHeader.init();
-			AppHeader.setMenu(options);
-			AppHeader.setMenu(options);
+				AppHeader.init();
+				AppHeader.setMenu(options);
 
-			var headerEl = getHeaderEl();
-			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+				var headerEl = getHeaderEl();
+				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
 
-			expect(appNavMenuItemEls.length).to.be(2);
-			expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
-			expect(appNavMenuItemEls[0].querySelector('a').href).to.be(options.appNav.items.Foo);
-			expect(appNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
-			expect(appNavMenuItemEls[1].querySelector('a').href).to.be(options.appNav.items.Bar);
+				expect(appNavMenuItemEls.length).to.be(2);
+				expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
+				expect(appNavMenuItemEls[0].querySelector('a').href).to.be(options.appNav.items.Foo);
+				expect(appNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
+				expect(appNavMenuItemEls[1].querySelector('a').href).to.be(options.appNav.items.Bar);
+			});
+
+			it('should replace the existing app nav menu items on each invocation', function () {
+				var options = {
+					appNav: {
+						items: {
+							Foo: 'http://example.com/foo',
+							Bar: 'http://example.com/bar'
+						}
+					}
+				};
+
+				AppHeader.init();
+				AppHeader.setMenu(options);
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+
+				expect(appNavMenuItemEls.length).to.be(2);
+				expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
+				expect(appNavMenuItemEls[0].querySelector('a').href).to.be(options.appNav.items.Foo);
+				expect(appNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
+				expect(appNavMenuItemEls[1].querySelector('a').href).to.be(options.appNav.items.Bar);
+			});
+
+			it('should render the app nav menu item as a link when the href option is a string', function () {
+				var href = 'http://example.com/foo';
+				var options = {
+					appNav: {
+						items: {
+							Foo: { href: href },
+						}
+					}
+				};
+
+				AppHeader.init();
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+
+				expect(appNavMenuItemEls[0].querySelector('a').href).to.be(href);
+			});
+
+			it('should render the app nav menu item as disabled when the active option is true', function () {
+				var options = {
+					appNav: {
+						items: {
+							Foo: { href: 'http://example.com/foo', active: true },
+						}
+					}
+				};
+
+				AppHeader.init();
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+
+				expect(appNavMenuItemEls[0].classList.contains('o-dropdown-menu__menu-item--disabled')).to.be(true);
+			});
+
+			it('should add a click handler when the onClick option is a function', function () {
+				var handler = sinon.spy();
+				var options = {
+					appNav: {
+						items: {
+							Foo: { onClick: handler }
+						}
+					}
+				};
+
+				AppHeader.init();
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+
+				dispatchEvent(appNavMenuItemEls[0].querySelector('a'), 'click');
+
+				expect(handler.calledOnce).to.be(true);
+			});
+
+			it('should throw an error when the onClick option is not a function', function () {
+				var options = {
+					appNav: {
+						items: {
+							Foo: { onClick: 'invalid' }
+						}
+					}
+				};
+
+				AppHeader.init();
+
+				expect(AppHeader.setMenu.bind(AppHeader, options)).to.throwException(/Click handler must be a function/);
+			});
+
+			it('should insert a heading menu item when the heading option is defined', function () {
+				var text = 'Foo';
+				var href = 'https://example.com/';
+				var options = {
+					appNav: {
+						heading: {
+							text: text,
+							href: href
+						}
+					}
+				};
+
+				AppHeader.init();
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+
+				expect(appNavMenuItemEls[0].classList.contains('o-dropdown-menu__heading')).to.be(true);
+				expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be(text);
+				expect(appNavMenuItemEls[0].querySelector('a').href).to.be(href);
+			});
+
 		});
 
-		it('should render the menu item as a link when the href option is a string', function () {
-			var href = 'http://example.com/foo';
-			var options = {
-				appNav: {
-					items: {
-						Foo: { href: href },
-					}
-				}
-			};
+		describe('options.appAbout', function () {
 
-			AppHeader.init();
-			AppHeader.setMenu(options);
-
-			var headerEl = getHeaderEl();
-			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
-
-			expect(appNavMenuItemEls[0].querySelector('a').href).to.be(href);
-		});
-
-		it('should render the menu item as disabled when the active option is true', function () {
-			var options = {
-				appNav: {
-					items: {
-						Foo: { href: 'http://example.com/foo', active: true },
-					}
-				}
-			};
-
-			AppHeader.init();
-			AppHeader.setMenu(options);
-
-			var headerEl = getHeaderEl();
-			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
-
-			expect(appNavMenuItemEls[0].classList.contains('o-dropdown-menu__menu-item--disabled')).to.be(true);
-		});
-
-		it('should add a click handler when the onClick option is a function', function () {
-			var handler = sinon.spy();
-			var options = {
-				appNav: {
-					items: {
-						Foo: { onClick: handler }
-					}
-				}
-			};
-
-			AppHeader.init();
-			AppHeader.setMenu(options);
-
-			var headerEl = getHeaderEl();
-			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
-
-			dispatchEvent(appNavMenuItemEls[0].querySelector('a'), 'click');
-
-			expect(handler.calledOnce).to.be(true);
-		});
-
-		it('should throw an error when the onClick option is not a function', function () {
-			var options = {
-				appNav: {
-					items: {
-						Foo: { onClick: 'invalid' }
-					}
-				}
-			};
-
-			AppHeader.init();
-
-			expect(AppHeader.setMenu.bind(AppHeader, options)).to.throwException(/Click handler must be a function/);
-		});
-
-		it('should insert a heading menu item when the heading option is defined', function () {
-			var text = 'Foo';
-			var href = 'https://example.com/';
-			var options = {
-				appNav: {
-					heading: {
-						text: text,
+			it('should render a menu item with a link to the app info when the appAbout option is defined', function () {
+				var title = 'About Foo';
+				var href = 'https://example.com/about';
+				var options = {
+					appAbout: {
+						title: title,
 						href: href
 					}
-				}
-			};
+				};
 
-			AppHeader.init();
-			AppHeader.setMenu(options);
+				AppHeader.init();
+				AppHeader.setMenu(options);
 
-			var headerEl = getHeaderEl();
-			var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+				var headerEl = getHeaderEl();
+				var appAboutMenuItemEl = getAppAboutMenuItemEl(headerEl);
 
-			expect(appNavMenuItemEls[0].classList.contains('o-dropdown-menu__heading')).to.be(true);
-			expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be(text);
-			expect(appNavMenuItemEls[0].querySelector('a').href).to.be(href);
-		});
+				expect(appAboutMenuItemEl.classList.contains('o-dropdown-menu__menu-item')).to.be(true);
+				expect(appAboutMenuItemEl.querySelector('a').textContent).to.be(title);
+				expect(appAboutMenuItemEl.querySelector('a').href).to.be(href);
+			});
 
-		it('should render a menu item with a link to the course listing page when the showAllCoursesMenuItem option is true', function () {
-			var options = {
-				showAllCoursesMenuItem: true
-			};
+			it('should add a click handler when onClick is a function', function (done) {
+				var options = {
+					appAbout: {
+						onClick: done.bind(null, null)
+					}
+				};
 
-			AppHeader.init();
-			AppHeader.setMenu(options);
+				AppHeader.init();
+				AppHeader.setMenu(options);
 
-			var headerEl = getHeaderEl();
-			var accountMenuItemEls = getAccountMenuItemEls(headerEl);
+				var headerEl = getHeaderEl();
+				var appAboutMenuItemEl = getAppAboutMenuItemEl(headerEl);
 
-			expect(accountMenuItemEls[0].querySelector('a').textContent).to.match(/All courses$/);
-		});
+				dispatchEvent(appAboutMenuItemEl.querySelector('a'), 'click');
+			});
 
-		it('should hide the course listing menu item in tablet and wider viewports when the showAllCoursesMenuItem option is true', function () {
-			var options = {
-				showAllCoursesMenuItem: true
-			};
+			it('should throw an error when onClick is not a function', function () {
+				var options = {
+					appAbout: {
+						onClick: 'invalid'
+					}
+				};
 
-			AppHeader.init();
-			AppHeader.setMenu(options);
+				AppHeader.init();
 
-			var headerEl = getHeaderEl();
-			var accountMenuItemEls = getAccountMenuItemEls(headerEl);
+				expect(AppHeader.setMenu.bind(AppHeader, options)).to.throwException(/Click handler must be a function/);
+			});
 
-			expect(accountMenuItemEls[0].classList.contains('o-header__viewport-tablet--hidden')).to.be(true);
-			expect(accountMenuItemEls[0].classList.contains('o-header__viewport-desktop--hidden')).to.be(true);
-		});
-
-		it('should resolve the link to the course listing page using the consoleBaseUrl setting when the showAllCoursesMenuItem option is true', function () {
-			var options = {
-				showAllCoursesMenuItem: true
-			};
-
-			AppHeader.init({ consoleBaseUrl: 'https://example.com' });
-			AppHeader.setMenu(options);
-
-			var headerEl = getHeaderEl();
-			var accountMenuItemEls = getAccountMenuItemEls(headerEl);
-
-			var expectedUrl = AppHeader.defaultSettings.links.home.replace('{consoleBaseUrl}', 'https://example.com');
-
-			expect(accountMenuItemEls[0].querySelector('a').href).to.be(expectedUrl);
-		});
-
-		it('should render a menu item with a link to the app info when the appAbout option is defined', function () {
-			var title = 'About Foo';
-			var href = 'https://example.com/about';
-			var options = {
-				appAbout: {
-					title: title,
-					href: href
-				}
-			};
-
-			AppHeader.init();
-			AppHeader.setMenu(options);
-
-			var headerEl = getHeaderEl();
-			var appAboutMenuItemEl = getAppAboutMenuItemEl(headerEl);
-
-			expect(appAboutMenuItemEl.classList.contains('o-dropdown-menu__menu-item')).to.be(true);
-			expect(appAboutMenuItemEl.querySelector('a').textContent).to.be(title);
-			expect(appAboutMenuItemEl.querySelector('a').href).to.be(href);
-		});
-
-		it('should register a click handler when the appAbout option is defined and appAbout.onClick is a function', function (done) {
-			var options = {
-				appAbout: {
-					onClick: done.bind(null, null)
-				}
-			};
-
-			AppHeader.init();
-			AppHeader.setMenu(options);
-
-			var headerEl = getHeaderEl();
-			var appAboutMenuItemEl = getAppAboutMenuItemEl(headerEl);
-
-			dispatchEvent(appAboutMenuItemEl.querySelector('a'), 'click');
-		});
-
-		it('should throw an error when the appAbout option is defined and appAbout.onClick is not a function', function () {
-			var options = {
-				appAbout: {
-					onClick: 'invalid'
-				}
-			};
-
-			AppHeader.init();
-
-			expect(AppHeader.setMenu.bind(AppHeader, options)).to.throwException(/Click handler must be a function/);
 		});
 
 	});

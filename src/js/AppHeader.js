@@ -407,34 +407,23 @@ var setMenuInternal = function (options) {
 		var appNavItems = options.appNav.items;
 
 		Object.keys(options.appNav.items).forEach(function (key) {
-			var menuItemEl = document.createElement('li');
-			var menuItemLinkEl = document.createElement('a');
-
-			menuItemEl.classList.add('o-dropdown-menu__menu-item');
-			menuItemEl.setAttribute('role', 'presentation');
-			menuItemLinkEl.setAttribute('role', 'menuitem');
-			menuItemLinkEl.setAttribute('tabindex', '-1');
-			menuItemLinkEl.textContent = key;
+			var menuItemElOptions = { link: { textContent: key } };
 
 			if (typeof appNavItems[key] === 'string') {
-				menuItemLinkEl.href = appNavItems[key];
+				menuItemElOptions.link.href = appNavItems[key];
 			} else if (typeof appNavItems[key] === 'object') {
 				var itemOptions = appNavItems[key];
 
-				menuItemLinkEl.href = itemOptions.href;
+				menuItemElOptions.link.href = itemOptions.href;
+				menuItemElOptions.link.onClick = itemOptions.onClick;
 
 				if (itemOptions.active) {
-					menuItemEl.classList.add('o-dropdown-menu__menu-item--disabled');
-				}
-
-				if (itemOptions.onClick) {
-					if (typeof itemOptions.onClick !== 'function') throw new TypeError('Click handler must be a function');
-					menuItemLinkEl.href = '#';
-					menuItemLinkEl.addEventListener('click', itemOptions.onClick);
+					menuItemElOptions.cssClasses = ['o-dropdown-menu__menu-item--disabled'];
 				}
 			}
 
-			menuItemEl.appendChild(menuItemLinkEl);
+			var menuItemEl = createDropdownMenuItemEl(menuItemElOptions);
+
 			appNavMenuItemEls.push(menuItemEl);
 		});
 	}

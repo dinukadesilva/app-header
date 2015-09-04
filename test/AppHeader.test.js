@@ -420,7 +420,7 @@ describe('AppHeader', function () {
 			expect(accountMenuItemEls[0].querySelector('a').textContent).to.match(/All courses$/);
 		});
 
-		it('should hide the menu item in tablet and wider viewports', function () {
+		it('should hide the course listing menu item in tablet and wider viewports when the showAllCoursesMenuItem option is true', function () {
 			var options = {
 				showAllCoursesMenuItem: true
 			};

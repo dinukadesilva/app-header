@@ -63,6 +63,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		locale: locale,
 		menu: {
 			showAllCoursesMenuItem: true,
+			siteNav: {
+				items: {
+					'U.S. History 201': 'https://example.com/us-history-201',
+					'Intro to Sociology': 'https://example.com/intro-to-sociology'
+				}
+			},
 			appAbout: { title: 'About this app', href: 'https://example.com/about' },
 			appNav: {
 				heading: {
@@ -110,8 +116,16 @@ document.addEventListener('DOMContentLoaded', function() {
 		config.menu.showAllCoursesMenuItem = false;
 	}
 
+	if (localStorage.getItem('disable_site_nave_menu_items')) {
+		delete config.menu.siteNav;
+	}
+
 	if (localStorage.getItem('disable_app_about_menu_item')) {
 		delete config.menu.appAbout;
+	}
+
+	if (localStorage.getItem('disable_app_nav_menu_items')) {
+		delete config.menu.appNav;
 	}
 
 	var configEl = document.createElement('script');
@@ -129,7 +143,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		'* Change the Help nav item to a dropdown menu: localStorage.setItem(\'nav_help_menu\', true);' + '\n' +
 		'* Change the username to a long string: localStorage.setItem(\'long_username\', true);' + '\n' +
 		'* Disable the \'All courses\' menu item: localStorage.setItem(\'disable_all_courses_menu_item\', true);' + '\n' +
+		'* Disable the site nav menu items: localStorage.setItem(\'disable_site_nave_menu_items\', true);' + '\n' +
 		'* Disable the app about menu item: localStorage.setItem(\'disable_app_about_menu_item\', true);' + '\n' +
+		'* Disable the app nav menu items: localStorage.setItem(\'disable_app_nav_menu_items\', true);' + '\n' +
 		'* Clear all settings: localStorage.clear();'
 	);
 });

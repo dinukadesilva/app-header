@@ -38,3 +38,13 @@ exports.get = function (object, path) {
 
 	return (index && index === length) ? object : undefined;
 };
+
+/**
+ * Inserts a new DOM node after the specified node.
+ * @param {[type]} newNode The new node.
+ * @param {[type]} referenceNode The existing node after which the new node will be inserted.
+ * @return {[type]} Returns the inserted node.
+ */
+exports.insertAfter = function (newNode, referenceNode) {
+	referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+};

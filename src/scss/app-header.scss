@@ -83,6 +83,14 @@
 	}
 }
 
+[data-nav-item-type="site"].o-dropdown-menu__menu-item {
+	font-size: 1.2em;
+
+	> a {
+		padding-top: 13px;
+	}
+}
+
 // Light theme
 .o-header--theme-light {
 	// scss-lint:disable SelectorDepth

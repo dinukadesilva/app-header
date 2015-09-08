@@ -62,6 +62,8 @@ Refer to the [options object](#api-methods-init) for a list of properties.
 | Property                 | Type                   | Description                       |
 |--------------------------|------------------------|-----------------------------------|
 | enableAllCoursesMenuItem | `Boolean`              | If true, the menu will include an item with a link to return to the page that displays the user's course list. |
+| siteNav                  | `Object`               | Options for setting site-oriented navigation menu items. |
+| siteNav.items            | `Object`               | Site-oriented navigation menu items. The key is the menu item text content. The value can be a `String`, which is the URL of the menu item's link, or an `Object`. |
 | appAbout                 | `Object`               | Options for rendering a menu item that links to or initiates an action to display information about the current application. |
 | appAbout.title           | `String`               | The text that will be rendered for the menu item. |
 | appAbout.href            | `String`               | URL. If defined, the menu item will be rendered as a link. |
@@ -70,10 +72,15 @@ Refer to the [options object](#api-methods-init) for a list of properties.
 | appNav.heading           | `Object`               | Options for rendering a heading menu item. |
 | appNav.heading.title     | `String`               | The heading title.                |
 | appNav.heading.href      | `String`               | URL. If defined, the menu item will be rendered as a link. |
-| appNav.items             | `Object`               | The key is the menu item text content. The value can be a `String`, which is the URL of the menu item's link, or an `Object`. |
-| appNav.items.href        | `String`               | URL. If defined, the menu item will be rendered as a link. |
-| appNav.items.active      | `Boolean`              | If true, the menu is rendered as active. |
-| appNav.items.onClick     | `Function`             | A callback function that will be called when the menu item is clicked. |
+| appNav.items             | `Object`               | Page-oriented navigation menu items. The key is the menu item text content. The value can be a `String`, which is the URL of the menu item's link, or an `Object`. |
+
+Object values for `items` properties of the `siteNav` and `appNav` properties may contain the following properties:
+
+| Property                 | Type                   | Description                       |
+|--------------------------|------------------------|-----------------------------------|
+| href                     | `String`               | URL. If defined, the menu item will be rendered as a link. |
+| active                   | `Boolean`              | If true, the menu is rendered as active. |
+| onClick                  | `Function`             | A callback function that will be called when the menu item is clicked. |
 
 Example:
 

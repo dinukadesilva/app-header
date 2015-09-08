@@ -6,6 +6,7 @@ var assign = require('object-assign/index');
 var dispatchEvent = require('./utils').dispatchEvent;
 var forEach = require('./utils').forEach;
 var get = require('./utils').get;
+var insertAfter = require('./utils').insertAfter;
 var I18n = require('./I18n');
 
 var rootElInternal;
@@ -320,13 +321,19 @@ var setMenuInternal = function (options) {
 		var menuItemEl = document.createElement('li');
 
 		menuItemEl.setAttribute('role', 'presentation');
-		menuItemEl.classList.add('o-dropdown-menu__menu-item');
-		if (options.isHeading) menuItemEl.classList.add('o-dropdown-menu__heading');
+		if (!options.isDivider) menuItemEl.classList.add('o-dropdown-menu__menu-item');
 		if (options.isDivider) menuItemEl.classList.add('o-dropdown-menu__divider');
+		if (options.isHeading) menuItemEl.classList.add('o-dropdown-menu__heading');
 
 		if (options.cssClasses) {
 			options.cssClasses.forEach(function (cssClass) {
 				menuItemEl.classList.add(cssClass);
+			});
+		}
+
+		if (options.attributes) {
+			Object.keys(options.attributes).forEach(function (key) {
+				menuItemEl.setAttribute(key, options.attributes[key]);
 			});
 		}
 
@@ -351,12 +358,32 @@ var setMenuInternal = function (options) {
 		return menuItemEl;
 	}
 
+	function getMenuItemElOptionsFromItemOptions(key, item) {
+		var menuItemElOptions = { link: { textContent: key } };
+
+		if (typeof item === 'string') {
+			menuItemElOptions.link.href = item;
+		} else if (typeof item === 'object') {
+			var itemOptions = item;
+
+			menuItemElOptions.link.href = itemOptions.href;
+			menuItemElOptions.link.onClick = itemOptions.onClick;
+
+			if (itemOptions.active) {
+				menuItemElOptions.cssClasses = ['o-dropdown-menu__menu-item--disabled'];
+			}
+		}
+
+		return menuItemElOptions;
+	}
+
 	var accountMenuItemsEl = accountMenuElInternal.querySelector('.o-dropdown-menu__menu-items');
 
 	// All courses menu item
 	if (options.showAllCoursesMenuItem) {
 		var allCoursesMenuItemEl = createDropdownMenuItemEl({
 			cssClasses: ['o-header__viewport-tablet--hidden', 'o-header__viewport-desktop--hidden'],
+			attributes: { 'data-nav-item-type': 'all-courses'},
 			link: { textContent: 'All courses', href: resolveLinkInternal('home') }
 		});
 
@@ -367,6 +394,44 @@ var setMenuInternal = function (options) {
 
 		// Insert the menu item
 		accountMenuItemsEl.insertBefore(allCoursesMenuItemEl, accountMenuItemsEl.firstChild);
+	}
+
+	// Site nav menu items
+	var siteNavMenuItemEls = [];
+
+	if (options.siteNav && typeof options.siteNav.items === 'object') {
+		var siteNavItems = options.siteNav.items;
+
+		Object.keys(options.siteNav.items).forEach(function (key) {
+			var menuItemElOptions = getMenuItemElOptionsFromItemOptions(key, siteNavItems[key]);
+			var menuItemEl = createDropdownMenuItemEl(assign(menuItemElOptions, { attributes: { 'data-nav-item-type': 'site' } }));
+
+			siteNavMenuItemEls.push(menuItemEl);
+		});
+	}
+
+	forEach(accountMenuItemsEl.querySelectorAll('[data-nav-item-type="site"]'), function (idx, item) {
+		item.parentElement.removeChild(item);
+	});
+
+	for (var i = 0, l = siteNavMenuItemEls.length; i < l; i++) {
+		if (i === 0) {
+			if (accountMenuItemsEl.firstChild &&
+				typeof accountMenuItemsEl.firstChild.getAttribute !== 'undefined' &&
+				accountMenuItemsEl.firstChild.getAttribute('data-nav-item-type') === 'all-courses') {
+				insertAfter(siteNavMenuItemEls[i], accountMenuItemsEl.firstChild);
+			} else if (accountMenuItemsEl.firstChild) {
+				accountMenuItemsEl.insertBefore(siteNavMenuItemEls[i], accountMenuItemsEl.firstChild);
+			} else {
+				accountMenuItemsEl.appendChild(siteNavMenuItemEls[i]);
+			}
+		} else {
+			insertAfter(siteNavMenuItemEls[i], siteNavMenuItemEls[0]);
+		}
+	}
+
+	if (siteNavMenuItemEls.length) {
+		insertAfter(createDropdownMenuItemEl({ isDivider: true }), siteNavMenuItemEls[siteNavMenuItemEls.length - 1]);
 	}
 
 	// App about menu item
@@ -407,21 +472,7 @@ var setMenuInternal = function (options) {
 		var appNavItems = options.appNav.items;
 
 		Object.keys(options.appNav.items).forEach(function (key) {
-			var menuItemElOptions = { link: { textContent: key } };
-
-			if (typeof appNavItems[key] === 'string') {
-				menuItemElOptions.link.href = appNavItems[key];
-			} else if (typeof appNavItems[key] === 'object') {
-				var itemOptions = appNavItems[key];
-
-				menuItemElOptions.link.href = itemOptions.href;
-				menuItemElOptions.link.onClick = itemOptions.onClick;
-
-				if (itemOptions.active) {
-					menuItemElOptions.cssClasses = ['o-dropdown-menu__menu-item--disabled'];
-				}
-			}
-
+			var menuItemElOptions = getMenuItemElOptionsFromItemOptions(key, appNavItems[key]);
 			var menuItemEl = createDropdownMenuItemEl(menuItemElOptions);
 
 			appNavMenuItemEls.push(menuItemEl);

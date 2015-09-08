@@ -313,6 +313,135 @@ describe('AppHeader', function () {
 
 		});
 
+		describe('options.siteNav', function () {
+
+			it('should inject the site nav menu items when options.siteNav is an object', function () {
+				var options = {
+					siteNav: {
+						items: {
+							Foo: 'http://example.com/foo',
+							Bar: 'http://example.com/bar'
+						}
+					}
+				};
+
+				AppHeader.init();
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
+
+				expect(siteNavMenuItemEls.length).to.be(2);
+				expect(siteNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
+				expect(siteNavMenuItemEls[0].querySelector('a').href).to.be(options.siteNav.items.Foo);
+				expect(siteNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
+				expect(siteNavMenuItemEls[1].querySelector('a').href).to.be(options.siteNav.items.Bar);
+			});
+
+			it('should inject the menu items after the all courses menu item when options.showAllCoursesMenuItem is true', function () {
+				var options = {
+					showAllCoursesMenuItem: true,
+					siteNav: {
+						items: {
+							Foo: 'http://example.com/foo',
+							Bar: 'http://example.com/bar'
+						}
+					}
+				};
+
+				AppHeader.init();
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var accountMenuItemEls = getAccountMenuItemEls(headerEl);
+
+				expect(accountMenuItemEls[0].querySelector('a').textContent).to.match(/All courses$/);
+				expect(accountMenuItemEls[1].querySelector('a').textContent).to.be('Foo');
+				expect(accountMenuItemEls[1].querySelector('a').href).to.be(options.siteNav.items.Foo);
+				expect(accountMenuItemEls[2].querySelector('a').textContent).to.be('Bar');
+				expect(accountMenuItemEls[2].querySelector('a').href).to.be(options.siteNav.items.Bar);
+			});
+
+			it('should replace the existing site nav menu items on each invocation', function () {
+				var options = {
+					siteNav: {
+						items: {
+							Foo: 'http://example.com/foo',
+							Bar: 'http://example.com/bar'
+						}
+					}
+				};
+
+				AppHeader.init();
+				AppHeader.setMenu(options);
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
+
+				expect(siteNavMenuItemEls.length).to.be(2);
+				expect(siteNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
+				expect(siteNavMenuItemEls[0].querySelector('a').href).to.be(options.siteNav.items.Foo);
+				expect(siteNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
+				expect(siteNavMenuItemEls[1].querySelector('a').href).to.be(options.siteNav.items.Bar);
+			});
+
+			it('should render the site nav menu item as a link when the href option is a string', function () {
+				var href = 'http://example.com/foo';
+				var options = {
+					siteNav: {
+						items: {
+							Foo: { href: href },
+						}
+					}
+				};
+
+				AppHeader.init();
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
+
+				expect(siteNavMenuItemEls[0].querySelector('a').href).to.be(href);
+			});
+
+			it('should add a click handler when the onClick option is a function', function () {
+				var handler = sinon.spy();
+				var options = {
+					siteNav: {
+						items: {
+							Foo: { onClick: handler }
+						}
+					}
+				};
+
+				AppHeader.init();
+				AppHeader.setMenu(options);
+
+				var headerEl = getHeaderEl();
+				var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
+
+				dispatchEvent(siteNavMenuItemEls[0].querySelector('a'), 'click');
+
+				expect(handler.calledOnce).to.be(true);
+			});
+
+			it('should throw an error when the onClick option is not a function', function () {
+				var options = {
+					siteNav: {
+						items: {
+							Foo: { onClick: 'invalid' }
+						}
+					}
+				};
+
+				AppHeader.init();
+
+				expect(AppHeader.setMenu.bind(AppHeader, options)).to.throwException(/Click handler must be a function/);
+			});
+
+		});
+
 		describe('options.appNav', function () {
 
 			it('should inject the app nav menu items when options.appNav is an object', function () {
@@ -629,6 +758,10 @@ function getAccountMenuEl(headerEl) {
 
 function getAccountMenuItemEls(headerEl) {
 	return getAccountMenuEl(headerEl).querySelectorAll('.o-dropdown-menu__menu-item');
+}
+
+function getSiteNavMenuItemEls(headerEl) {
+	return getAccountMenuEl(headerEl).querySelectorAll('[data-nav-item-type="site"].o-dropdown-menu__menu-item');
 }
 
 function getAppNavMenuItemEls(headerEl) {

@@ -24,6 +24,9 @@ script:
 - obt verify
 - npm test -- --browsers $BROWSER --reporter dots
 
+after_success:
+  - cat ./build/reports/coverage/coverage.lcov | node_modules/coveralls/bin/coveralls.js
+
 after_failure:
   - for file in *.log; do echo $file; echo "======================"; cat $file; done || true
 

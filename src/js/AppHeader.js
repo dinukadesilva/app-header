@@ -109,66 +109,44 @@ var initInternal = function (element, options) {
 			}
 		});
 
+		// Help nav item
 		if (typeof links.help === 'object') {
-			// Turn the help nav item into a dropdown menu
+			// Render the nav item as a dropdown menu
 			var helpNavItemEl = rootElInternal.querySelector('.o-app-header__nav-item-help');
-			var helpMenuEl = document.createElement('div');
-			var helpMenuTriggerEl = document.createElement('a');
-			var helpMenuItemsEl = document.createElement('ul');
-
-			helpMenuEl.classList.add('o-dropdown-menu');
-			helpMenuEl.classList.add('o-dropdown-menu--right');
-
-			helpMenuTriggerEl.href = '#';
-			helpMenuTriggerEl.classList.add('o-dropdown-menu__toggle');
-			helpMenuTriggerEl.setAttribute('data-toggle', 'dropdown-menu');
-			helpMenuTriggerEl.setAttribute('aria-haspopup', 'true');
-			helpMenuTriggerEl.setAttribute('aria-expanded', 'false');
-			helpMenuTriggerEl.setAttribute('data-i18n', '');
-			helpMenuTriggerEl.textContent = 'Help';
-
-			helpMenuItemsEl.classList.add('o-dropdown-menu__menu-items');
-			helpMenuItemsEl.setAttribute('role', 'menu');
-			// helpMenuItemsEl.setAttribute('aria-labelledby', '?');
+			var helpMenuItemsOptions = [];
 
 			Object.keys(links.help).forEach(function (key) {
 				var link = links.help[key];
-				var helpMenuItemEl = document.createElement('li');
-				var helpMenuItemLinkEl = document.createElement('a');
+				var helpMenuItemOptions = { link: { attributes: {} }, attributes: {} };
 
-				helpMenuItemEl.classList.add('o-dropdown-menu__menu-item');
-				helpMenuItemEl.setAttribute('role', 'presentation');
-
-				helpMenuItemLinkEl.setAttribute('role', 'menuitem');
-				helpMenuItemLinkEl.setAttribute('tabindex', '-1');
+				helpMenuItemOptions.link.textContent = key;
 
 				if (typeof link === 'object') {
 					Object.keys(link).forEach(function (key) {
 						if (key === 'href') {
-							helpMenuItemLinkEl.href = link.href;
+							helpMenuItemOptions.link.href = link.href;
 						} else {
-							helpMenuItemLinkEl.setAttribute(key, link[key]);
+							helpMenuItemOptions.link.attributes[key] = link[key];
 						}
 					});
-
 				} else if (typeof link === 'function') {
-					helpMenuItemLinkEl.href = '#';
-					helpMenuItemLinkEl.addEventListener('click', link);
+					helpMenuItemOptions.link.onClick = link;
 				} else {
-					helpMenuItemLinkEl.href = links.help[key];
+					helpMenuItemOptions.link.href = links.help[key];
 				}
 
-				helpMenuItemLinkEl.textContent = key;
-
-				helpMenuItemEl.appendChild(helpMenuItemLinkEl);
-				helpMenuItemsEl.appendChild(helpMenuItemEl);
+				helpMenuItemsOptions.push(helpMenuItemOptions);
 			});
 
-			helpMenuEl.appendChild(helpMenuTriggerEl);
-			helpMenuEl.appendChild(helpMenuItemsEl);
+			var helpMenuOptions = {
+				alignRight: true,
+				toggle: { textContent: 'Help' },
+				items: helpMenuItemsOptions,
+				attributes: { 'data-18n': ''}
+			};
 
 			helpNavItemEl.innerHTML = '';
-			helpNavItemEl.appendChild(helpMenuEl);
+			helpNavItemEl.appendChild(menu.createMenuEl(helpMenuOptions));
 		} else if (typeof links.help !== 'string') {
 			rootElInternal.querySelector('[data-link="help"]').addEventListener('click', handleHelpClick);
 		}

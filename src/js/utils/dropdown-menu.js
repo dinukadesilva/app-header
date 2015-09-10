@@ -1,5 +1,47 @@
 'use strict';
 
+var assign = require('object-assign/index');
+
+var MENU_DEFAULTS = { toggle: {}, items: [], attributes: {} };
+
+exports.createMenuEl = function (options) {
+	options = assign({}, MENU_DEFAULTS, options);
+
+	var menuEl = document.createElement('div');
+
+	menuEl.classList.add('o-dropdown-menu');
+	if (options.alignRight) menuEl.classList.add('o-dropdown-menu--right');
+
+	var menuToggleEl = document.createElement('a');
+
+	menuToggleEl.href = '#';
+	menuToggleEl.classList.add('o-dropdown-menu__toggle');
+	menuToggleEl.setAttribute('data-toggle', 'dropdown-menu');
+	menuToggleEl.setAttribute('aria-haspopup', 'true');
+	menuToggleEl.setAttribute('aria-expanded', 'false');
+	menuToggleEl.textContent = options.toggle.textContent;
+
+	var menuItemsEl = document.createElement('ul');
+
+	menuItemsEl.classList.add('o-dropdown-menu__menu-items');
+	menuItemsEl.setAttribute('role', 'menu');
+	// TODO:
+	// menuItemsEl.setAttribute('aria-labelledby', '');
+
+	Object.keys(options.attributes).forEach(function (key) {
+		menuEl.setAttribute(key, options.attributes[key]);
+	});
+
+	options.items.forEach(function (menuItemOptions) {
+		menuItemsEl.appendChild(exports.createMenuItemEl(menuItemOptions));
+	});
+
+	menuEl.appendChild(menuToggleEl);
+	menuEl.appendChild(menuItemsEl);
+
+	return menuEl;
+};
+
 exports.createMenuItemEl = function (options) {
 	options = options || {};
 
@@ -35,6 +77,12 @@ exports.createMenuItemEl = function (options) {
 		} else {
 			menuItemLinkEl.textContent = options.link.textContent;
 			menuItemLinkEl.href = options.link.href;
+		}
+
+		if (options.link.attributes) {
+			Object.keys(options.link.attributes).forEach(function (key) {
+				menuItemLinkEl.setAttribute(key, options.link.attributes[key]);
+			});
 		}
 
 		menuItemEl.appendChild(menuItemLinkEl);

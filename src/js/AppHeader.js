@@ -11,7 +11,6 @@ var menu = require('./utils/dropdown-menu');
 
 var rootElInternal;
 var accountMenuElInternal;
-var usernameElInternal;
 var settingsInternal;
 
 var defaultSettingsInternal = {
@@ -45,7 +44,6 @@ var initInternal = function (element, options) {
 
 	rootElInternal = constructRootEl();
 	accountMenuElInternal = rootElInternal.querySelector('.o-app-header__menu-account');
-	usernameElInternal = rootElInternal.querySelector('.o-app-header__username');
 
 	render('initializing');
 
@@ -95,6 +93,17 @@ var initInternal = function (element, options) {
 			element.parentElement.insertBefore(rootElInternal, element);
 			element.parentNode.removeChild(element);
 		}
+
+		// Username
+		var username = get(settingsInternal, 'user.givenName');
+		var usernameEl = rootElInternal.querySelector('.o-app-header__username');
+		var iconEl = document.createElement('i');
+
+		iconEl.classList.add('o-app-header__icon');
+		iconEl.classList.add('o-app-header__icon-chevron-down');
+
+		usernameEl.innerHTML = username + ' ';
+		usernameEl.appendChild(iconEl);
 
 		// Links
 		var links = settingsInternal.links;
@@ -192,19 +201,6 @@ var initInternal = function (element, options) {
 		return rootElInternal;
 	}
 
-	function getUsername(callback) {
-		var user = settingsInternal.user;
-
-		if (typeof user === 'function') {
-			user(function handleGetUser(error, user) {
-				if (error) return callback(error);
-				return callback(null, get(user, 'givenName'));
-			});
-		} else {
-			return callback(null, get(user, 'givenName'));
-		}
-	}
-
 	function render(state) {
 		var selector = '[data-show="state:signed-in"],[data-show="state:signed-out"]';
 		var elements = rootElInternal.querySelectorAll(selector);
@@ -222,16 +218,6 @@ var initInternal = function (element, options) {
 				el.style.display = el.getAttribute('data-show') === 'state:signed-out' ? '' : 'none';
 			});
 		}
-	}
-
-	function renderUsername(username) {
-		var iconEl = document.createElement('i');
-
-		iconEl.classList.add('o-app-header__icon');
-		iconEl.classList.add('o-app-header__icon-chevron-down');
-
-		usernameElInternal.innerHTML = username + ' ';
-		usernameElInternal.appendChild(iconEl);
 	}
 
 	function initSession() {
@@ -264,21 +250,11 @@ var initInternal = function (element, options) {
 	}
 
 	function handleSessionStateKnown(e) {
-		if (session.hasValidSession(0) === session.Success) {
-			getUsername(handleGetUsername);
-		} else {
-			render('signed-out');
-		}
-	}
-
-	function handleGetUsername(error, username) {
-		if (error) return;
-		renderUsername(username);
-		render('signed-in');
+		render(session.hasValidSession(0) === session.Success ? 'signed-in' : 'signed-out');
 	}
 
 	function handleSessionLogin(e) {
-		getUsername(handleGetUsername);
+		render('signed-in');
 	}
 
 	function handleSessionLogout(e) {

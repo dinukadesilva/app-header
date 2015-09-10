@@ -51,7 +51,7 @@ Refer to the [options object](#api-methods-init) for a list of properties.
 | consoleBaseUrl           | `string`               | The Console application base URL (default: https://console.pearson.com) |
 | locale                   | `string`               | The user's preferred locale (refer to the [i18n](#i18n) section). |
 | session                  | `string` or `Object`   | The session object, or the name of the session object in the global scope. If set to `false`, the session controls will not be rendered. |
-| user                     | `Object` or `Function` | An object with a property `givenName` that contains the user's given name as a string; or a function in the form of `function(callback)` that returns the user object via `callback`, which is a function in the form of `function(error, user)`. The value of `givenName` is displayed in the desktop view in the user menu for an authenticated user. The value of this property will be ignored if it is a function when defined in a [global configuration block](#configuration) on the page. |
+| user                     | `Object`               | An object with a property `givenName` that contains the user's given name as a string. The value of `givenName` is displayed in the desktop view in the user menu for an authenticated user. |
 | menu                     | `Object`               | Takes the same options as the [setMenu](#api-methods-setMenu) method. |
 
 <a name="api-methods-setMenu"></a>

@@ -3,11 +3,11 @@
 var Header = require('o-header');
 var DropdownMenu = require('o-dropdown-menu');
 var assign = require('object-assign/index');
-var dispatchEvent = require('./utils').dispatchEvent;
-var forEach = require('./utils').forEach;
-var get = require('./utils').get;
-var insertAfter = require('./utils').insertAfter;
-var I18n = require('./I18n');
+var dom = require('./utils/dom');
+var forEach = require('./utils/forEach');
+var get = require('./utils/get');
+var I18n = require('./utils/I18n');
+var menu = require('./utils/dropdown-menu');
 
 var rootElInternal;
 var accountMenuElInternal;
@@ -282,7 +282,7 @@ var initInternal = function (element, options) {
 
 	function handleHelpClick(e) {
 		e.preventDefault();
-		dispatchEvent(rootElInternal, 'oAppHeader.help.toggle');
+		dom.dispatchEvent(rootElInternal, 'oAppHeader.help.toggle');
 	}
 
 	function handleSessionStateKnown(e) {
@@ -315,49 +315,6 @@ var setMenuInternal = function (options) {
 
 	options.appNav = options.appNav || {};
 
-	function createDropdownMenuItemEl(options) {
-		options = options || {};
-
-		var menuItemEl = document.createElement('li');
-
-		menuItemEl.setAttribute('role', 'presentation');
-		if (!options.isDivider) menuItemEl.classList.add('o-dropdown-menu__menu-item');
-		if (options.isDivider) menuItemEl.classList.add('o-dropdown-menu__divider');
-		if (options.isHeading) menuItemEl.classList.add('o-dropdown-menu__heading');
-
-		if (options.cssClasses) {
-			options.cssClasses.forEach(function (cssClass) {
-				menuItemEl.classList.add(cssClass);
-			});
-		}
-
-		if (options.attributes) {
-			Object.keys(options.attributes).forEach(function (key) {
-				menuItemEl.setAttribute(key, options.attributes[key]);
-			});
-		}
-
-		if (options.link) {
-			var menuItemLinkEl = document.createElement('a');
-
-			menuItemLinkEl.setAttribute('role', 'menuitem');
-			menuItemLinkEl.setAttribute('tabindex', '-1');
-
-			if (options.link.onClick) {
-				if (typeof options.link.onClick !== 'function') throw new TypeError('Click handler must be a function');
-				menuItemLinkEl.href = '#';
-				menuItemLinkEl.addEventListener('click', options.link.onClick);
-			} else {
-				menuItemLinkEl.textContent = options.link.textContent;
-				menuItemLinkEl.href = options.link.href;
-			}
-
-			menuItemEl.appendChild(menuItemLinkEl);
-		}
-
-		return menuItemEl;
-	}
-
 	function getMenuItemElOptionsFromItemOptions(key, item) {
 		var menuItemElOptions = { link: { textContent: key } };
 
@@ -381,7 +338,7 @@ var setMenuInternal = function (options) {
 
 	// All courses menu item
 	if (options.showAllCoursesMenuItem) {
-		var allCoursesMenuItemEl = createDropdownMenuItemEl({
+		var allCoursesMenuItemEl = menu.createMenuItemEl({
 			cssClasses: ['o-header__viewport-tablet--hidden', 'o-header__viewport-desktop--hidden'],
 			attributes: { 'data-nav-item-type': 'all-courses'},
 			link: { textContent: 'All courses', href: resolveLinkInternal('home') }
@@ -404,7 +361,7 @@ var setMenuInternal = function (options) {
 
 		Object.keys(options.siteNav.items).forEach(function (key) {
 			var menuItemElOptions = getMenuItemElOptionsFromItemOptions(key, siteNavItems[key]);
-			var menuItemEl = createDropdownMenuItemEl(assign(menuItemElOptions, { attributes: { 'data-nav-item-type': 'site' } }));
+			var menuItemEl = menu.createMenuItemEl(assign(menuItemElOptions, { attributes: { 'data-nav-item-type': 'site' } }));
 
 			siteNavMenuItemEls.push(menuItemEl);
 		});
@@ -419,19 +376,19 @@ var setMenuInternal = function (options) {
 			if (accountMenuItemsEl.firstChild &&
 				typeof accountMenuItemsEl.firstChild.getAttribute !== 'undefined' &&
 				accountMenuItemsEl.firstChild.getAttribute('data-nav-item-type') === 'all-courses') {
-				insertAfter(siteNavMenuItemEls[i], accountMenuItemsEl.firstChild);
+				dom.insertAfter(siteNavMenuItemEls[i], accountMenuItemsEl.firstChild);
 			} else if (accountMenuItemsEl.firstChild) {
 				accountMenuItemsEl.insertBefore(siteNavMenuItemEls[i], accountMenuItemsEl.firstChild);
 			} else {
 				accountMenuItemsEl.appendChild(siteNavMenuItemEls[i]);
 			}
 		} else {
-			insertAfter(siteNavMenuItemEls[i], siteNavMenuItemEls[0]);
+			dom.insertAfter(siteNavMenuItemEls[i], siteNavMenuItemEls[0]);
 		}
 	}
 
 	if (siteNavMenuItemEls.length) {
-		insertAfter(createDropdownMenuItemEl({ isDivider: true }), siteNavMenuItemEls[siteNavMenuItemEls.length - 1]);
+		dom.insertAfter(menu.createMenuItemEl({ isDivider: true }), siteNavMenuItemEls[siteNavMenuItemEls.length - 1]);
 	}
 
 	// App about menu item
@@ -445,13 +402,13 @@ var setMenuInternal = function (options) {
 			appAboutMenuItemOptions.link.href = options.appAbout.href;
 		}
 
-		var appAboutMenuItemEl = createDropdownMenuItemEl(appAboutMenuItemOptions);
+		var appAboutMenuItemEl = menu.createMenuItemEl(appAboutMenuItemOptions);
 
 		// Insert before the My Account menu item
 		var myAccountMenuItemEl = accountMenuItemsEl.querySelector('[data-link="my-account"]').parentElement;
 
 		accountMenuItemsEl.insertBefore(appAboutMenuItemEl, myAccountMenuItemEl);
-		accountMenuItemsEl.insertBefore(createDropdownMenuItemEl({ isDivider: true }), myAccountMenuItemEl);
+		accountMenuItemsEl.insertBefore(menu.createMenuItemEl({ isDivider: true }), myAccountMenuItemEl);
 	}
 
 	// App nav menu items
@@ -460,7 +417,7 @@ var setMenuInternal = function (options) {
 	if (options.appNav.heading) {
 		var appNavHeaderOptions = options.appNav.heading;
 
-		var appNavHeadingMenuItemEl = createDropdownMenuItemEl({
+		var appNavHeadingMenuItemEl = menu.createMenuItemEl({
 			isHeading: true,
 			link: { textContent: appNavHeaderOptions.text, href: appNavHeaderOptions.href }
 		});
@@ -473,7 +430,7 @@ var setMenuInternal = function (options) {
 
 		Object.keys(options.appNav.items).forEach(function (key) {
 			var menuItemElOptions = getMenuItemElOptionsFromItemOptions(key, appNavItems[key]);
-			var menuItemEl = createDropdownMenuItemEl(menuItemElOptions);
+			var menuItemEl = menu.createMenuItemEl(menuItemElOptions);
 
 			appNavMenuItemEls.push(menuItemEl);
 		});

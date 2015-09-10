@@ -2,7 +2,7 @@
 'use strict';
 
 var expect = require('expect.js');
-var I18n = require('../src/js/I18n');
+var I18n = require('../src/js/utils/I18n');
 
 describe('I18n', function () {
 

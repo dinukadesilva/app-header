@@ -2,8 +2,8 @@
 'use strict';
 
 var expect = require('expect.js');
-var dispatchEvent = require('../src/js/utils').dispatchEvent;
-var forEach = require('../src/js/utils').forEach;
+var dispatchEvent = require('../src/js/utils/dom').dispatchEvent;
+var forEach = require('../src/js/utils/forEach');
 var AppHeader = require('../src/js/AppHeader');
 
 describe('AppHeader', function () {

@@ -1,3 +1,23 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.2.0...v0.3.0) (2015-09-10)
+
+
+### Bug Fixes
+
+* add a divider between the My Account and Sign Out menu items ([26e593e](https://github.com/Pearson-Higher-Ed/o-app-header/commit/26e593e))
+* throw a meaningful error when session config property is a string and the object ([4134832](https://github.com/Pearson-Higher-Ed/o-app-header/commit/4134832))
+
+### Features
+
+* add option to render '← All courses' menu item ([3416da4](https://github.com/Pearson-Higher-Ed/o-app-header/commit/3416da4))
+* add option to render menu item for info about the application ([1a448e6](https://github.com/Pearson-Higher-Ed/o-app-header/commit/1a448e6))
+* add support for site nav items in the menu ([3a569b5](https://github.com/Pearson-Higher-Ed/o-app-header/commit/3a569b5))
+* remove support for passing a function in the user option ([358a0ef](https://github.com/Pearson-Higher-Ed/o-app-header/commit/358a0ef))
+* support additional options for setMenu(options) ([037c94b](https://github.com/Pearson-Higher-Ed/o-app-header/commit/037c94b))
+* support headings in the app nav menu items ([8d684bd](https://github.com/Pearson-Higher-Ed/o-app-header/commit/8d684bd))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](//compare/v0.1.0...v0.2.0) (2015-09-01)
 

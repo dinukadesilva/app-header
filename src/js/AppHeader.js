@@ -315,7 +315,11 @@ var setMenuInternal = function (options) {
 
 		Object.keys(options.siteNav.items).forEach(function (key) {
 			var menuItemElOptions = getMenuItemElOptionsFromItemOptions(key, siteNavItems[key]);
-			var menuItemEl = menu.createMenuItemEl(assign(menuItemElOptions, { attributes: { 'data-nav-item-type': 'site' } }));
+
+			menuItemElOptions.attributes = { 'data-nav-item-type': 'site' };
+			menuItemElOptions.cssClasses = ['o-header__viewport-tablet--hidden', 'o-header__viewport-desktop--hidden'];
+
+			var menuItemEl = menu.createMenuItemEl(menuItemElOptions);
 
 			siteNavMenuItemEls.push(menuItemEl);
 		});

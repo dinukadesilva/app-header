@@ -332,8 +332,12 @@ describe('AppHeader', function () {
 				var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
 
 				expect(siteNavMenuItemEls.length).to.be(2);
+				expect(siteNavMenuItemEls[0].classList.contains('o-header__viewport-tablet--hidden')).to.be(true);
+				expect(siteNavMenuItemEls[0].classList.contains('o-header__viewport-desktop--hidden')).to.be(true);
 				expect(siteNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
 				expect(siteNavMenuItemEls[0].querySelector('a').href).to.be(options.siteNav.items.Foo);
+				expect(siteNavMenuItemEls[1].classList.contains('o-header__viewport-tablet--hidden')).to.be(true);
+				expect(siteNavMenuItemEls[1].classList.contains('o-header__viewport-desktop--hidden')).to.be(true);
 				expect(siteNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
 				expect(siteNavMenuItemEls[1].querySelector('a').href).to.be(options.siteNav.items.Bar);
 			});

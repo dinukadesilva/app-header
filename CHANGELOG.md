@@ -1,3 +1,14 @@
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.3.0...v0.4.0) (2015-09-11)
+
+
+### Bug Fixes
+
+* chevron icon not displaying in menu toggle ([b01aabd](https://github.com/Pearson-Higher-Ed/o-app-header/commit/b01aabd))
+* site nav menu items should be hidden on tablet and desktop viewports ([7d3a189](https://github.com/Pearson-Higher-Ed/o-app-header/commit/7d3a189))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.2.0...v0.3.0) (2015-09-10)
 

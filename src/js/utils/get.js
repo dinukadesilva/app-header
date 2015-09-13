@@ -15,7 +15,7 @@ function get(object, path) {
 	var index = 0;
 	var length = path.length;
 
-	while (object !== null && index < length) {
+	while (object !== null && typeof object !== 'undefined' && index < length) {
 		object = object[path[index++]];
 	}
 

@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var path = require('path');
+var fs = require('fs');
+var superviews = require('superviews.js');
+
+function printUsage() {
+  console.log('usage: gen-template source_file target_file');
+}
+
+function main(argv) {
+  if (argv.length !== 2) {
+    printUsage();
+    process.exit(1);
+  }
+
+  function preamble() {
+    return [
+      '/* jshint ignore: start */',
+      '',
+      '// *** DO NOT MODIFY THIS FILE ***',
+      '// This file was generated from src/html/header.template',
+      '// Regenerate using bin/gen-template',
+      '',
+      'var incrementalDom = require(\'../../bower_components/incremental-dom\');',
+      'var elementOpen = incrementalDom.elementOpen;',
+      'var elementClose = incrementalDom.elementClose;',
+      'var elementVoid = incrementalDom.elementVoid;',
+      'var text = incrementalDom.text;',
+      '',
+      'module.exports = template;',
+      '\n'
+    ].join('\n');
+  }
+
+  var sourcePath = path.resolve(argv[0]);
+  var destPath = path.resolve(argv[1]);
+
+  var buffer = fs.readFileSync(sourcePath);
+
+  var outStream = fs.createWriteStream(destPath);
+
+  outStream.write(preamble());
+  outStream.write(superviews(buffer));
+  outStream.end();
+}
+
+main(process.argv.slice(2));

@@ -6,7 +6,7 @@ var dispatchEvent = require('../src/js/utils/dom').dispatchEvent;
 var forEach = require('../src/js/utils/forEach');
 var AppHeader = require('../src/js/AppHeader');
 
-describe('AppHeader', function () {
+describe('AppHeader:', function () {
 
 	var sandbox, session;
 
@@ -46,7 +46,7 @@ describe('AppHeader', function () {
 		sandbox.restore();
 	});
 
-	describe('o.DOMContentLoaded', function () {
+	describe('o.DOMContentLoaded:', function () {
 
 		require('../main');
 
@@ -67,14 +67,14 @@ describe('AppHeader', function () {
 
 	});
 
-	describe('#init(element, options)', function () {
+	describe('new AppHeader(element, options):', function () {
 
 		it ('should throw an error when options.session is a string and the session object is undefined in the global scope', function () {
 			expect(AppHeader.init.bind(null, { session: 'nonexistent' })).to.throwException(/unable to find window\[\'nonexistent\'\]/);
 		});
 
 		it('should prepend to document.body when element is undefined', function () {
-			AppHeader.init();
+			new AppHeader();
 
 			var appHeaderEl = document.body.firstChild;
 
@@ -89,7 +89,7 @@ describe('AppHeader', function () {
 			var el = document.createElement('div');
 			document.body.appendChild(el);
 
-			AppHeader.init(el);
+			new AppHeader(el);
 
 			var appHeaderEl = document.body.childNodes[1];
 
@@ -105,7 +105,7 @@ describe('AppHeader', function () {
 			el.id = 'app-header';
 			document.body.appendChild(el);
 
-			AppHeader.init('#app-header');
+			new AppHeader('#app-header');
 
 			var appHeaderEl = document.body.childNodes[1];
 
@@ -115,7 +115,7 @@ describe('AppHeader', function () {
 		});
 
 		it('should set role="banner"', function () {
-			AppHeader.init();
+			new AppHeader();
 
 			var appHeaderEl = getHeaderEl();
 
@@ -125,93 +125,35 @@ describe('AppHeader', function () {
 		it('should set the light theme', function () {
 			var options = { theme: 'light' };
 
-			AppHeader.init(options);
+			new AppHeader(options);
 
 			var appHeaderEl = getHeaderEl();
 
 			expect(appHeaderEl.classList.contains('o-header--theme-light')).to.be(true);
 		});
 
-		it('should resolve the nav links', function () {
-			var consoleBaseUrl = 'https://example.org';
-			var options = {
-				consoleBaseUrl: consoleBaseUrl,
-				links: {
-					home: '{consoleBaseUrl}/home',
-					'my-account': '{consoleBaseUrl}/my-account'
-				}
-			};
-			AppHeader.init(options);
+		describe('Help nav item:', function () {
 
-			var appHeaderEl = getHeaderEl();
+			it('should emit oAppHeader.help.toggle when the Help nav item is clicked', function (done) {
+				new AppHeader();
 
-			function resolveLink(key) {
-				return options.links[key].replace('{consoleBaseUrl}', consoleBaseUrl);
-			}
+				var appHeaderEl = getHeaderEl();
+				var helpNavEl = getHelpNavItemEl(appHeaderEl);
 
-			expect(appHeaderEl.querySelector('[data-link="my-account"]').href).to.be(resolveLink('my-account'));
-			expect(appHeaderEl.querySelector('[data-link="home"]').href).to.be(resolveLink('home'));
-		});
+				appHeaderEl.addEventListener('oAppHeader.help.toggle', done.bind(null, null));
 
-		it('should add a click handler when link target is a function', function (done) {
-			function handleHomeClick(e) {
-				e.preventDefault();
-				done();
-			}
-
-			AppHeader.init({
-				links: {
-					home: handleHomeClick
-				}
+				dispatchEvent(helpNavEl.querySelector('a'), 'click');
 			});
 
-			var appHeaderEl = getHeaderEl();
-			var homeEl = appHeaderEl.querySelector('[data-link="home"]');
-
-			dispatchEvent(homeEl, 'click');
-		});
-
-		it('should merge the links object', function () {
-			var consoleBaseUrl = 'https://example.com';
-			var options = {
-				consoleBaseUrl: consoleBaseUrl,
-				links: {
-					home: 'https://example.com/home'
-				}
-			};
-
-			AppHeader.init(options);
-
-			var appHeaderEl = getHeaderEl();
-			var myAccountLinkEl = appHeaderEl.querySelector('[data-link="my-account"]');
-
-			expect(myAccountLinkEl.href).to.be(AppHeader.defaultSettings.links['my-account'].replace('{consoleBaseUrl}', consoleBaseUrl));
-		});
-
-		it('should emit oAppHeader.help.toggle when the Help nav item is clicked', function (done) {
-			AppHeader.init();
-
-			var appHeaderEl = getHeaderEl();
-			var helpNavEl = appHeaderEl.querySelector('[data-link="help"]');
-
-			appHeaderEl.addEventListener('oAppHeader.help.toggle', done.bind(null, null));
-
-			dispatchEvent(helpNavEl, 'click');
-		});
-
-		describe('Help nav item dropdown menu', function () {
-
-			it('should render the Help nav item as a dropdown menu when the link is an object', function () {
+			it('should render as a dropdown menu when options.help is an object', function () {
 				var options = {
-					links: {
-						help: {
-							'Foo': 'https://example.org/foo',
-							'Bar': 'https://example.org/bar'
-						}
+					help: {
+						'Foo': 'https://example.org/foo',
+						'Bar': 'https://example.org/bar'
 					}
 				};
 
-				AppHeader.init(options);
+				new AppHeader(options);
 
 				var appHeaderEl = getHeaderEl();
 				var helpNavItemEl = getHelpNavItemEl(appHeaderEl);
@@ -219,35 +161,33 @@ describe('AppHeader', function () {
 				expect(helpNavItemEl.firstChild.classList.contains('o-dropdown-menu')).to.be(true);
 			});
 
-			it('should handle an object value', function () {
+			it('should render the Help menu menu item as a link when options.help[key] is an object', function () {
+				var href = 'https://example.org/foo';
+				var target = '_blank';
 				var options = {
-					links: {
-						help: {
-							'Foo': { href: 'https://example.org/foo', target: '_blank' }
-						}
+					help: {
+						'Foo': { href: href, target: target }
 					}
 				};
 
-				AppHeader.init(options);
+				new AppHeader(options);
 
 				var appHeaderEl = getHeaderEl();
 				var helpNavItemEl = getHelpNavItemEl(appHeaderEl);
 				var menuItemLinkEl = helpNavItemEl.querySelector('.o-dropdown-menu__menu-item a');
 
-				expect(menuItemLinkEl.href).to.be(options.links.help.Foo.href);
-				expect(menuItemLinkEl.getAttribute('target')).to.be(options.links.help.Foo.target);
+				expect(menuItemLinkEl.href).to.be(href);
+				expect(menuItemLinkEl.getAttribute('target')).to.be(target);
 			});
 
-			it('should handle a function value', function (done) {
+			it('should register a click event listener for the Help menu menu item when options.help[key].onClick is a function', function (done) {
 				var options = {
-					links: {
-						help: {
-							'Foo': done.bind(null, null)
-						}
+					help: {
+						'Foo': { onClick: done.bind(null, null) }
 					}
 				};
 
-				AppHeader.init(options);
+				new AppHeader(options);
 
 				var appHeaderEl = getHeaderEl();
 				var helpNavItemEl = getHelpNavItemEl(appHeaderEl);
@@ -260,387 +200,344 @@ describe('AppHeader', function () {
 
 		});
 
-	});
+		describe('Menu (user) nav item:', function () {
 
-	describe('.setMenu(options)', function () {
-
-		describe('options.showAllCoursesMenuItem', function () {
-
-			it('should render a menu item with a link to the course listing page when the showAllCoursesMenuItem option is true', function () {
-				var options = {
-					showAllCoursesMenuItem: true
-				};
-
-				AppHeader.init();
-				AppHeader.setMenu(options);
-
-				var headerEl = getHeaderEl();
-				var accountMenuItemEls = getAccountMenuItemEls(headerEl);
-
-				expect(accountMenuItemEls[0].querySelector('a').textContent).to.match(/All courses$/);
+			beforeEach(function () {
+				sandbox.stub(session, 'on').withArgs(session.LoginEvent).yields();
 			});
 
-			it('should hide the course listing menu item in tablet and wider viewports when the showAllCoursesMenuItem option is true', function () {
-				var options = {
-					showAllCoursesMenuItem: true
-				};
+			describe('showAllCoursesMenuItem:', function () {
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
-
-				var headerEl = getHeaderEl();
-				var accountMenuItemEls = getAccountMenuItemEls(headerEl);
-
-				expect(accountMenuItemEls[0].classList.contains('o-header__viewport-tablet--hidden')).to.be(true);
-				expect(accountMenuItemEls[0].classList.contains('o-header__viewport-desktop--hidden')).to.be(true);
-			});
-
-			it('should resolve the link to the course listing page using the consoleBaseUrl setting when the showAllCoursesMenuItem option is true', function () {
-				var options = {
-					showAllCoursesMenuItem: true
-				};
-
-				AppHeader.init({ consoleBaseUrl: 'https://example.com' });
-				AppHeader.setMenu(options);
-
-				var headerEl = getHeaderEl();
-				var accountMenuItemEls = getAccountMenuItemEls(headerEl);
-
-				var expectedUrl = AppHeader.defaultSettings.links.home.replace('{consoleBaseUrl}', 'https://example.com');
-
-				expect(accountMenuItemEls[0].querySelector('a').href).to.be(expectedUrl);
-			});
-
-		});
-
-		describe('options.siteNav', function () {
-
-			it('should inject the site nav menu items when options.siteNav is an object', function () {
-				var options = {
-					siteNav: {
-						items: {
-							Foo: 'http://example.com/foo',
-							Bar: 'http://example.com/bar'
+				it('should render a menu item with a link to the course listing page when the showAllCoursesMenuItem option is true', function () {
+					var options = {
+						menu: {
+							showAllCoursesMenuItem: true
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
+					new AppHeader(options);
 
-				var headerEl = getHeaderEl();
-				var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
+					var headerEl = getHeaderEl();
+					var allCoursesMenuItemEl = getAllCoursesMenuItemEl(headerEl);
 
-				expect(siteNavMenuItemEls.length).to.be(2);
-				expect(siteNavMenuItemEls[0].classList.contains('o-header__viewport-tablet--hidden')).to.be(true);
-				expect(siteNavMenuItemEls[0].classList.contains('o-header__viewport-desktop--hidden')).to.be(true);
-				expect(siteNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
-				expect(siteNavMenuItemEls[0].querySelector('a').href).to.be(options.siteNav.items.Foo);
-				expect(siteNavMenuItemEls[1].classList.contains('o-header__viewport-tablet--hidden')).to.be(true);
-				expect(siteNavMenuItemEls[1].classList.contains('o-header__viewport-desktop--hidden')).to.be(true);
-				expect(siteNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
-				expect(siteNavMenuItemEls[1].querySelector('a').href).to.be(options.siteNav.items.Bar);
-			});
+					expect(allCoursesMenuItemEl.querySelector('a').textContent).to.match(/All courses$/);
+				});
 
-			it('should inject the menu items after the all courses menu item when options.showAllCoursesMenuItem is true', function () {
-				var options = {
-					showAllCoursesMenuItem: true,
-					siteNav: {
-						items: {
-							Foo: 'http://example.com/foo',
-							Bar: 'http://example.com/bar'
+				it('should hide the course listing menu item in tablet and wider viewports when the showAllCoursesMenuItem option is true', function () {
+					var options = {
+						menu: {
+							showAllCoursesMenuItem: true
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
+					new AppHeader(options);
 
-				var headerEl = getHeaderEl();
-				var accountMenuItemEls = getAccountMenuItemEls(headerEl);
+					var headerEl = getHeaderEl();
+					var allCoursesMenuItemEl = getAllCoursesMenuItemEl(headerEl);
 
-				expect(accountMenuItemEls[0].querySelector('a').textContent).to.match(/All courses$/);
-				expect(accountMenuItemEls[1].querySelector('a').textContent).to.be('Foo');
-				expect(accountMenuItemEls[1].querySelector('a').href).to.be(options.siteNav.items.Foo);
-				expect(accountMenuItemEls[2].querySelector('a').textContent).to.be('Bar');
-				expect(accountMenuItemEls[2].querySelector('a').href).to.be(options.siteNav.items.Bar);
-			});
+					expect(allCoursesMenuItemEl.classList.contains('o-header__viewport-tablet--hidden')).to.be(true);
+					expect(allCoursesMenuItemEl.classList.contains('o-header__viewport-desktop--hidden')).to.be(true);
+				});
 
-			it('should replace the existing site nav menu items on each invocation', function () {
-				var options = {
-					siteNav: {
-						items: {
-							Foo: 'http://example.com/foo',
-							Bar: 'http://example.com/bar'
+				it('should resolve the link to the course listing page using the consoleBaseUrl setting when the showAllCoursesMenuItem option is true', function () {
+					var consoleBaseUrl = 'https://example.com';
+					var options = {
+						consoleBaseUrl: consoleBaseUrl,
+						menu: {
+							showAllCoursesMenuItem: true
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
-				AppHeader.setMenu(options);
+					new AppHeader(options);
 
-				var headerEl = getHeaderEl();
-				var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
+					var headerEl = getHeaderEl();
+					var allCoursesMenuItemEl = getAllCoursesMenuItemEl(headerEl);
+					var expectedUrl = AppHeader.defaultSettings.links.home.replace('{consoleBaseUrl}', consoleBaseUrl);
 
-				expect(siteNavMenuItemEls.length).to.be(2);
-				expect(siteNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
-				expect(siteNavMenuItemEls[0].querySelector('a').href).to.be(options.siteNav.items.Foo);
-				expect(siteNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
-				expect(siteNavMenuItemEls[1].querySelector('a').href).to.be(options.siteNav.items.Bar);
+					expect(allCoursesMenuItemEl.querySelector('a').href).to.be(expectedUrl);
+				});
+
 			});
 
-			it('should render the site nav menu item as a link when the href option is a string', function () {
-				var href = 'http://example.com/foo';
-				var options = {
-					siteNav: {
-						items: {
-							Foo: { href: href },
+			describe('siteNav:', function () {
+
+				it('should render the site nav menu items when the menu.siteNav option is an object', function () {
+					var options = {
+						menu: {
+							siteNav: {
+								items: {
+									Foo: 'http://example.com/foo',
+									Bar: 'http://example.com/bar'
+								}
+							}
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
+					new AppHeader(options);
 
-				var headerEl = getHeaderEl();
-				var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
+					var headerEl = getHeaderEl();
+					var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
 
-				expect(siteNavMenuItemEls[0].querySelector('a').href).to.be(href);
-			});
+					expect(siteNavMenuItemEls.length).to.be(2);
+					expect(siteNavMenuItemEls[0].classList.contains('o-header__viewport-tablet--hidden')).to.be(true);
+					expect(siteNavMenuItemEls[0].classList.contains('o-header__viewport-desktop--hidden')).to.be(true);
+					expect(siteNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
+					expect(siteNavMenuItemEls[0].querySelector('a').href).to.be(options.menu.siteNav.items.Foo);
+					expect(siteNavMenuItemEls[1].classList.contains('o-header__viewport-tablet--hidden')).to.be(true);
+					expect(siteNavMenuItemEls[1].classList.contains('o-header__viewport-desktop--hidden')).to.be(true);
+					expect(siteNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
+					expect(siteNavMenuItemEls[1].querySelector('a').href).to.be(options.menu.siteNav.items.Bar);
+				});
 
-			it('should add a click handler when the onClick option is a function', function () {
-				var handler = sinon.spy();
-				var options = {
-					siteNav: {
-						items: {
-							Foo: { onClick: handler }
+				it('should render the site nav menu item as a link when the href option is a string', function () {
+					var href = 'http://example.com/foo';
+					var options = {
+						menu: {
+							siteNav: {
+								items: {
+									Foo: { href: href },
+								}
+							}
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
+					new AppHeader(options);
 
-				var headerEl = getHeaderEl();
-				var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
+					var headerEl = getHeaderEl();
+					var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
 
-				dispatchEvent(siteNavMenuItemEls[0].querySelector('a'), 'click');
+					expect(siteNavMenuItemEls[0].querySelector('a').href).to.be(href);
+				});
 
-				expect(handler.calledOnce).to.be(true);
-			});
-
-			it('should throw an error when the onClick option is not a function', function () {
-				var options = {
-					siteNav: {
-						items: {
-							Foo: { onClick: 'invalid' }
+				it('should add a click handler when the onClick option is a function', function () {
+					var handler = sinon.spy();
+					var options = {
+						menu: {
+							siteNav: {
+								items: {
+									Foo: { onClick: handler }
+								}
+							}
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
+					new AppHeader(options);
 
-				expect(AppHeader.setMenu.bind(AppHeader, options)).to.throwException(/Click handler must be a function/);
-			});
+					var headerEl = getHeaderEl();
+					var siteNavMenuItemEls = getSiteNavMenuItemEls(headerEl);
 
-		});
+					dispatchEvent(siteNavMenuItemEls[0].querySelector('a'), 'click');
 
-		describe('options.appNav', function () {
+					expect(handler.calledOnce).to.be(true);
+				});
 
-			it('should inject the app nav menu items when options.appNav is an object', function () {
-				var options = {
-					appNav: {
-						items: {
-							Foo: 'http://example.com/foo',
-							Bar: 'http://example.com/bar'
+				it('should throw an error when the onClick option is not a function', function () {
+					var options = {
+						menu: {
+							siteNav: {
+								items: {
+									Foo: { onClick: 'invalid' }
+								}
+							}
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
+					expect(function () { new AppHeader(options); })
+						.to.throwException(/value must be a function/);
+				});
 
-				var headerEl = getHeaderEl();
-				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
-
-				expect(appNavMenuItemEls.length).to.be(2);
-				expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
-				expect(appNavMenuItemEls[0].querySelector('a').href).to.be(options.appNav.items.Foo);
-				expect(appNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
-				expect(appNavMenuItemEls[1].querySelector('a').href).to.be(options.appNav.items.Bar);
 			});
 
-			it('should replace the existing app nav menu items on each invocation', function () {
-				var options = {
-					appNav: {
-						items: {
-							Foo: 'http://example.com/foo',
-							Bar: 'http://example.com/bar'
+			describe('appNav:', function () {
+
+				it('should render the app nav menu items when the menu.appNav option is an object', function () {
+					var item1href = 'http://example.com/foo';
+					var item2href = 'http://example.com/bar';
+					var options = {
+						menu: {
+							appNav: {
+								items: {
+									Foo: item1href,
+									Bar: item2href
+								}
+							}
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
-				AppHeader.setMenu(options);
+					new AppHeader(options);
 
-				var headerEl = getHeaderEl();
-				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+					var headerEl = getHeaderEl();
+					var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
 
-				expect(appNavMenuItemEls.length).to.be(2);
-				expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
-				expect(appNavMenuItemEls[0].querySelector('a').href).to.be(options.appNav.items.Foo);
-				expect(appNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
-				expect(appNavMenuItemEls[1].querySelector('a').href).to.be(options.appNav.items.Bar);
-			});
+					expect(appNavMenuItemEls.length).to.be(2);
+					expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be('Foo');
+					expect(appNavMenuItemEls[0].querySelector('a').href).to.be(item1href);
+					expect(appNavMenuItemEls[1].querySelector('a').textContent).to.be('Bar');
+					expect(appNavMenuItemEls[1].querySelector('a').href).to.be(item2href);
+				});
 
-			it('should render the app nav menu item as a link when the href option is a string', function () {
-				var href = 'http://example.com/foo';
-				var options = {
-					appNav: {
-						items: {
-							Foo: { href: href },
+				it('should render the menu item as a link when the href option is a string', function () {
+					var href = 'http://example.com/foo';
+					var options = {
+						menu: {
+							appNav: {
+								items: {
+									Foo: { href: href },
+								}
+							}
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
+					new AppHeader(options);
 
-				var headerEl = getHeaderEl();
-				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+					var headerEl = getHeaderEl();
+					var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
 
-				expect(appNavMenuItemEls[0].querySelector('a').href).to.be(href);
-			});
+					expect(appNavMenuItemEls[0].querySelector('a').href).to.be(href);
+				});
 
-			it('should render the app nav menu item as disabled when the active option is true', function () {
-				var options = {
-					appNav: {
-						items: {
-							Foo: { href: 'http://example.com/foo', active: true },
+				it('should render the menu item as disabled when the active option is true', function () {
+					var options = {
+						menu: {
+							appNav: {
+								items: {
+									Foo: { href: 'http://example.com/foo', active: true },
+								}
+							}
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
+					new AppHeader(options);
 
-				var headerEl = getHeaderEl();
-				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+					var headerEl = getHeaderEl();
+					var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
 
-				expect(appNavMenuItemEls[0].classList.contains('o-dropdown-menu__menu-item--disabled')).to.be(true);
-			});
+					expect(appNavMenuItemEls[0].classList.contains('o-dropdown-menu__menu-item--disabled')).to.be(true);
+				});
 
-			it('should add a click handler when the onClick option is a function', function () {
-				var handler = sinon.spy();
-				var options = {
-					appNav: {
-						items: {
-							Foo: { onClick: handler }
+				it('should add a click handler when the onClick option is a function', function () {
+					var handler = sinon.spy();
+					var options = {
+						menu: {
+							appNav: {
+								items: {
+									Foo: { onClick: handler }
+								}
+							}
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
+					new AppHeader(options);
 
-				var headerEl = getHeaderEl();
-				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+					var headerEl = getHeaderEl();
+					var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
 
-				dispatchEvent(appNavMenuItemEls[0].querySelector('a'), 'click');
+					dispatchEvent(appNavMenuItemEls[0].querySelector('a'), 'click');
 
-				expect(handler.calledOnce).to.be(true);
-			});
+					expect(handler.calledOnce).to.be(true);
+				});
 
-			it('should throw an error when the onClick option is not a function', function () {
-				var options = {
-					appNav: {
-						items: {
-							Foo: { onClick: 'invalid' }
+				it('should throw an error when the onClick option is not a function', function () {
+					var options = {
+						menu: {
+							appNav: {
+								items: {
+									Foo: { onClick: 'invalid' }
+								}
+							}
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
+					expect(function () { new AppHeader(options); })
+						.to.throwException(/value must be a function/);
+				});
 
-				expect(AppHeader.setMenu.bind(AppHeader, options)).to.throwException(/Click handler must be a function/);
-			});
-
-			it('should insert a heading menu item when the heading option is defined', function () {
-				var text = 'Foo';
-				var href = 'https://example.com/';
-				var options = {
-					appNav: {
-						heading: {
-							text: text,
-							href: href
+				it('should insert a heading menu item when the heading option is defined', function () {
+					var text = 'Foo';
+					var href = 'https://example.com/';
+					var options = {
+						menu: {
+							appNav: {
+								heading: {
+									text: text,
+									href: href
+								}
+							}
 						}
-					}
-				};
+					};
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
+					new AppHeader(options);
 
-				var headerEl = getHeaderEl();
-				var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
+					var headerEl = getHeaderEl();
+					var appNavMenuItemEls = getAppNavMenuItemEls(headerEl);
 
-				expect(appNavMenuItemEls[0].classList.contains('o-dropdown-menu__heading')).to.be(true);
-				expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be(text);
-				expect(appNavMenuItemEls[0].querySelector('a').href).to.be(href);
+					expect(appNavMenuItemEls[0].classList.contains('o-dropdown-menu__heading')).to.be(true);
+					expect(appNavMenuItemEls[0].querySelector('a').textContent).to.be(text);
+					expect(appNavMenuItemEls[0].querySelector('a').href).to.be(href);
+				});
+
 			});
 
-		});
+			describe('appAbout:', function () {
 
-		describe('options.appAbout', function () {
+				it('should render the app info menu item when the appAbout option is defined', function () {
+					var text = 'About Foo';
+					var href = 'https://example.com/about';
+					var options = {
+						menu: {
+							appAbout: {
+								text: text,
+								href: href
+							}
+						}
+					};
 
-			it('should render a menu item with a link to the app info when the appAbout option is defined', function () {
-				var title = 'About Foo';
-				var href = 'https://example.com/about';
-				var options = {
-					appAbout: {
-						title: title,
-						href: href
-					}
-				};
+					new AppHeader(options);
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
+					var headerEl = getHeaderEl();
+					var appAboutMenuItemEl = getAppAboutMenuItemEl(headerEl);
 
-				var headerEl = getHeaderEl();
-				var appAboutMenuItemEl = getAppAboutMenuItemEl(headerEl);
+					expect(appAboutMenuItemEl.classList.contains('o-dropdown-menu__menu-item')).to.be(true);
+					expect(appAboutMenuItemEl.querySelector('a').textContent).to.be(text);
+					expect(appAboutMenuItemEl.querySelector('a').href).to.be(href);
+				});
 
-				expect(appAboutMenuItemEl.classList.contains('o-dropdown-menu__menu-item')).to.be(true);
-				expect(appAboutMenuItemEl.querySelector('a').textContent).to.be(title);
-				expect(appAboutMenuItemEl.querySelector('a').href).to.be(href);
-			});
+				it('should add a click handler when onClick is a function', function () {
+					var text = 'About Foo';
+					var handler = sinon.spy();
+					var options = {
+						menu: {
+							appAbout: {
+								text: text,
+								onClick: handler
+							}
+						}
+					};
 
-			it('should add a click handler when onClick is a function', function (done) {
-				var options = {
-					appAbout: {
-						onClick: done.bind(null, null)
-					}
-				};
+					new AppHeader(options);
 
-				AppHeader.init();
-				AppHeader.setMenu(options);
+					var headerEl = getHeaderEl();
+					var appAboutMenuItemEl = getAppAboutMenuItemEl(headerEl);
 
-				var headerEl = getHeaderEl();
-				var appAboutMenuItemEl = getAppAboutMenuItemEl(headerEl);
+					dispatchEvent(appAboutMenuItemEl.querySelector('a'), 'click');
 
-				dispatchEvent(appAboutMenuItemEl.querySelector('a'), 'click');
-			});
+					expect(appAboutMenuItemEl.querySelector('a').textContent).to.be(text);
+					expect(handler.calledOnce).to.be(true);
+				});
 
-			it('should throw an error when onClick is not a function', function () {
-				var options = {
-					appAbout: {
-						onClick: 'invalid'
-					}
-				};
+				it('should throw an error when onClick is not a function', function () {
+					var options = {
+						menu: {
+							appAbout: {
+								onClick: 'invalid'
+							}
+						}
+					};
 
-				AppHeader.init();
+					expect(function () { new AppHeader(options); })
+						.to.throwException(/value must be a function/);
+				});
 
-				expect(AppHeader.setMenu.bind(AppHeader, options)).to.throwException(/Click handler must be a function/);
 			});
 
 		});
@@ -650,30 +547,32 @@ describe('AppHeader', function () {
 	describe('session', function () {
 
 		it('should sign the user in when the Sign In nav item is clicked', function () {
-			AppHeader.init();
-			var headerEl = getHeaderEl();
-			var signInEl = headerEl.querySelector('[data-action="sign-in"]');
 			sandbox.stub(session, 'login');
+			new AppHeader();
+			var headerEl = getHeaderEl();
+			var signInNavEl = getSignInNavItemEl(headerEl);
 
-			dispatchEvent(signInEl, 'click');
+			dispatchEvent(signInNavEl.querySelector('a'), 'click');
 
 			expect(session.login.calledWith(window.location.href)).to.be(true);
 		});
 
 		it('should sign the user out when the Sign Out dropdown menu item is clicked', function () {
-			AppHeader.init();
-			var headerEl = getHeaderEl();
-			var signOutEl = headerEl.querySelector('[data-action="sign-out"]');
+			sandbox.stub(session, 'on').withArgs(session.LoginEvent).yields();
 			sandbox.stub(session, 'logout');
+			new AppHeader();
+			var headerEl = getHeaderEl();
+			var signOutMenuItemEl = getSignOutMenuItemEl(headerEl);
 
-			dispatchEvent(signOutEl, 'click');
+			dispatchEvent(signOutMenuItemEl.querySelector('a'), 'click');
 
 			expect(session.logout.calledWith(window.location.href)).to.be(true);
+
 		});
 
 		it('should be in the initializing state when the session state is not Success, NoToken, or NoSession', function () {
 			sandbox.stub(session, 'hasValidSession').returns(session.Unknown);
-			AppHeader.init();
+			new AppHeader();
 			var headerEl = getHeaderEl();
 
 			expect(isHeaderInState(headerEl, 'initializing')).to.be(true);
@@ -681,7 +580,7 @@ describe('AppHeader', function () {
 
 		it('should be in the signed in state when the session state is Success', function () {
 			sandbox.stub(session, 'hasValidSession').returns(session.Success);
-			AppHeader.init();
+			new AppHeader();
 			var headerEl = getHeaderEl();
 
 			expect(isHeaderInState(headerEl, 'signed-in')).to.be(true);
@@ -689,7 +588,7 @@ describe('AppHeader', function () {
 
 		it('should be in the signed out state when the session state is NoSession', function () {
 			sandbox.stub(session, 'hasValidSession').returns(session.NoSession);
-			AppHeader.init();
+			new AppHeader();
 			var headerEl = getHeaderEl();
 
 			expect(isHeaderInState(headerEl, 'signed-out')).to.be(true);
@@ -697,7 +596,7 @@ describe('AppHeader', function () {
 
 		it('should be in the signed out state when the session state is NoToken', function () {
 			sandbox.stub(session, 'hasValidSession').returns(session.NoToken);
-			AppHeader.init();
+			new AppHeader();
 			var headerEl = getHeaderEl();
 
 			expect(isHeaderInState(headerEl, 'signed-out')).to.be(true);
@@ -706,7 +605,7 @@ describe('AppHeader', function () {
 		it('should be in the signed in state when a session SessionStateKnownEvent is emitted and session state is Success', function () {
 			sandbox.stub(session, 'hasValidSession').returns(session.Success);
 			sandbox.stub(session, 'on').withArgs(session.SessionStateKnownEvent).yields();
-			AppHeader.init();
+			new AppHeader();
 			var headerEl = getHeaderEl();
 
 			expect(isHeaderInState(headerEl, 'signed-in')).to.be(true);
@@ -715,7 +614,7 @@ describe('AppHeader', function () {
 		it('should be in the signed in state when a session SessionStateKnownEvent is emitted and session state is Success', function () {
 			sandbox.stub(session, 'hasValidSession').returns(session.NoSession);
 			sandbox.stub(session, 'on').withArgs(session.SessionStateKnownEvent).yields();
-			AppHeader.init();
+			new AppHeader();
 			var headerEl = getHeaderEl();
 
 			expect(isHeaderInState(headerEl, 'signed-out')).to.be(true);
@@ -723,7 +622,7 @@ describe('AppHeader', function () {
 
 		it('should be in the signed in state when a session LoginEvent is emitted', function () {
 			sandbox.stub(session, 'on').withArgs(session.LoginEvent).yields();
-			AppHeader.init();
+			new AppHeader();
 			var headerEl = getHeaderEl();
 
 			expect(isHeaderInState(headerEl, 'signed-in')).to.be(true);
@@ -731,7 +630,7 @@ describe('AppHeader', function () {
 
 		it('should be in the signed out state when a session LogoutEvent is emitted', function () {
 			sandbox.stub(session, 'on').withArgs(session.LogoutEvent).yields();
-			AppHeader.init();
+			new AppHeader();
 			var headerEl = getHeaderEl();
 
 			expect(isHeaderInState(headerEl, 'signed-out')).to.be(true);
@@ -742,7 +641,7 @@ describe('AppHeader', function () {
 				session: false
 			};
 
-			AppHeader.init(options);
+			new AppHeader(options);
 			var headerEl = getHeaderEl();
 
 			expect(getAccountMenuEl(headerEl)).to.be(null);
@@ -756,31 +655,36 @@ function getHeaderEl() {
 	return document.querySelector('.o-app-header');
 }
 
+function getHelpNavItemEl(headerEl) {
+	return headerEl.querySelector('.o-app-header__nav-item-help');
+}
+
+function getSignInNavItemEl(headerEl) {
+	return headerEl.querySelector('.o-app-header__nav-item-sign-in');
+}
+
 function getAccountMenuEl(headerEl) {
 	return headerEl.querySelector('.o-app-header__menu-account');
 }
 
-function getAccountMenuItemEls(headerEl) {
-	return getAccountMenuEl(headerEl).querySelectorAll('.o-dropdown-menu__menu-item');
+function getAllCoursesMenuItemEl(headerEl) {
+	return headerEl.querySelector('.o-app-header__menu-item-all-courses');
 }
 
 function getSiteNavMenuItemEls(headerEl) {
-	return getAccountMenuEl(headerEl).querySelectorAll('[data-nav-item-type="site"].o-dropdown-menu__menu-item');
+	return headerEl.querySelectorAll('.o-app-header__menu-item-site-nav');
 }
 
 function getAppNavMenuItemEls(headerEl) {
-	return getAccountMenuEl(headerEl).querySelectorAll('.o-app-header__menu-app-nav .o-dropdown-menu__menu-item');
+	return getAccountMenuEl(headerEl).querySelectorAll('.o-app-header__menu-item-app-nav');
 }
 
 function getAppAboutMenuItemEl(headerEl) {
-	return getAccountMenuEl(headerEl).querySelector('[data-link="my-account"]')
-		.parentElement
-		.previousElementSibling
-		.previousElementSibling;
+	return headerEl.querySelector('.o-app-header__menu-item-app-about');
 }
 
-function getHelpNavItemEl(headerEl) {
-	return headerEl.querySelector('.o-app-header__nav-item-help');
+function getSignOutMenuItemEl(headerEl) {
+	return headerEl.querySelector('.o-app-header__menu-item-sign-out');
 }
 
 function isHeaderInState(headerEl, state) {

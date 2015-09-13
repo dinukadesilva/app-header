@@ -1,415 +1,288 @@
 'use strict';
 
-var Header = require('o-header');
-var DropdownMenu = require('o-dropdown-menu');
 var assign = require('object-assign/index');
 var dom = require('./utils/dom');
-var forEach = require('./utils/forEach');
 var get = require('./utils/get');
+var forEach = require('./utils/forEach');
+var patch = require('../../bower_components/incremental-dom').patch;
+var template = require('./template');
 var I18n = require('./utils/I18n');
-var menu = require('./utils/dropdown-menu');
+var DropdownMenu = require('o-dropdown-menu');
 
-var rootElInternal;
-var accountMenuElInternal;
-var settingsInternal;
+module.exports = AppHeader;
 
-var defaultSettingsInternal = {
+/**
+ * Represents the header for Pearson Higher Ed web applications.
+ * @param {HTMLElement} element
+ * @param {Object} options
+ */
+function AppHeader(element, options) {
+	this.init(element, options);
+}
+
+
+/**
+ * Default settings for all AppHeader instances.
+ * @type {Object}
+ */
+AppHeader.defaultSettings = {
 	session: 'piSession',
 	consoleBaseUrl: 'https://console.pearson.com',
 	links: {
 		home: '{consoleBaseUrl}/console/home',
-		'my-account': '{consoleBaseUrl}/account/manage/account'
+		myAccount: '{consoleBaseUrl}/account/manage/account'
 	},
 	menu: {
 		showAllCoursesMenuItem: false
 	}
 };
 
-var resolveLinkInternal = function (key) {
-	if (!settingsInternal.links[key] || typeof settingsInternal.links[key] !== 'string') return;
 
-	return settingsInternal.links[key].replace('{consoleBaseUrl}', settingsInternal.consoleBaseUrl);
+/**
+ * Initializes an AppHeader instance.
+ * @param  {HTMLElement} element
+ * @param  {Object} options
+ * @return {AppHeader}
+ */
+AppHeader.init = function (element, options) {
+	return new AppHeader(element, options);
 };
 
-var initInternal = function (element, options) {
+
+/**
+ * Initializes the current AppHeader instance.
+ * @param  {HTMLElement} [element] The DOM element to initialize.
+ * Defaults to document.body, in which case the header element is
+ * prepended to the contents of the body element.
+ * @param  {Object} options
+ */
+AppHeader.prototype.init = function (element, options) {
 	if (typeof element === 'object' && !(element instanceof HTMLElement)) {
 		options = element;
 		element = null;
 	}
 	if (!element) element = document.body;
 	if (!(element instanceof HTMLElement)) element = document.querySelector(element);
+
+	var settings = this.settings_ = this.getSettings_(options);
+	var rootEl = this.element = this.constructRootEl_(settings);
+
+	this.state_ = this.getInitialState_(settings);
+	this.initSession_(settings);
+
+	if (element === document.body) {
+		element.insertBefore(rootEl, element.firstChild);
+	} else {
+		// Replace the passed in element with the header element
+		element.parentElement.insertBefore(rootEl, element);
+		element.parentNode.removeChild(element);
+	}
+
+	this.render_();
+};
+
+
+/**
+ * Sets the theme.
+ * @param {String} [theme] Possible values:
+ * - 'light'
+ */
+AppHeader.prototype.setTheme = function (theme) {
+	this.element.classList[theme === 'light' ? 'add' : 'remove']('o-header--theme-light');
+};
+
+
+/**
+ * Sets the user account menu options.
+ * @param {Object} options
+ */
+AppHeader.prototype.setMenu = function (options) {
+	options = options || {};
+	this.settings_ = assign({}, this.settings_, { menu: options });
+	this.render_();
+};
+
+
+/**
+ * Private methods
+ */
+
+
+AppHeader.prototype.getInitialState_ = function (options) {
+	var state = {};
+
+	state.user = assign({}, options.user, { isAuthenticated: false });
+
+	return state;
+};
+
+
+AppHeader.prototype.getSettings_ = function (options) {
 	options = options || {};
 
-	settingsInternal = getSettings();
+	// Merge links object
+	var globalSettings = this.getGlobalSettings_();
+	var links = assign({}, AppHeader.defaultSettings.links, globalSettings.links, options.links);
 
-	rootElInternal = constructRootEl();
-	accountMenuElInternal = rootElInternal.querySelector('.o-app-header__menu-account');
+	var settings = assign({}, AppHeader.defaultSettings, globalSettings, options, { links: links });
 
-	render('initializing');
+	function validate() {
 
-	var session;
-
-	if (!settingsInternal.session) {
-		render('signed-out');
-	} else {
-		session = (typeof settingsInternal.session === 'string') ? window[settingsInternal.session] : settingsInternal.session;
-		if (!session) throw new TypeError('Invalid configuration for \'session\': unable to find window[\'' + settingsInternal.session + '\']');
-		initSession();
-	}
-
-	setMenuInternal(settingsInternal.menu);
-
-	function getSettings() {
-		// Merge links object
-		var globalSettings = getGlobalSettings();
-		var links = assign({}, defaultSettingsInternal.links, globalSettings.links, options.links);
-
-		return assign({}, defaultSettingsInternal, globalSettings, options, { links: links });
-	}
-
-	function getGlobalSettings() {
-		var configEl = document.querySelector('[data-o-app-header-config]');
-		var config = {};
-
-		if (!configEl) return config;
-		try { config = JSON.parse(configEl.textContent); } catch (e) { throw new Error('Unable to parse configuration object: invalid JSON'); }
-		return config;
-	}
-
-	function constructRootEl() {
-		var rootElInternal = document.createElement('header');
-
-		rootElInternal.setAttribute('role', 'banner');
-		rootElInternal.classList.add('o-header');
-		rootElInternal.classList.add('o-header--fixed');
-		if (settingsInternal.theme === 'light') rootElInternal.classList.add('o-header--theme-light');
-		rootElInternal.classList.add('o-app-header');
-		rootElInternal.innerHTML = requireText('../html/header.html');
-
-		if (element === document.body) {
-			element.insertBefore(rootElInternal, element.firstChild);
-		} else {
-			// Replace the passed in element with the header element
-			element.parentElement.insertBefore(rootElInternal, element);
-			element.parentNode.removeChild(element);
-		}
-
-		// Username
-		var username = get(settingsInternal, 'user.givenName');
-		var usernameEl = rootElInternal.querySelector('.o-app-header__username');
-		var iconEl = document.createElement('i');
-
-		iconEl.classList.add('o-app-header__icon');
-		iconEl.classList.add('o-app-header__icon-chevron-down');
-
-		usernameEl.innerHTML = username + ' ';
-		usernameEl.appendChild(iconEl);
-
-		// Links
-		var links = settingsInternal.links;
-
-		forEach(rootElInternal.querySelectorAll('[data-link]'), function (idx, item) {
-			var link = item.getAttribute('data-link');
-
-			if (links[link] && typeof links[link] === 'function') {
-				item.addEventListener('click', links[link]);
-			} else {
-				item.href = resolveLinkInternal(link);
+		function checkNavItemOptions(path, key) {
+			if (typeof get(settings, path) !== 'undefined') {
+				var items = settings.menu[key].items;
+				Object.keys(items).forEach(function (itemKey) {
+					if (items[itemKey].onClick) checkIsFunction(items[itemKey].onClick, 'onClick');
+				});
 			}
-		});
-
-		// Help nav item
-		if (typeof links.help === 'object') {
-			// Render the nav item as a dropdown menu
-			var helpNavItemEl = rootElInternal.querySelector('.o-app-header__nav-item-help');
-			var helpMenuItemsOptions = [];
-
-			Object.keys(links.help).forEach(function (key) {
-				var link = links.help[key];
-				var helpMenuItemOptions = { link: { attributes: {} }, attributes: {} };
-
-				helpMenuItemOptions.link.textContent = key;
-
-				if (typeof link === 'object') {
-					Object.keys(link).forEach(function (key) {
-						if (key === 'href') {
-							helpMenuItemOptions.link.href = link.href;
-						} else {
-							helpMenuItemOptions.link.attributes[key] = link[key];
-						}
-					});
-				} else if (typeof link === 'function') {
-					helpMenuItemOptions.link.onClick = link;
-				} else {
-					helpMenuItemOptions.link.href = links.help[key];
-				}
-
-				helpMenuItemsOptions.push(helpMenuItemOptions);
-			});
-
-			var helpMenuOptions = {
-				alignRight: true,
-				toggle: { textContent: 'Help' },
-				items: helpMenuItemsOptions,
-				attributes: { 'data-18n': ''}
-			};
-
-			helpNavItemEl.innerHTML = '';
-			helpNavItemEl.appendChild(menu.createMenuEl(helpMenuOptions));
-		} else if (typeof links.help !== 'string') {
-			rootElInternal.querySelector('[data-link="help"]').addEventListener('click', handleHelpClick);
 		}
 
-		// Actions
-		rootElInternal.querySelector('[data-action="sign-in"]').addEventListener('click', handleSignIn);
-		rootElInternal.querySelector('[data-action="sign-out"]').addEventListener('click', handleSignOut);
-
-		// i18n
-		var i18n = new I18n({ locale: settingsInternal.locale });
-		forEach(rootElInternal.querySelectorAll('[data-i18n]'), function (idx, item) {
-			item.textContent = i18n.translate(item.textContent.trim());
-		});
-
-		// Header
-		new Header(rootElInternal);
-
-		// Dropdown menus
-		DropdownMenu.init(rootElInternal);
-
-		if (!settingsInternal.session) {
-			forEach(rootElInternal.querySelectorAll('.o-app-header__nav-item-menu'), function (idx, item) {
-				item.parentElement.removeChild(item);
-			});
-		} else {
-			var menuEl = rootElInternal.querySelector('.o-app-header__menu-account');
-
-			menuEl.addEventListener('oDropdownMenu.expand', function (e) {
-				forEach(e.target.querySelectorAll('.o-app-header__icon'), function (idx, item) {
-					item.classList.remove('o-app-header__icon-chevron-down');
-					item.classList.add('o-app-header__icon-chevron-up');
-				});
-			});
-
-			menuEl.addEventListener('oDropdownMenu.collapse', function (e) {
-				forEach(e.target.querySelectorAll('.o-app-header__icon'), function (idx, item) {
-					item.classList.remove('o-app-header__icon-chevron-up');
-					item.classList.add('o-app-header__icon-chevron-down');
-				});
-			});
+		function checkIsFunction(value, name) {
+			if (typeof value !== 'function') throw new TypeError(name + ': value must be a function');
 		}
 
-		return rootElInternal;
-	}
+		checkNavItemOptions('menu.siteNav.items', 'siteNav');
+		checkNavItemOptions('menu.appNav.items', 'appNav');
 
-	function render(state) {
-		var selector = '[data-show="state:signed-in"],[data-show="state:signed-out"]';
-		var elements = rootElInternal.querySelectorAll(selector);
-
-		if (state === 'initializing') {
-			forEach(elements, function (idx, el) {
-				el.style.display = 'none';
-			});
-		} else if (state === 'signed-in') {
-			forEach(elements, function (idx, el) {
-				el.style.display = el.getAttribute('data-show') === 'state:signed-in' ? '' : 'none';
-			});
-		} else if (state === 'signed-out') {
-			forEach(elements, function (idx, el) {
-				el.style.display = el.getAttribute('data-show') === 'state:signed-out' ? '' : 'none';
-			});
+		if (typeof get(settings, 'menu.appAbout') !== 'undefined') {
+			if (settings.menu.appAbout.onClick) checkIsFunction(settings.menu.appAbout.onClick);
 		}
 	}
 
-	function initSession() {
+	validate();
+
+	return settings;
+};
+
+
+AppHeader.prototype.getGlobalSettings_ = function () {
+	var configEl = document.querySelector('[data-o-app-header-config]');
+	var config = {};
+
+	if (!configEl) return config;
+	try { config = JSON.parse(configEl.textContent); } catch (e) { throw new Error('Unable to parse configuration object: invalid JSON'); }
+	return config;
+};
+
+
+AppHeader.prototype.resolveLink_ = function (key) {
+	if (!this.settings_.links[key] || typeof this.settings_.links[key] !== 'string') return;
+
+	return this.settings_.links[key].replace('{consoleBaseUrl}', this.settings_.consoleBaseUrl);
+};
+
+
+AppHeader.prototype.initSession_ = function (options) {
+	var state = this.state_;
+	var render = this.render_.bind(this);
+
+	if (!options.session) {
+		this.state_.session = false;
+	} else {
+		var session = (typeof options.session === 'string') ?
+			window[options.session] : options.session;
+
+		if (!session) throw new TypeError('Invalid configuration for \'session\': unable to find window[\'' + options.session + '\']');
+
 		var sessionState = session.hasValidSession(0);
 
 		if (sessionState === session.Success) {
-			render('signed-in');
+			this.state_.user.isAuthenticated = true;
 		} else if (sessionState === session.NoSession || sessionState === session.NoToken) {
-			render('signed-out');
+			this.state_.user.isAuthenticated = false;
 		}
 
-		session.on(session.SessionStateKnownEvent, handleSessionStateKnown);
-		session.on(session.LoginEvent, handleSessionLogin);
-		session.on(session.LogoutEvent, handleSessionLogout);
-	}
+		this.handleSessionStateKnown_ = function (e) {
+			if (e && typeof e.preventDefault === 'function') e.preventDefault();
+			state.user.isAuthenticated = (session.hasValidSession(0) === session.Success);
+			render();
+		};
 
-	function handleSignIn(e) {
-		e.preventDefault();
-		session.login(window.location.href);
-	}
+		this.handleSessionLogin_ = function (e) {
+			if (e && typeof e.preventDefault === 'function') e.preventDefault();
+			state.user.isAuthenticated = true;
+			render();
+		};
 
-	function handleSignOut(e) {
-		e.preventDefault();
-		session.logout(window.location.href);
-	}
+		this.handleSessionLogout_ = function (e) {
+			if (e && typeof e.preventDefault === 'function') e.preventDefault();
+			state.user.isAuthenticated = false;
+			render();
+		};
 
-	function handleHelpClick(e) {
-		e.preventDefault();
-		dom.dispatchEvent(rootElInternal, 'oAppHeader.help.toggle');
-	}
+		this.handleSignInClick_ = function (e) {
+			e.preventDefault();
+			session.login(window.location.href);
+		};
 
-	function handleSessionStateKnown(e) {
-		render(session.hasValidSession(0) === session.Success ? 'signed-in' : 'signed-out');
-	}
+		this.handleSignOutClick_ = function (e) {
+			e.preventDefault();
+			session.logout(window.location.href);
+		};
 
-	function handleSessionLogin(e) {
-		render('signed-in');
+		session.on(session.SessionStateKnownEvent, this.handleSessionStateKnown_);
+		session.on(session.LoginEvent, this.handleSessionLogin_);
+		session.on(session.LogoutEvent, this.handleSessionLogout_);
 	}
-
-	function handleSessionLogout(e) {
-		render('signed-out');
-	}
-
 };
 
-var setMenuInternal = function (options) {
-	if (!rootElInternal || !accountMenuElInternal) return;
-	if (!options || typeof options !== 'object') return;
 
-	options.appNav = options.appNav || {};
+AppHeader.prototype.constructRootEl_ = function (options) {
+	var element = document.createElement('header');
 
-	function getMenuItemElOptionsFromItemOptions(key, item) {
-		var menuItemElOptions = { link: { textContent: key } };
+	element.classList.add('o-app-header');
+	element.setAttribute('role', 'banner');
+	element.classList.add('o-header');
+	element.classList.add('o-header--fixed');
+	if (options.theme === 'light') element.classList.add('o-header--theme-light');
 
-		if (typeof item === 'string') {
-			menuItemElOptions.link.href = item;
-		} else if (typeof item === 'object') {
-			var itemOptions = item;
-
-			menuItemElOptions.link.href = itemOptions.href;
-			menuItemElOptions.link.onClick = itemOptions.onClick;
-
-			if (itemOptions.active) {
-				menuItemElOptions.cssClasses = ['o-dropdown-menu__menu-item--disabled'];
-			}
-		}
-
-		return menuItemElOptions;
-	}
-
-	var accountMenuItemsEl = accountMenuElInternal.querySelector('.o-dropdown-menu__menu-items');
-
-	// All courses menu item
-	if (options.showAllCoursesMenuItem) {
-		var allCoursesMenuItemEl = menu.createMenuItemEl({
-			cssClasses: ['o-header__viewport-tablet--hidden', 'o-header__viewport-desktop--hidden'],
-			attributes: { 'data-nav-item-type': 'all-courses'},
-			link: { textContent: 'All courses', href: resolveLinkInternal('home') }
+	element.addEventListener('oDropdownMenu.expand', function (e) {
+		forEach(e.target.querySelectorAll('.o-app-header__icon'), function (idx, item) {
+			item.classList.remove('o-app-header__icon-chevron-down');
+			item.classList.add('o-app-header__icon-chevron-up');
 		});
-
-		// Prepend the left arrow icon
-		var allCoursesMenuItemLinkEl = allCoursesMenuItemEl.querySelector('a');
-
-		allCoursesMenuItemLinkEl.innerHTML = '<span class="o-app-header__icon-left-arrow"></span> ' + allCoursesMenuItemLinkEl.innerHTML;
-
-		// Insert the menu item
-		accountMenuItemsEl.insertBefore(allCoursesMenuItemEl, accountMenuItemsEl.firstChild);
-	}
-
-	// Site nav menu items
-	var siteNavMenuItemEls = [];
-
-	if (options.siteNav && typeof options.siteNav.items === 'object') {
-		var siteNavItems = options.siteNav.items;
-
-		Object.keys(options.siteNav.items).forEach(function (key) {
-			var menuItemElOptions = getMenuItemElOptionsFromItemOptions(key, siteNavItems[key]);
-
-			menuItemElOptions.attributes = { 'data-nav-item-type': 'site' };
-			menuItemElOptions.cssClasses = ['o-header__viewport-tablet--hidden', 'o-header__viewport-desktop--hidden'];
-
-			var menuItemEl = menu.createMenuItemEl(menuItemElOptions);
-
-			siteNavMenuItemEls.push(menuItemEl);
-		});
-	}
-
-	forEach(accountMenuItemsEl.querySelectorAll('[data-nav-item-type="site"]'), function (idx, item) {
-		item.parentElement.removeChild(item);
 	});
 
-	for (var i = 0, l = siteNavMenuItemEls.length; i < l; i++) {
-		if (i === 0) {
-			if (accountMenuItemsEl.firstChild &&
-				typeof accountMenuItemsEl.firstChild.getAttribute !== 'undefined' &&
-				accountMenuItemsEl.firstChild.getAttribute('data-nav-item-type') === 'all-courses') {
-				dom.insertAfter(siteNavMenuItemEls[i], accountMenuItemsEl.firstChild);
-			} else if (accountMenuItemsEl.firstChild) {
-				accountMenuItemsEl.insertBefore(siteNavMenuItemEls[i], accountMenuItemsEl.firstChild);
-			} else {
-				accountMenuItemsEl.appendChild(siteNavMenuItemEls[i]);
-			}
-		} else {
-			dom.insertAfter(siteNavMenuItemEls[i], siteNavMenuItemEls[0]);
-		}
-	}
-
-	if (siteNavMenuItemEls.length) {
-		dom.insertAfter(menu.createMenuItemEl({ isDivider: true }), siteNavMenuItemEls[siteNavMenuItemEls.length - 1]);
-	}
-
-	// App about menu item
-	if (options.appAbout) {
-		var appAboutMenuItemOptions = { link: {} };
-
-		if (options.appAbout.onClick) {
-			appAboutMenuItemOptions.link.onClick = options.appAbout.onClick;
-		} else {
-			appAboutMenuItemOptions.link.textContent = options.appAbout.title;
-			appAboutMenuItemOptions.link.href = options.appAbout.href;
-		}
-
-		var appAboutMenuItemEl = menu.createMenuItemEl(appAboutMenuItemOptions);
-
-		// Insert before the My Account menu item
-		var myAccountMenuItemEl = accountMenuItemsEl.querySelector('[data-link="my-account"]').parentElement;
-
-		accountMenuItemsEl.insertBefore(appAboutMenuItemEl, myAccountMenuItemEl);
-		accountMenuItemsEl.insertBefore(menu.createMenuItemEl({ isDivider: true }), myAccountMenuItemEl);
-	}
-
-	// App nav menu items
-	var appNavMenuItemEls = [];
-
-	if (options.appNav.heading) {
-		var appNavHeaderOptions = options.appNav.heading;
-
-		var appNavHeadingMenuItemEl = menu.createMenuItemEl({
-			isHeading: true,
-			link: { textContent: appNavHeaderOptions.text, href: appNavHeaderOptions.href }
+	element.addEventListener('oDropdownMenu.collapse', function (e) {
+		forEach(e.target.querySelectorAll('.o-app-header__icon'), function (idx, item) {
+			item.classList.remove('o-app-header__icon-chevron-up');
+			item.classList.add('o-app-header__icon-chevron-down');
 		});
+	});
 
-		appNavMenuItemEls.push(appNavHeadingMenuItemEl);
-	}
+	return element;
+};
 
-	if (options.appNav && typeof options.appNav.items === 'object') {
-		var appNavItems = options.appNav.items;
 
-		Object.keys(options.appNav.items).forEach(function (key) {
-			var menuItemElOptions = getMenuItemElOptionsFromItemOptions(key, appNavItems[key]);
-			var menuItemEl = menu.createMenuItemEl(menuItemElOptions);
+AppHeader.prototype.render_ = function () {
+	var element = this.element;
+	var state = this.state_;
+	var settings = this.settings_;
 
-			appNavMenuItemEls.push(menuItemEl);
-		});
-	}
+	var data = assign({}, this.settings_, {
+		links: {
+			home: this.resolveLink_('home'),
+			myAccount: this.resolveLink_('myAccount')
+		}
+	});
 
-	var appNavMenuItemsEl = accountMenuElInternal.querySelector('.o-app-header__menu-app-nav > ul');
+	var handlers = {
+		handleLogin: this.handleSignInClick_,
+		handleLogout: this.handleSignOutClick_,
+		handleHelpNavItemClick: this.handleHelpNavItemClick_.bind(this)
+	};
 
-	// Clear existing menu items
-	appNavMenuItemsEl.innerHTML = '';
+	var i18n = new I18n({ locale: settings.locale });
 
-	// Inject the page nav menu items
-	var referenceNode = appNavMenuItemsEl.firstChild;
-
-	appNavMenuItemEls.forEach(function (menuItemEl) {
-		appNavMenuItemsEl.insertBefore(menuItemEl, referenceNode);
+	patch(element, function () {
+		template(data, state.user, handlers, i18n.translate.bind(i18n));
+		DropdownMenu.init(element);
+		dom.dispatchEvent(element, 'oAppHeader.didUpdate');
 	});
 };
 
-// Export the public API
-module.exports = {
-	defaultSettings: defaultSettingsInternal,
-	init: initInternal,
-	setMenu: setMenuInternal
+
+AppHeader.prototype.handleHelpNavItemClick_ = function (e) {
+	e.preventDefault();
+	dom.dispatchEvent(this.element, 'oAppHeader.help.toggle');
 };

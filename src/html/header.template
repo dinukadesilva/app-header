@@ -1,0 +1,149 @@
+<template args="data user handlers translate">
+	<script>
+		var _ = {
+			get: require('./utils/get')
+		};
+
+		var siteNavItems = _.get(data, 'menu.siteNav.items');
+		var appNavHeading = _.get(data, 'menu.appNav.heading');
+		var appNavItems = _.get(data, 'menu.appNav.items');
+		var appAbout = _.get(data, 'menu.appAbout') || {};
+	</script>
+
+	<div class="o-header__container">
+		<section class="o-header__section">
+			<div class="o-header__brand">
+				<a href="{data.links.home}" if="data.session && user.isAuthenticated">
+					<div class="o-header__logo o-header__logo--pearson"></div>
+				</a>
+				<div class="o-header__logo o-header__logo--pearson" if="!user.isAuthenticated"></div>
+			</div>
+		</section>
+		<section class="o-header__section o-header__section--right">
+			<nav class="o-header__nav">
+				<ul class="o-header__nav-items">
+					<li class="o-header__nav-item o-app-header__nav-item-help">
+						<a href="#" onclick="{handlers.handleHelpNavItemClick($event)}" if="!data.help">{translate('Help')}</a>
+						<a href="{data.help}" if="typeof data.help === 'string'">{translate('Help')}</a>
+						<div class="o-dropdown-menu o-dropdown-menu--right" if="typeof data.help === 'object'">
+							<a href="#"
+								class="o-dropdown-menu__toggle"
+								data-toggle="dropdown-menu"
+								aria-haspopup="true"
+								aria-expanded="false">{translate('Help')}</a>
+							<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-menu-act">
+								<li class="o-dropdown-menu__menu-item" role="presentation" each="key in data.help">
+									<a role="menuitem" href="{data.help[key]}" tabindex="-1" if="typeof data.help[key] === 'string'">{key}</a>
+									<a role="menuitem" href="{data.help[key].href}" tabindex="-1" target="{data.help[key].target}" if="data.help[key].href">{key}</a>
+									<a role="menuitem" href="#" tabindex="-1" onclick="{data.help[key].onClick($event)}" if="typeof data.help[key].onClick === 'function'">{key}</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="o-header__nav-item o-app-header__nav-item-sign-in" if="data.session && !user.isAuthenticated">
+						<a href="#" onclick="{handlers.handleLogin($event)}">{translate('Sign In')}</a>
+					</li>
+					<li class="o-header__nav-item o-app-header__nav-item-menu" if="user.isAuthenticated">
+						<div class="o-dropdown-menu o-dropdown-menu--right o-app-header__menu-account">
+							<a href="#"
+								id="o-app-header-menu-act"
+								class="o-dropdown-menu__toggle"
+								data-toggle="dropdown-menu"
+								aria-haspopup="true"
+								aria-expanded="false">
+								<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible">{user.givenName} <i class="o-app-header__icon o-app-header__icon-chevron-down"></i></span>
+								<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">{translate('Menu')} <i class="o-app-header__icon o-app-header__icon-chevron-down"></i></span>
+							</a>
+							<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-menu-act">
+								<!-- All courses menu item -->
+								<li class="o-app-header__menu-item-all-courses o-dropdown-menu__menu-item o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"
+									role="presentation"
+									if="data.menu.showAllCoursesMenuItem">
+									<a role="menuitem" href="{data.links.home}" tabindex="-1"><span class="o-app-header__icon-left-arrow"></span> {translate('All courses')}</a>
+								</li>
+								<li class="o-dropdown-menu__divider o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"
+									role="presentation"
+									if="data.menu.showAllCoursesMenuItem"></li>
+								<!-- Site nav menu items -->
+								<if condition="typeof siteNavItems !== 'undefined'">
+								<li class="o-app-header__menu-item-site-nav o-dropdown-menu__menu-item o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"
+									role="presentation"
+									each="key in siteNavItems">
+									<a role="menuitem"
+										href="{siteNavItems[key]}"
+										tabindex="-1"
+										if="typeof siteNavItems[key] === 'string'">{key}</a>
+									<a role="menuitem"
+										href="{siteNavItems[key].href}"
+										tabindex="-1"
+										target="{siteNavItems[key].target}"
+										if="siteNavItems[key].href">{key}</a>
+									<a role="menuitem" 
+										href="#"
+										tabindex="-1"
+										onclick="{siteNavItems[key].onClick($event)}"
+										if="typeof siteNavItems[key].onClick === 'function'">{key}</a>
+								</li>
+								<li class="o-dropdown-menu__divider o-dropdown-menu__menu-item o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden" role="presentation"></li>
+								</if>
+								<!-- App nav menu item and sub-menu items -->
+								<if condition="appNavHeading || appNavItems">
+								<li class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">
+									<ul class="o-app-header__menu-items-app-nav">
+										<if condition="appNavHeading">
+										<li class="o-app-header__menu-item-app-nav o-dropdown-menu__menu-item o-dropdown-menu__heading"
+											role="presentation"
+											if="typeof appNavHeading !== 'undefined'">
+											<a role="menuitem"
+												href="{appNavHeading.href}"
+												tabindex="-1"
+												if="appNavHeading.href">{appNavHeading.text}</a>
+										</li>
+										</if>
+										<if condition="appNavItems">
+										<li class="{appNavItems[key].active ? 'o-app-header__menu-item-app-nav o-dropdown-menu__menu-item o-dropdown-menu__menu-item--disabled' : 'o-app-header__menu-item-app-nav o-dropdown-menu__menu-item'}"
+											role="presentation"
+											each="key in appNavItems">
+											<a role="menuitem"
+												href="{appNavItems[key]}"
+												tabindex="-1"
+												if="typeof appNavItems[key] === 'string'">{key}</a>
+											<a role="menuitem"
+												href="{appNavItems[key].href}"
+												tabindex="-1"
+												target="{appNavItems[key].target}"
+												if="appNavItems[key].href">{key}</a>
+											<a role="menuitem"
+												href="#"
+												tabindex="-1"
+												onclick="{appNavItems[key].onClick($event)}"
+												if="typeof appNavItems[key].onClick === 'function'">{key}</a>
+										</li>
+										</if>
+									</ul>
+								</li>
+								</if>
+								<!-- App info menu item -->
+								<if condition="appAbout">
+								<li class="o-app-header__menu-item-app-about o-dropdown-menu__menu-item" role="presentation">
+									<a role="menuitem" href="{appAbout.href}" tabindex="-1" if="appAbout.href">{appAbout.text}</a>
+									<a role="menuitem" href="#" tabindex="-1" onclick="{appAbout.onClick($event)}" if="appAbout.onClick">{appAbout.text}</a>
+								</li>
+								<li class="o-dropdown-menu__divider" role="presentation"></li>
+								</if>
+								<!-- Account and sign out menu items -->
+								<li class="o-dropdown-menu__menu-item" role="presentation">
+									<a role="menuitem" href="{data.links.myAccount}" tabindex="-1">{translate('My Account')}</a>
+								</li>
+								<li class="o-dropdown-menu__divider" role="presentation"></li>
+								<li class="o-dropdown-menu__menu-item o-app-header__menu-item-sign-out" role="presentation">
+									<a role="menuitem" href="#" tabindex="-1" onclick="{handlers.handleLogout($event)}">{translate('Sign Out')}</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</nav>
+		</section>
+	</div>
+</template>

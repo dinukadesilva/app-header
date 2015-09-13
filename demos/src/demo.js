@@ -46,21 +46,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		TimedOut: 'timedout'
 	};
 
-	var locale = localStorage.getItem('locale') || 'en';
-	document.querySelector('#demo-btn-locale').textContent = 'Locale: ' + locale;
-	document.querySelector('#demo-dd-menu-locale').addEventListener('click', function (e) {
-		var locale = e.target.getAttribute('data-locale');
-		if (locale) {
-			e.preventDefault();
-			localStorage.setItem('locale', locale);
-			location.reload();
-		}
-	});
-
 	var config = {
 		session: 'session',
 		user: { givenName: 'XXXXXXXXXXXXXXXX' },
-		locale: locale,
 		menu: {
 			showAllCoursesMenuItem: true,
 			siteNav: {
@@ -69,10 +57,10 @@ document.addEventListener('DOMContentLoaded', function() {
 					'Intro to Sociology': 'https://example.com/intro-to-sociology'
 				}
 			},
-			appAbout: { title: 'About this app', href: 'https://example.com/about' },
+			appAbout: { text: 'About this app', href: 'https://example.com/about' },
 			appNav: {
 				heading: {
-					text: 'U.S. History 201',
+					text: 'Physics',
 					href: 'https://example.com/us-history-201'
 				},
 				items: {
@@ -96,11 +84,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	if (localStorage.getItem('nav_help_menu')) {
-		config.links = {
-			help: {
-				'Regular link': 'https://example.com',
-				'Opens in a new window or tab': { href: 'https://example.com', target: '_blank' }
-			}
+		config.help = {
+			'Regular link': 'https://example.com',
+			'Opens in a new window or tab': { href: 'https://example.com', target: '_blank' }
 		};
 	} else {
 		document.addEventListener('oAppHeader.help.toggle', function () {
@@ -116,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		config.menu.showAllCoursesMenuItem = false;
 	}
 
-	if (localStorage.getItem('disable_site_nave_menu_items')) {
+	if (localStorage.getItem('disable_site_nav_menu_items')) {
 		delete config.menu.siteNav;
 	}
 
@@ -143,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		'* Change the Help nav item to a dropdown menu: localStorage.setItem(\'nav_help_menu\', true);' + '\n' +
 		'* Change the username to a long string: localStorage.setItem(\'long_username\', true);' + '\n' +
 		'* Disable the \'All courses\' menu item: localStorage.setItem(\'disable_all_courses_menu_item\', true);' + '\n' +
-		'* Disable the site nav menu items: localStorage.setItem(\'disable_site_nave_menu_items\', true);' + '\n' +
+		'* Disable the site nav menu items: localStorage.setItem(\'disable_site_nav_menu_items\', true);' + '\n' +
 		'* Disable the app about menu item: localStorage.setItem(\'disable_app_about_menu_item\', true);' + '\n' +
 		'* Disable the app nav menu items: localStorage.setItem(\'disable_app_nav_menu_items\', true);' + '\n' +
 		'* Clear all settings: localStorage.clear();'

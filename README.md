@@ -65,12 +65,12 @@ Refer to the [options object](#api-methods-init) for a list of properties.
 | siteNav                  | `Object`               | Options for setting site-oriented navigation menu items. |
 | siteNav.items            | `Object`               | Site-oriented navigation menu items. The key is the menu item text content. The value can be a `String`, which is the URL of the menu item's link, or an `Object`. |
 | appAbout                 | `Object`               | Options for rendering a menu item that links to or initiates an action to display information about the current application. |
-| appAbout.title           | `String`               | The text that will be rendered for the menu item. |
+| appAbout.text            | `String`               | The text that will be rendered for the menu item. |
 | appAbout.href            | `String`               | URL. If defined, the menu item will be rendered as a link. |
 | appAbout.onClick         | `Function`             | A callback function that will be called when the menu item is clicked. |
 | appNav                   | `Object`               | Options for setting page-oriented navigation menu items. |
 | appNav.heading           | `Object`               | Options for rendering a heading menu item. |
-| appNav.heading.title     | `String`               | The heading title.                |
+| appNav.heading.text      | `String`               | The heading text.                |
 | appNav.heading.href      | `String`               | URL. If defined, the menu item will be rendered as a link. |
 | appNav.items             | `Object`               | Page-oriented navigation menu items. The key is the menu item text content. The value can be a `String`, which is the URL of the menu item's link, or an `Object`. |
 
@@ -89,7 +89,7 @@ AppHeader.setMenu({
 	appNav: {
 		// Render a heading menu item
 		heading: {
-			title: 'Psychology 101',
+			text: 'Psychology 101',
 			href: 'https://example.com/psychology-101'
 		},
 		items: {
@@ -118,7 +118,7 @@ document.addEventListener('oAppHeader.help.toggle', function (e) {
 
 By default, the header's `z-index` property is set to 1000. This value can be changed by setting the `$o-app-header-z-index` SASS variable.
 
-## i18n
+<!-- ## i18n
 
 Setting the `locale` configuration property will render the header with the translated strings, if the locale is supported.
 The following languages are supported:
@@ -135,7 +135,7 @@ The following languages are supported:
 - `pt` Portuguese
 - `ru` Russian
 - `tr` Turkish
-- `zh-Hans` Chinese (simplified)
+- `zh-Hans` Chinese (simplified) -->
 
 ## Browser support
 

@@ -5,11 +5,7 @@
 }
 
 .o-app-header__username {
-	max-width: 240px;
-
-	@media (min-width: $o-header-desktop-min) {
-		max-width: 400px;
-	}
+	max-width: 220px;
 }
 
 // Responsive utilities
@@ -74,16 +70,14 @@
 	}
 }
 
-.o-app-header__menu-app-nav {
-	> ul {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-		background-color: $o-app-header-menu-app-nav-bg;
-	}
+.o-app-header__menu-items-app-nav {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	background-color: $o-app-header-menu-app-nav-bg;
 }
 
-[data-nav-item-type="site"].o-dropdown-menu__menu-item {
+.o-app-header__menu-item-site-nav {
 	font-size: 1.2em;
 
 	> a {
@@ -102,9 +96,7 @@
 		}
 	}
 
-	.o-app-header__menu-app-nav {
-		> ul {
-			background-color: $o-app-header-menu-app-nav-bg-light;
-		}
+	.o-app-header__menu-items-app-nav {
+		background-color: $o-app-header-menu-app-nav-bg-light;
 	}
 }

@@ -26,6 +26,7 @@
     "karma-sinon": "^1.0.4",
     "mocha": "^2.1.0",
     "sinon": "^1.15.3",
+    "superviews.js": "0.0.5",
     "textrequireify": "^2.1.1",
     "travis-multirunner": "^2.7.0"
   }

@@ -4,7 +4,7 @@
 var AppHeader = require('./src/js/AppHeader');
 
 var construct = function () {
-	AppHeader.init();
+	new AppHeader();
 	document.removeEventListener('o.DOMContentLoaded', construct);
 };
 

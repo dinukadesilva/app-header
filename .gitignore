@@ -6,3 +6,6 @@ public/
 build/
 demos/local/
 docs/
+
+# Included in the repository, but ignored by lintspaces
+src/js/template.js

@@ -1,3 +1,14 @@
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.5.0...v0.6.0) (2015-09-15)
+
+
+### Bug Fixes
+
+* incremental-dom bower incompatibility ([557507c](https://github.com/Pearson-Higher-Ed/o-app-header/commit/557507c))
+* remove checks in session event handlers ([e7cdf83](https://github.com/Pearson-Higher-Ed/o-app-header/commit/e7cdf83))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.4.0...v0.5.0) (2015-09-15)
 

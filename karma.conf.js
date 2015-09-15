@@ -39,7 +39,7 @@ module.exports = function(config) {
 			transform: [
 				'debowerify',
 				require('browserify-istanbul')({
-					ignore: ['node_modules/**', 'test/**']
+					ignore: ['node_modules/**', 'test/**', '**/lib/**']
 				}),
 				require('textrequireify').create({
 					rootDirectory: process.cwd()
@@ -52,6 +52,8 @@ module.exports = function(config) {
 		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
 		reporters: ['progress', 'coverage'],
 
+
+		// coverage reporter options
 		coverageReporter: {
 			dir : 'build/reports/coverage',
 			reporters: [

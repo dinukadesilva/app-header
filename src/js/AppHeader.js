@@ -67,6 +67,7 @@ AppHeader.prototype.init = function (element, options) {
 	var settings = this.settings_ = this.getSettings_(options);
 	var rootEl = this.element = this.constructRootEl_(settings);
 
+	this.i18n_ = new I18n({ locale: settings.locale });
 	this.state_ = this.getInitialState_(settings);
 	this.initSession_(settings);
 
@@ -257,7 +258,7 @@ AppHeader.prototype.constructRootEl_ = function (options) {
 AppHeader.prototype.render_ = function () {
 	var element = this.element;
 	var state = this.state_;
-	var settings = this.settings_;
+	var i18n = this.i18n_;
 
 	var data = assign({}, this.settings_, {
 		links: {
@@ -271,8 +272,6 @@ AppHeader.prototype.render_ = function () {
 		handleLogout: this.handleSignOutClick_,
 		handleHelpNavItemClick: this.handleHelpNavItemClick_.bind(this)
 	};
-
-	var i18n = new I18n({ locale: settings.locale });
 
 	patch(element, function () {
 		template(data, state.user, handlers, i18n.translate.bind(i18n));

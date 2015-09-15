@@ -1,7 +1,6 @@
 {
   "name": "o-app-header",
   "dependencies": {
-    "incremental-dom": "google/incremental-dom#~0.1.0",
     "o-dropdown-menu": "^1.0.0",
     "o-fonts": "^1.0.0",
     "o-header": "^1.0.0",

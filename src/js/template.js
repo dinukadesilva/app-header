@@ -4,7 +4,7 @@
 // This file was generated from src/html/header.template
 // Regenerate using bin/gen-template
 
-var incrementalDom = require('../../bower_components/incremental-dom');
+var incrementalDom = require('../../lib/incremental-dom');
 var elementOpen = incrementalDom.elementOpen;
 var elementClose = incrementalDom.elementClose;
 var elementVoid = incrementalDom.elementVoid;

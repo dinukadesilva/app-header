@@ -194,19 +194,16 @@ AppHeader.prototype.initSession_ = function (options) {
 		}
 
 		this.handleSessionStateKnown_ = function (e) {
-			if (e && typeof e.preventDefault === 'function') e.preventDefault();
 			state.user.isAuthenticated = (session.hasValidSession(0) === session.Success);
 			render();
 		};
 
 		this.handleSessionLogin_ = function (e) {
-			if (e && typeof e.preventDefault === 'function') e.preventDefault();
 			state.user.isAuthenticated = true;
 			render();
 		};
 
 		this.handleSessionLogout_ = function (e) {
-			if (e && typeof e.preventDefault === 'function') e.preventDefault();
 			state.user.isAuthenticated = false;
 			render();
 		};

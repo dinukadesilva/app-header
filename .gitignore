@@ -9,3 +9,4 @@ docs/
 
 # Included in the repository, but ignored by lintspaces
 src/js/template.js
+lib/*

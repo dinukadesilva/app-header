@@ -1,3 +1,13 @@
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.6.0...v0.7.0) (2015-09-15)
+
+
+### Bug Fixes
+
+* lint errors ([361b8e5](https://github.com/Pearson-Higher-Ed/o-app-header/commit/361b8e5))
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.5.0...v0.6.0) (2015-09-15)
 

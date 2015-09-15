@@ -1,3 +1,16 @@
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.4.0...v0.5.0) (2015-09-15)
+
+### Refactor
+ * use Google incremental DOM ([7cd078b](https://github.com/Pearson-Higher-Ed/o-app-header/commit/7cd078ba69d9df2908675a2e543e6ca8da500101))
+
+#### Breaking Changes
+
+- `appAbout.title` is now `appAbout.text`
+- `appNav.heading.title` is now `appNav.heading.text`
+
+Note that the `locale` configuration option and i18n section have been removed from the documentation. This feature will be supported in the future but should not be used in the current version because the strings have not been properly translated.
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.3.0...v0.4.0) (2015-09-11)
 

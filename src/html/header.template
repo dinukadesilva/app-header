@@ -51,7 +51,7 @@
 								data-toggle="dropdown-menu"
 								aria-haspopup="true"
 								aria-expanded="false">
-								<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible">{user.givenName} <i class="o-app-header__icon o-app-header__icon-chevron-down"></i></span>
+								<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible">{user.givenName || translate('Menu')} <i class="o-app-header__icon o-app-header__icon-chevron-down"></i></span>
 								<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">{translate('Menu')} <i class="o-app-header__icon o-app-header__icon-chevron-down"></i></span>
 							</a>
 							<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-menu-act">

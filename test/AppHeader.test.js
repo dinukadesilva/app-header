@@ -169,6 +169,19 @@ describe('AppHeader:', function () {
 				sandbox.stub(session, 'on').withArgs(session.LoginEvent).yields();
 			});
 
+			it('should set the menu toggle text content to a default value when user.givenName is undefined', function () {
+				var options = {
+					user: {}
+				};
+
+				new AppHeader(options);
+
+				var headerEl = getHeaderEl();
+				var usernameEl = getUsernameEl(headerEl);
+
+				expect(usernameEl.textContent.trim()).to.be('Menu');
+			});
+
 			describe('showAllCoursesMenuItem:', function () {
 
 				it('should render a menu item with a link to the course listing page when the showAllCoursesMenuItem option is true', function () {
@@ -648,6 +661,10 @@ function getAppAboutMenuItemEl(headerEl) {
 
 function getSignOutMenuItemEl(headerEl) {
 	return headerEl.querySelector('.o-app-header__menu-item-sign-out');
+}
+
+function getUsernameEl(headerEl) {
+	return headerEl.querySelector('.o-app-header__username');
 }
 
 function isHeaderInState(headerEl, state) {

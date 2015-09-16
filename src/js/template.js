@@ -91,7 +91,7 @@ function template (data, user, handlers, translate) {
               elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right o-app-header__menu-account"])
                 elementOpen("a", null, ["href", "#", "id", "o-app-header-menu-act", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
                   elementOpen("span", null, ["class", "o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible"])
-                    text("" + (user.givenName) + " ")
+                    text("" + (user.givenName || translate('Menu')) + " ")
                     elementOpen("i", null, ["class", "o-app-header__icon o-app-header__icon-chevron-down"])
                     elementClose("i")
                   elementClose("span")

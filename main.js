@@ -3,11 +3,25 @@
 
 var AppHeader = require('./src/js/AppHeader');
 
+var instance;
+
+var getOrCreateInstance = function () {
+	if (!instance) {
+		instance = new AppHeader(arguments);
+	}
+
+	return instance;
+};
+
 var construct = function () {
-	new AppHeader();
+	getOrCreateInstance();
 	document.removeEventListener('o.DOMContentLoaded', construct);
 };
 
 document.addEventListener('o.DOMContentLoaded', construct);
 
-module.exports = AppHeader;
+module.exports = function () {
+	return getOrCreateInstance.apply(null, arguments);
+};
+
+module.exports.init = AppHeader.init;

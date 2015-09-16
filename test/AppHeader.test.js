@@ -30,27 +30,6 @@ describe('AppHeader:', function () {
 		sandbox.restore();
 	});
 
-	describe('o.DOMContentLoaded:', function () {
-
-		require('../main');
-
-		it('should prepend to document.body', function (done) {
-			document.addEventListener('o.DOMContentLoaded', function () {
-				var appHeaderEl = document.body.firstChild;
-
-				expect(document.body.children.length).to.be(1);
-				expect(appHeaderEl).to.not.be(null);
-				expect(appHeaderEl.nodeName.toLowerCase()).to.be('header');
-				done();
-			});
-
-			var ready = document.createEvent('Event');
-			ready.initEvent('o.DOMContentLoaded', true, true);
-			document.dispatchEvent(ready);
-		});
-
-	});
-
 	describe('new AppHeader(element, options):', function () {
 
 		it ('should throw an error when options.session is a string and the session object is undefined in the global scope', function () {

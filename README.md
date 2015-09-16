@@ -52,9 +52,10 @@ Refer to the [options object](#api-methods-init) for a list of properties.
 | locale                   | `string`               | The user's preferred locale (refer to the [i18n](#i18n) section). |
 | session                  | `string` or `Object`   | The session object, or the name of the session object in the global scope. If set to `false`, the session controls will not be rendered. |
 | user                     | `Object`               | An object with a property `givenName` that contains the user's given name as a string. The value of `givenName` is displayed in the desktop view in the user menu for an authenticated user. |
-| menu                     | `Object`               | Takes the same options as the [setMenu](#api-methods-setMenu) method. |
 
-<a name="api-methods-setMenu"></a>
+<!-- | menu                     | `Object`               | Takes the same options as the [setMenu](#api-methods-setMenu) method. | -->
+
+<!-- <a name="api-methods-setMenu"></a>
 `setMenu(options)`
 
 - `options`: an object with the following optional properties:
@@ -100,7 +101,7 @@ AppHeader.setMenu({
 		}
 	}
 });
-```
+``` -->
 
 ### Events
 

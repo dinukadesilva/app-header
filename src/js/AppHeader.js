@@ -1,3 +1,5 @@
+/*global console*/
+
 'use strict';
 
 var assign = require('object-assign/index');
@@ -33,7 +35,7 @@ AppHeader.defaultSettings = {
 		myAccount: '{consoleBaseUrl}/account/manage/account'
 	},
 	menu: {
-		showAllCoursesMenuItem: false
+		// showAllCoursesMenuItem: false
 	}
 };
 
@@ -98,6 +100,7 @@ AppHeader.prototype.setTheme = function (theme) {
  * @param {Object} options
  */
 AppHeader.prototype.setMenu = function (options) {
+	console.error('The setMenu method is not considered stable and should not be used. Current functionality may break in a future version.');
 	options = options || {};
 	this.settings_ = assign({}, this.settings_, { menu: options });
 	this.render_();
@@ -128,6 +131,10 @@ AppHeader.prototype.getSettings_ = function (options) {
 	var settings = assign({}, AppHeader.defaultSettings, globalSettings, options, { links: links });
 
 	function validate() {
+
+		if (Object.keys(settings.menu || {}).length) {
+			console.error('The menu configuration options are not considered stable and should not be used.');
+		}
 
 		function checkNavItemOptions(path, key) {
 			if (typeof get(settings, path) !== 'undefined') {

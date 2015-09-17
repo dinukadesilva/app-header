@@ -1,3 +1,15 @@
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.7.0...v0.8.0) (2015-09-17)
+
+
+### Bug Fixes
+
+* clicking 'Help' nav item should collapse the user menu ([036cca3](https://github.com/Pearson-Higher-Ed/o-app-header/commit/036cca3)), closes [#14](https://github.com/Pearson-Higher-Ed/o-app-header/issues/14)
+* maintain a single instance in main ([e0f9de3](https://github.com/Pearson-Higher-Ed/o-app-header/commit/e0f9de3))
+* set menu text to a default value when user.givenName is undefined ([9f73618](https://github.com/Pearson-Higher-Ed/o-app-header/commit/9f73618))
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.6.0...v0.7.0) (2015-09-15)
 

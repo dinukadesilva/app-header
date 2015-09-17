@@ -287,5 +287,21 @@ AppHeader.prototype.render_ = function () {
 
 AppHeader.prototype.handleHelpNavItemClick_ = function (e) {
 	e.preventDefault();
+
+	// Since we prevent the default action, the dropdown menu nav items
+	// will not collapse automatically.
+	var accountMenuEl = this.element.querySelector('.o-app-header__menu-account');
+
+	if (accountMenuEl) {
+		accountMenuEl.classList.remove('o-dropdown-menu--expanded');
+
+		var accountMenuIconEls = accountMenuEl.querySelectorAll('.o-app-header__icon');
+
+		forEach(accountMenuIconEls, function (idx, el) {
+			el.classList.remove('o-app-header__icon-chevron-up');
+			el.classList.add('o-app-header__icon-chevron-down');
+		});
+	}
+
 	dom.dispatchEvent(this.element, 'oAppHeader.help.toggle');
 };

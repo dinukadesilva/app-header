@@ -161,6 +161,32 @@ describe('AppHeader:', function () {
 				dispatchEvent(menuItemLinkEl, 'click');
 			});
 
+			it('should close the account menu when clicked', function () {
+				sandbox.stub(session, 'on').withArgs(session.LoginEvent).yields();
+
+				new AppHeader();
+
+				var appHeaderEl = getHeaderEl();
+				var accountMenuEl = getAccountMenuEl(appHeaderEl);
+
+				dispatchEvent(accountMenuEl, 'click');
+
+				expect(accountMenuEl.classList.contains('o-dropdown-menu--expanded')).to.be(true);
+
+				var helpNavItemEl = getHelpNavItemEl(appHeaderEl);
+
+				dispatchEvent(helpNavItemEl.querySelector('a'), 'click');
+
+				var accountMenuIconEls = accountMenuEl.querySelectorAll('.o-app-header__icon');
+
+				expect(accountMenuEl.classList.contains('o-dropdown-menu--expanded')).to.be(false);
+
+				forEach(accountMenuIconEls, function (idx, el) {
+					expect(el.classList.contains('o-app-header__icon-chevron-up')).to.be(false);
+					expect(el.classList.contains('o-app-header__icon-chevron-down')).to.be(true);
+				});
+			});
+
 		});
 
 		describe('Menu (user) nav item:', function () {

@@ -167,7 +167,7 @@ describe('AppHeader:', function () {
 				new AppHeader();
 
 				var appHeaderEl = getHeaderEl();
-				var accountMenuEl = getAccountMenuEl(appHeaderEl);
+				var accountMenuEl = getMenuMenuEl(appHeaderEl);
 
 				dispatchEvent(accountMenuEl, 'click');
 
@@ -646,7 +646,7 @@ describe('AppHeader:', function () {
 			new AppHeader(options);
 			var headerEl = getHeaderEl();
 
-			expect(getAccountMenuEl(headerEl)).to.be(null);
+			expect(getMenuMenuEl(headerEl)).to.be(null);
 		});
 
 	});
@@ -665,8 +665,8 @@ function getSignInNavItemEl(headerEl) {
 	return headerEl.querySelector('.o-app-header__nav-item-sign-in');
 }
 
-function getAccountMenuEl(headerEl) {
-	return headerEl.querySelector('.o-app-header__menu-account');
+function getMenuMenuEl(headerEl) {
+	return headerEl.querySelector('.o-app-header__menu-menu');
 }
 
 function getAllCoursesMenuItemEl(headerEl) {
@@ -678,7 +678,7 @@ function getSiteNavMenuItemEls(headerEl) {
 }
 
 function getAppNavMenuItemEls(headerEl) {
-	return getAccountMenuEl(headerEl).querySelectorAll('.o-app-header__menu-item-app-nav');
+	return getMenuMenuEl(headerEl).querySelectorAll('.o-app-header__menu-item-app-nav');
 }
 
 function getAppAboutMenuItemEl(headerEl) {

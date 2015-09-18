@@ -290,7 +290,7 @@ AppHeader.prototype.handleHelpNavItemClick_ = function (e) {
 
 	// Since we prevent the default action, the dropdown menu nav items
 	// will not collapse automatically.
-	var accountMenuEl = this.element.querySelector('.o-app-header__menu-account');
+	var accountMenuEl = this.element.querySelector('.o-app-header__menu-menu');
 
 	if (accountMenuEl) {
 		accountMenuEl.classList.remove('o-dropdown-menu--expanded');

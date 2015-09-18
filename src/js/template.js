@@ -88,7 +88,7 @@ function template (data, user, handlers, translate) {
           }
           if (user.isAuthenticated) {
             elementOpen("li", null, ["class", "o-header__nav-item o-app-header__nav-item-menu"])
-              elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right o-app-header__menu-account"])
+              elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu"])
                 elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
                   elementOpen("span", null, ["id", "o-app-header-user-menu-label", "class", "o-app-header--sr-only"])
                     text("" + (translate('User account menu')) + "")

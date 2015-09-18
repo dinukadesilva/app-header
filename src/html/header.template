@@ -45,7 +45,7 @@
 						<a href="#" onclick="{handlers.handleLogin($event)}">{translate('Sign In')}</a>
 					</li>
 					<li class="o-header__nav-item o-app-header__nav-item-menu" if="user.isAuthenticated">
-						<div class="o-dropdown-menu o-dropdown-menu--right o-app-header__menu-account">
+						<div class="o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu">
 							<a href="#"
 								class="o-dropdown-menu__toggle"
 								data-toggle="dropdown-menu"

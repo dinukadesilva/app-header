@@ -64,7 +64,7 @@
 }
 
 // Menu
-.o-app-header__menu-account {
+.o-app-header__menu-menu {
 
 	i {
 		color: inherit;
@@ -102,7 +102,7 @@
 .o-header--theme-light {
 	// scss-lint:disable SelectorDepth
 
-	.o-app-header__menu-account {
+	.o-app-header__menu-menu {
 
 		.o-dropdown-menu__menu-item--disabled > a {
 			color: $o-app-header-menu-app-nav-menu-item-disabled-color-light;

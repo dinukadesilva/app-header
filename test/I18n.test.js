@@ -17,7 +17,7 @@ describe('I18n', function () {
 	});
 
 	it('should set the keys based on the locale', function () {
-		expect((new I18n({ locale: 'fr' })).keys).to.eql(I18n.prototype.strings.fr);
+		expect((new I18n({ locale: 'test' })).keys).to.eql(I18n.prototype.strings.test);
 	});
 
 	it('should set the keys to en if the locale is unrecognized', function () {

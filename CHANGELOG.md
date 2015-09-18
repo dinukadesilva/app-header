@@ -1,3 +1,13 @@
+<a name="1.0.0-rc.1"></a>
+# [1.0.0-rc.1](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.8.0...v1.0.0-rc.1) (2015-09-18)
+
+
+### Bug Fixes
+
+* aria-labelledby attributes for dropdown menus ([4e0ff69](https://github.com/Pearson-Higher-Ed/o-app-header/commit/4e0ff69))
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.7.0...v0.8.0) (2015-09-17)
 

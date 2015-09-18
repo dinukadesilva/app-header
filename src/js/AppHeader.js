@@ -86,28 +86,6 @@ AppHeader.prototype.init = function (element, options) {
 
 
 /**
- * Sets the theme.
- * @param {String} [theme] Possible values:
- * - 'light'
- */
-AppHeader.prototype.setTheme = function (theme) {
-	this.element.classList[theme === 'light' ? 'add' : 'remove']('o-header--theme-light');
-};
-
-
-/**
- * Sets the user account menu options.
- * @param {Object} options
- */
-AppHeader.prototype.setMenu = function (options) {
-	console.error('The setMenu method is not considered stable and should not be used. Current functionality may break in a future version.');
-	options = options || {};
-	this.settings_ = assign({}, this.settings_, { menu: options });
-	this.render_();
-};
-
-
-/**
  * Private methods
  */
 

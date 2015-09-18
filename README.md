@@ -106,7 +106,7 @@ AppHeader.setMenu({
 
 | Event Name               | Description                                         |
 |--------------------------|-----------------------------------------------------|
-| oAppHeader.help.toggle   | Fires when the **Help** nav item is clicked and it is not a link. |
+| oAppHeader.help.toggle   | Fires when the **Help** nav item is clicked.        |
 
 ```js
 document.addEventListener('oAppHeader.help.toggle', function (e) {

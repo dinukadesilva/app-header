@@ -6,13 +6,6 @@ require('o-dropdown-menu');
 
 document.addEventListener('DOMContentLoaded', function() {
 
-	var themeLightCheckbox = document.getElementById('theme-light');
-	themeLightCheckbox.checked = localStorage.getItem('theme') === 'light';
-	themeLightCheckbox.addEventListener('change', function () {
-		localStorage.setItem('theme', themeLightCheckbox.checked ? 'light' : '');
-		window.location.reload();
-	});
-
 	window.session = {
 		sessionState: 'nosession',
 		eventHandlers: {},
@@ -86,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	console.log(
 		'You can change the o-app-header component demo\'s default settings. To change a setting, copy and paste the provided command into the dev tools console, then press Enter and reload the page.' + '\n\n' +
 		'* Disable user session: localStorage.setItem(\'disable_session\', true);' + '\n' +
+		'* Enable the light theme: localStorage.setItem(\'theme\', \'light\');' + '\n' +
 		'* Change the Help nav item to a dropdown menu: localStorage.setItem(\'nav_help_menu\', true);' + '\n' +
 		'* Change the username to a long string: localStorage.setItem(\'long_username\', true);' + '\n' +
 		'* Clear all settings: localStorage.clear();'

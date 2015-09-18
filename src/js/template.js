@@ -52,10 +52,10 @@ function template (data, user, handlers, translate) {
             }
             if (typeof data.help === 'object') {
               elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right"])
-                elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
+                elementOpen("a", null, ["href", "#", "id", "o-app-header-help-menu-toggle", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
                   text("" + (translate('Help')) + "")
                 elementClose("a")
-                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-menu-act"])
+                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-menu-toggle-help"])
                   ;(Array.isArray(data.help) ? data.help : Object.keys(data.help)).forEach(function(key, $index) {
                     elementOpen("li", $index, ["class", "o-dropdown-menu__menu-item", "role", "presentation"])
                       if (typeof data.help[key] === 'string') {
@@ -89,7 +89,10 @@ function template (data, user, handlers, translate) {
           if (user.isAuthenticated) {
             elementOpen("li", null, ["class", "o-header__nav-item o-app-header__nav-item-menu"])
               elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right o-app-header__menu-account"])
-                elementOpen("a", null, ["href", "#", "id", "o-app-header-menu-act", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
+                elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
+                  elementOpen("span", null, ["id", "o-app-header-user-menu-label", "class", "o-app-header--sr-only"])
+                    text("" + (translate('User account menu')) + "")
+                  elementClose("span")
                   elementOpen("span", null, ["class", "o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible"])
                     text("" + (user.givenName || translate('Menu')) + " ")
                     elementOpen("i", null, ["class", "o-app-header__icon o-app-header__icon-chevron-down"])
@@ -101,7 +104,7 @@ function template (data, user, handlers, translate) {
                     elementClose("i")
                   elementClose("span")
                 elementClose("a")
-                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-menu-act"])
+                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-user-menu-label"])
                   if (data.menu.showAllCoursesMenuItem) {
                     elementOpen("li", null, ["class", "o-app-header__menu-item-all-courses o-dropdown-menu__menu-item o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden", "role", "presentation"])
                       elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", data.links.home)

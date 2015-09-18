@@ -39,6 +39,7 @@ I18n.prototype.strings = {
 		'All courses': 'All courses',
 		'Help': 'Help',
 		'Menu': 'Menu',
+		'User account menu': 'User account menu',
 		'My Account': 'My Account',
 		'Sign In': 'Sign In',
 		'Sign Out': 'Sign Out'

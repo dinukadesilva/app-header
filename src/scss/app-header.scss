@@ -78,23 +78,21 @@
 
 	.o-dropdown-menu__menu-item--disabled {
 		> a {
-			color: $o-app-header-menu-app-nav-menu-item-disabled-color;
+			color: $o-app-header-menu-item-disabled-color;
 		}
 	}
 }
 
-.o-app-header__menu-items-app-nav {
+.o-app-header__menu-items-course-nav {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	background-color: $o-app-header-menu-app-nav-bg;
+	background-color: $o-app-header-menu-course-nav-bg;
 }
 
-.o-app-header__menu-item-site-nav {
-	font-size: 1.2em;
-
-	> a {
-		padding-top: 13px;
+.o-app-header__menu-item-course-nav {
+	&.o-dropdown-menu__menu-item > a {
+		padding-left: 30px;
 	}
 }
 
@@ -105,11 +103,11 @@
 	.o-app-header__menu-menu {
 
 		.o-dropdown-menu__menu-item--disabled > a {
-			color: $o-app-header-menu-app-nav-menu-item-disabled-color-light;
+			color: $o-app-header-menu-item-disabled-color-light;
 		}
 	}
 
-	.o-app-header__menu-items-app-nav {
-		background-color: $o-app-header-menu-app-nav-bg-light;
+	.o-app-header__menu-items-course-nav {
+		background-color: $o-app-header-menu-course-nav-bg-light;
 	}
 }

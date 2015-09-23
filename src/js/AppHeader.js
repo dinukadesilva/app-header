@@ -23,6 +23,12 @@ function AppHeader(element, options) {
 }
 
 
+AppHeader.prototype.constants_ = {
+	MODES: ['Signed Out', 'Basic', 'Course', 'Integration', 'Legacy Course'],
+	MAX_COURSE_ITEMS: 5
+};
+
+
 /**
  * Default settings for all AppHeader instances.
  * @type {Object}
@@ -36,7 +42,11 @@ AppHeader.defaultSettings = {
 	},
 	menu: {
 		// showAllCoursesMenuItem: false
-	}
+	},
+	mode: 'Signed Out',
+	// Mode options
+	showLoginControls: true,
+	menuItems: []
 };
 
 
@@ -66,11 +76,11 @@ AppHeader.prototype.init = function (element, options) {
 	if (!element) element = document.body;
 	if (!(element instanceof HTMLElement)) element = document.querySelector(element);
 
-	var settings = this.settings_ = this.getSettings_(options);
+	var settings = this.getSettings_(options);
 	var rootEl = this.element = this.constructRootEl_(settings);
 
 	this.i18n_ = new I18n({ locale: settings.locale });
-	this.state_ = this.getInitialState_(settings);
+	this.state_ = assign({}, settings);
 	this.initSession_(settings);
 
 	if (element === document.body) {
@@ -86,16 +96,72 @@ AppHeader.prototype.init = function (element, options) {
 
 
 /**
+ * Returns the current header mode.
+ * @return {string} The header mode.
+ */
+AppHeader.prototype.getMode = function () {
+	return this.state_.mode;
+};
+
+
+/**
+ * Sets the header mode.
+ * @param {string} mode The mode.
+ * @param {Object} [options] An object with the options for the specified mode.
+ */
+AppHeader.prototype.setMode = function (mode, options) {
+	var newState = assign({}, this.state_, { mode: mode }, options || {});
+
+	this.validateSettings_(newState);
+	this.setState_(newState, true);
+};
+
+
+/**
  * Private methods
  */
 
 
-AppHeader.prototype.getInitialState_ = function (options) {
-	var state = {};
+/**
+ * Updates the internal state by replacing the existing object with a new
+ * object containing the new state.
+ * @param {Object} newState An object containing the new state.
+ * @param {Boolean} [update] If true, update the component's view.
+ */
+AppHeader.prototype.setState_ = function (newState, update) {
+	this.state_ = assign({}, this.state_, newState);
+	if (update) this.render_();
+};
 
-	state.user = assign({}, options.user, { isAuthenticated: false });
 
-	return state;
+AppHeader.prototype.validateSettings_ = function (settings) {
+	if (this.constants_.MODES.indexOf(settings.mode) === -1) {
+		throw new TypeError('Unrecognized mode, \'' + settings.mode + '\'');
+	}
+
+	if (Object.keys(settings.menu || {}).length) {
+		console.error('The menu configuration options are not considered stable and should not be used.');
+	}
+
+	function checkNavItemOptions(path, key) {
+		if (typeof get(settings, path) !== 'undefined') {
+			var items = settings.menu[key].items;
+			Object.keys(items).forEach(function (itemKey) {
+				if (items[itemKey].onClick) checkIsFunction(items[itemKey].onClick, 'onClick');
+			});
+		}
+	}
+
+	function checkIsFunction(value, name) {
+		if (typeof value !== 'function') throw new TypeError(name + ': value must be a function');
+	}
+
+	checkNavItemOptions('menu.siteNav.items', 'siteNav');
+	checkNavItemOptions('menu.appNav.items', 'appNav');
+
+	if (typeof get(settings, 'menu.appAbout') !== 'undefined') {
+		if (settings.menu.appAbout.onClick) checkIsFunction(settings.menu.appAbout.onClick);
+	}
 };
 
 
@@ -108,34 +174,7 @@ AppHeader.prototype.getSettings_ = function (options) {
 
 	var settings = assign({}, AppHeader.defaultSettings, globalSettings, options, { links: links });
 
-	function validate() {
-
-		if (Object.keys(settings.menu || {}).length) {
-			console.error('The menu configuration options are not considered stable and should not be used.');
-		}
-
-		function checkNavItemOptions(path, key) {
-			if (typeof get(settings, path) !== 'undefined') {
-				var items = settings.menu[key].items;
-				Object.keys(items).forEach(function (itemKey) {
-					if (items[itemKey].onClick) checkIsFunction(items[itemKey].onClick, 'onClick');
-				});
-			}
-		}
-
-		function checkIsFunction(value, name) {
-			if (typeof value !== 'function') throw new TypeError(name + ': value must be a function');
-		}
-
-		checkNavItemOptions('menu.siteNav.items', 'siteNav');
-		checkNavItemOptions('menu.appNav.items', 'appNav');
-
-		if (typeof get(settings, 'menu.appAbout') !== 'undefined') {
-			if (settings.menu.appAbout.onClick) checkIsFunction(settings.menu.appAbout.onClick);
-		}
-	}
-
-	validate();
+	this.validateSettings_(settings);
 
 	return settings;
 };
@@ -152,15 +191,15 @@ AppHeader.prototype.getGlobalSettings_ = function () {
 
 
 AppHeader.prototype.resolveLink_ = function (key) {
-	if (!this.settings_.links[key] || typeof this.settings_.links[key] !== 'string') return;
+	if (!this.state_.links[key] || typeof this.state_.links[key] !== 'string') return;
 
-	return this.settings_.links[key].replace('{consoleBaseUrl}', this.settings_.consoleBaseUrl);
+	return this.state_.links[key].replace('{consoleBaseUrl}', this.state_.consoleBaseUrl);
 };
 
 
 AppHeader.prototype.initSession_ = function (options) {
 	var state = this.state_;
-	var render = this.render_.bind(this);
+	var setState = this.setState_.bind(this);
 
 	if (!options.session) {
 		this.state_.session = false;
@@ -179,18 +218,22 @@ AppHeader.prototype.initSession_ = function (options) {
 		}
 
 		this.handleSessionStateKnown_ = function (e) {
-			state.user.isAuthenticated = (session.hasValidSession(0) === session.Success);
-			render();
+			var user = assign({}, state.user,
+				{ isAuthenticated: (session.hasValidSession(0) === session.Success) });
+
+			setState({ user: user }, true);
 		};
 
 		this.handleSessionLogin_ = function (e) {
-			state.user.isAuthenticated = true;
-			render();
+			var user = assign({}, state.user, { isAuthenticated: true });
+
+			setState({ user: user }, true);
 		};
 
 		this.handleSessionLogout_ = function (e) {
-			state.user.isAuthenticated = false;
-			render();
+			var user = assign({}, state.user, { isAuthenticated: false });
+
+			setState({ user: user }, true);
 		};
 
 		this.handleSignInClick_ = function (e) {
@@ -217,7 +260,6 @@ AppHeader.prototype.constructRootEl_ = function (options) {
 	element.setAttribute('role', 'banner');
 	element.classList.add('o-header');
 	element.classList.add('o-header--fixed');
-	if (options.theme === 'light') element.classList.add('o-header--theme-light');
 
 	element.addEventListener('oDropdownMenu.expand', function (e) {
 		forEach(e.target.querySelectorAll('.o-app-header__icon'), function (idx, item) {
@@ -237,26 +279,205 @@ AppHeader.prototype.constructRootEl_ = function (options) {
 };
 
 
+AppHeader.prototype.setThemeForMode_ = function () {
+	if ((this.state_.mode === 'Course' || this.state_.mode === 'Legacy Course') &&
+		this.state_.theme === 'light') {
+		this.element.classList.add('o-header--theme-light');
+	} else {
+		this.element.classList.remove('o-header--theme-light');
+	}
+};
+
+
+AppHeader.prototype.getDataForRender_ = function () {
+	var mode = this.state_.mode;
+	var data = {};
+	var menuItems = [];
+
+	var menuItemCounter = 0;
+
+	function createMenuItemDef(source, options) {
+		options = options || {};
+		options.classes = options.classes || [];
+
+		var defaultClasses = [];
+
+		if (options.classes.indexOf('o-dropdown-menu__divider') === -1) {
+			defaultClasses = ['o-dropdown-menu__menu-item'];
+		}
+
+		var menuItem = assign({}, source);
+
+		menuItem.key = menuItemCounter++;
+		menuItem.classes = defaultClasses.concat(options.classes).join(' ');
+
+		return menuItem;
+	}
+
+	var menuNavItemClasses = ['o-header__nav-item'];
+
+	if (mode === 'Signed Out' && this.state_.showLoginControls) {
+		menuNavItemClasses.push('o-app-header__nav-item-sign-in');
+	}
+
+	if (mode === 'Basic' ||
+		mode === 'Course' ||
+		mode === 'Legacy Course') {
+		menuNavItemClasses.push('o-app-header__nav-item-menu');
+	}
+
+	menuNavItemClasses = menuNavItemClasses.join(' ');
+
+	if (mode === 'Basic') {
+		var courseItems = get(this.state_, 'courseItems') || [];
+		var courseItemsExceedsMax = false;
+
+		if (courseItems.length > this.constants_.MAX_COURSE_ITEMS) {
+			courseItemsExceedsMax = true;
+			courseItems = courseItems.slice(0, this.constants_.MAX_COURSE_ITEMS);
+		}
+
+		if (courseItems.length) {
+			for (var i = 0, l = courseItems.length; i < l; i++) {
+				menuItems.push(createMenuItemDef(courseItems[i], {
+					classes: [
+						'o-app-header__menu-item-course',
+						'o-header__viewport-tablet--hidden',
+						'o-header__viewport-desktop--hidden'
+					]
+				}));
+			}
+
+			if (courseItemsExceedsMax) {
+				menuItems.push(createMenuItemDef({
+					text: this.i18n_.translate('All courses'),
+					href: this.resolveLink_('home')
+				}, {
+					classes: [
+						'o-app-header__menu-item-all-courses',
+						'o-header__viewport-tablet--hidden',
+						'o-header__viewport-desktop--hidden'
+					]
+				}));
+			}
+
+			menuItems.push(createMenuItemDef({}, {
+				classes: [
+					'o-dropdown-menu__divider',
+					'o-header__viewport-tablet--hidden',
+					'o-header__viewport-desktop--hidden'
+				]
+			}));
+		}
+	}
+
+	if (mode === 'Course' || mode === 'Legacy Course') {
+		menuItems.push(createMenuItemDef({
+			text: this.i18n_.translate('All courses'),
+			href: this.resolveLink_('home')
+		}, {
+			classes: [
+				'o-app-header__menu-item-all-courses',
+				'o-header__viewport-tablet--hidden',
+				'o-header__viewport-desktop--hidden'
+			]
+		}));
+
+		menuItems.push(createMenuItemDef({}, {
+			classes: [
+				'o-dropdown-menu__divider',
+				'o-header__viewport-tablet--hidden',
+				'o-header__viewport-desktop--hidden'
+			]
+		}));
+
+		var courseNav = assign({ items: [] }, get(this.state_, 'courseNav'));
+
+		if (courseNav.heading || courseNav.items.length) {
+			var courseNavRoot = {
+				isCourseNav: true,
+				courseNavMenuItems: []
+			};
+
+			if (courseNav.heading) {
+				courseNavRoot.courseNavMenuItems.push(createMenuItemDef(courseNav.heading, {
+					classes: [
+						'o-app-header__menu-item-course-nav',
+						'o-dropdown-menu__heading'
+					]
+				}));
+			}
+
+			courseNav.items.forEach(function (item) {
+				var classes = ['o-app-header__menu-item-course-nav'];
+
+				if (item.active) classes.push('o-dropdown-menu__menu-item--disabled');
+
+				courseNavRoot.courseNavMenuItems.push(createMenuItemDef(item, {
+					classes: classes
+				}));
+			});
+
+			menuItems.push(courseNavRoot);
+		}
+	}
+
+	if (mode === 'Legacy Course' && this.state_.menuItems.length) {
+		this.state_.menuItems.forEach(function (menuItem) {
+			menuItems.push(createMenuItemDef(menuItem, {
+				classes: ['o-app-header__menu-item']
+			}));
+		});
+
+		menuItems.push(createMenuItemDef({}, { classes: ['o-dropdown-menu__divider'] }));
+	}
+
+	if (mode === 'Basic' || mode === 'Course' || mode === 'Legacy Course') {
+		// My Account
+		menuItems.push(createMenuItemDef({
+			text: this.i18n_.translate('My Account'),
+			href: this.resolveLink_('myAccount')
+		}, {
+			classes: ['o-app-header__menu-item-my-account']
+		}));
+
+		// Sign Out
+		menuItems.push(createMenuItemDef({
+			text: this.i18n_.translate('Sign Out'),
+			onClick: this.handleSignOutClick_
+		}, {
+			classes: ['o-app-header__menu-item-sign-out']
+		}));
+	}
+
+	data = assign({}, this.state_, {
+		mode: mode,
+		links: {
+			home: this.resolveLink_('home')
+		},
+		menuItems: menuItems,
+		menuNavItemClasses: menuNavItemClasses
+	});
+
+	return data;
+};
+
+
 AppHeader.prototype.render_ = function () {
 	var element = this.element;
-	var state = this.state_;
 	var i18n = this.i18n_;
 
-	var data = assign({}, this.settings_, {
-		links: {
-			home: this.resolveLink_('home'),
-			myAccount: this.resolveLink_('myAccount')
-		}
-	});
+	var data = this.getDataForRender_();
 
 	var handlers = {
 		handleLogin: this.handleSignInClick_,
-		handleLogout: this.handleSignOutClick_,
 		handleHelpNavItemClick: this.handleHelpNavItemClick_.bind(this)
 	};
 
+	this.setThemeForMode_();
+
 	patch(element, function () {
-		template(data, state.user, handlers, i18n.translate.bind(i18n));
+		template(data, handlers, i18n.translate.bind(i18n));
 		DropdownMenu.init(element);
 		dom.dispatchEvent(element, 'oAppHeader.didUpdate');
 	});

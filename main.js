@@ -5,9 +5,9 @@ var AppHeader = require('./src/js/AppHeader');
 
 var instance;
 
-var getOrCreateInstance = function () {
+var getOrCreateInstance = function (element, options) {
 	if (!instance) {
-		instance = new AppHeader(arguments);
+		instance = new AppHeader(element, options);
 	}
 
 	return instance;
@@ -20,8 +20,8 @@ var construct = function () {
 
 document.addEventListener('o.DOMContentLoaded', construct);
 
-module.exports = function () {
-	return getOrCreateInstance.apply(null, arguments);
+module.exports = function (element, options) {
+	return getOrCreateInstance(element, options);
 };
 
 module.exports.init = AppHeader.init;

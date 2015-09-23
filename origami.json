@@ -13,7 +13,22 @@
     },
     "demos": [
         {
-            "path": "/demos/demo.html",
+            "path": "/demos/signed-out.html",
+            "expanded": true,
+            "description": ""
+        },
+        {
+            "path": "/demos/basic.html",
+            "expanded": true,
+            "description": ""
+        },
+        {
+            "path": "/demos/course.html",
+            "expanded": true,
+            "description": ""
+        },
+        {
+            "path": "/demos/integration.html",
             "expanded": true,
             "description": ""
         }

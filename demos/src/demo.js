@@ -1,8 +1,10 @@
-/*global require, alert, console*/
+/*global require, alert*/
 'use strict';
 
-require('../../main');
 require('o-dropdown-menu');
+var AppHeader = require('../../main');
+var assign = require('object-assign/index');
+var forEach = require('../../src/js/utils/forEach');
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -39,49 +41,42 @@ document.addEventListener('DOMContentLoaded', function() {
 		TimedOut: 'timedout'
 	};
 
-	var config = {
-		session: 'session',
-		user: { givenName: 'XXXXXXXXXXXXXXXX' }
-	};
+	function getModeOptions() {
+		var options = {};
 
-	if (localStorage.getItem('disable_session')) {
-		config.session = false;
-	}
-
-	if (localStorage.getItem('theme')) {
-		config.theme = localStorage.getItem('theme');
-	}
-
-	if (localStorage.getItem('nav_help_menu')) {
-		config.help = {
-			'Regular link': 'https://example.com',
-			'Opens in a new window or tab': { href: 'https://example.com', target: '_blank' }
-		};
-	} else {
-		document.addEventListener('oAppHeader.help.toggle', function () {
-			alert('You toggled help');
+		forEach(document.querySelectorAll('[name="mode-options"]'), function (idx, el) {
+			if (el.checked) {
+				if (el.hasAttribute('data-option-value')) {
+					options[el.value] = JSON.parse(el.getAttribute('data-option-value'));
+				} else {
+					options[el.value] = true;
+				}
+			} else {
+				options[el.value] = undefined;
+			}
 		});
+
+		return options;
 	}
 
-	if (localStorage.getItem('long_username')) {
-		config.user.givenName = 'XXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-	}
+	var mode = document.querySelector('.demo-container').getAttribute('data-header-mode');
+	var modeOptions = getModeOptions();
 
-	var configEl = document.createElement('script');
-	configEl.setAttribute('data-o-app-header-config', '');
-	configEl.type = 'application/json';
-	configEl.innerHTML = JSON.stringify(config);
-	document.head.appendChild(configEl);
+	var config = assign({
+		session: 'session',
+		user: { givenName: 'XXXXXXXXXXXXXXXX' },
+		mode: mode
+	}, modeOptions);
 
-	document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
+	var appHeader = new AppHeader(config);
 
-	// Debug
-	console.log(
-		'You can change the o-app-header component demo\'s default settings. To change a setting, copy and paste the provided command into the dev tools console, then press Enter and reload the page.' + '\n\n' +
-		'* Disable user session: localStorage.setItem(\'disable_session\', true);' + '\n' +
-		'* Enable the light theme: localStorage.setItem(\'theme\', \'light\');' + '\n' +
-		'* Change the Help nav item to a dropdown menu: localStorage.setItem(\'nav_help_menu\', true);' + '\n' +
-		'* Change the username to a long string: localStorage.setItem(\'long_username\', true);' + '\n' +
-		'* Clear all settings: localStorage.clear();'
-	);
+	// Help menu
+	document.addEventListener('oAppHeader.help.toggle', function () {
+		alert('You toggled help');
+	});
+
+	// Select mode option
+	document.getElementById('mode-options').addEventListener('change', function (e) {
+		appHeader.setMode(mode, getModeOptions());
+	});
 });

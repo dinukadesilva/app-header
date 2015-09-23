@@ -12,25 +12,17 @@ var text = incrementalDom.text;
 
 module.exports = template;
 
-function template (data, user, handlers, translate) {
-  var _ = {
-  			get: require('./utils/get')
-  		};
-
-  		var siteNavItems = _.get(data, 'menu.siteNav.items');
-  		var appNavHeading = _.get(data, 'menu.appNav.heading');
-  		var appNavItems = _.get(data, 'menu.appNav.items');
-  		var appAbout = _.get(data, 'menu.appAbout') || {};
+function template (data, handlers, translate) {
   elementOpen("div", null, ["class", "o-header__container"])
     elementOpen("section", null, ["class", "o-header__section"])
       elementOpen("div", null, ["class", "o-header__brand"])
-        if (data.session && user.isAuthenticated) {
+        if (data.mode === 'Basic' || data.mode === 'Course' || data.mode === 'Legacy Course') {
           elementOpen("a", null, null, "href", data.links.home)
             elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
             elementClose("div")
           elementClose("a")
         }
-        if (!user.isAuthenticated) {
+        if (data.mode ==='Signed Out' || data.mode === 'Integration') {
           elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
           elementClose("div")
         }
@@ -79,22 +71,20 @@ function template (data, user, handlers, translate) {
               elementClose("div")
             }
           elementClose("li")
-          if (data.session && !user.isAuthenticated) {
-            elementOpen("li", null, ["class", "o-header__nav-item o-app-header__nav-item-sign-in"])
+          elementOpen("li", null, null, "class", data.menuNavItemClasses)
+            if (data.mode === 'Signed Out' && data.showLoginControls) {
               elementOpen("a", null, ["href", "#"], "onclick", function ($event) {handlers.handleLogin($event)})
                 text("" + (translate('Sign In')) + "")
               elementClose("a")
-            elementClose("li")
-          }
-          if (user.isAuthenticated) {
-            elementOpen("li", null, ["class", "o-header__nav-item o-app-header__nav-item-menu"])
+            }
+            if (data.mode === 'Basic' || data.mode === 'Course' || data.mode === 'Legacy Course') {
               elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu"])
                 elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
                   elementOpen("span", null, ["id", "o-app-header-user-menu-label", "class", "o-app-header--sr-only"])
                     text("" + (translate('User account menu')) + "")
                   elementClose("span")
                   elementOpen("span", null, ["class", "o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible"])
-                    text("" + (user.givenName || translate('Menu')) + " ")
+                    text("" + (data.user.givenName || translate('Menu')) + " ")
                     elementOpen("i", null, ["class", "o-app-header__icon o-app-header__icon-chevron-down"])
                     elementClose("i")
                   elementClose("span")
@@ -105,112 +95,42 @@ function template (data, user, handlers, translate) {
                   elementClose("span")
                 elementClose("a")
                 elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-user-menu-label"])
-                  if (data.menu.showAllCoursesMenuItem) {
-                    elementOpen("li", null, ["class", "o-app-header__menu-item-all-courses o-dropdown-menu__menu-item o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden", "role", "presentation"])
-                      elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", data.links.home)
-                        elementOpen("span", null, ["class", "o-app-header__icon-left-arrow"])
-                        elementClose("span")
-                        text(" " + (translate('All courses')) + "")
-                      elementClose("a")
-                    elementClose("li")
-                  }
-                  if (data.menu.showAllCoursesMenuItem) {
-                    elementOpen("li", null, ["class", "o-dropdown-menu__divider o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden", "role", "presentation"])
-                    elementClose("li")
-                  }
-                  if (typeof siteNavItems !== 'undefined') {
-                    ;(Array.isArray(siteNavItems) ? siteNavItems : Object.keys(siteNavItems)).forEach(function(key, $index) {
-                      elementOpen("li", $index, ["class", "o-app-header__menu-item-site-nav o-dropdown-menu__menu-item o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden", "role", "presentation"])
-                        if (typeof siteNavItems[key] === 'string') {
-                          elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", siteNavItems[key])
-                            text("" + (key) + "")
-                          elementClose("a")
-                        }
-                        if (siteNavItems[key].href) {
-                          elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", siteNavItems[key].href, "target", siteNavItems[key].target)
-                            text("" + (key) + "")
-                          elementClose("a")
-                        }
-                        if (typeof siteNavItems[key].onClick === 'function') {
-                          elementOpen("a", null, ["role", "menuitem", "href", "#", "tabindex", "-1"], "onclick", function ($event) {siteNavItems[key].onClick($event)})
-                            text("" + (key) + "")
-                          elementClose("a")
-                        }
-                      elementClose("li")
-                    }, siteNavItems)
-                    elementOpen("li", null, ["class", "o-dropdown-menu__divider o-dropdown-menu__menu-item o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden", "role", "presentation"])
-                    elementClose("li")
-                  }
-                  if (appNavHeading || appNavItems) {
-                    elementOpen("li", null, ["class", "o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])
-                      elementOpen("ul", null, ["class", "o-app-header__menu-items-app-nav"])
-                        if (appNavHeading) {
-                          if (typeof appNavHeading !== 'undefined') {
-                            elementOpen("li", null, ["class", "o-app-header__menu-item-app-nav o-dropdown-menu__menu-item o-dropdown-menu__heading", "role", "presentation"])
-                              if (appNavHeading.href) {
-                                elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", appNavHeading.href)
-                                  text("" + (appNavHeading.text) + "")
+                  ;(Array.isArray(data.menuItems) ? data.menuItems : Object.keys(data.menuItems)).forEach(function(item, $index) {
+                    elementOpen("li", item.key, ["role", "presentation"], "class", item.classes)
+                      if (item.href) {
+                        elementOpen("a", null, ["role", "menuitem", "class", "o-app-header--truncate", "tabindex", "-1"], "href", item.href, "target", item.target)
+                          text("" + (item.text) + "")
+                        elementClose("a")
+                      }
+                      if (typeof item.onClick === 'function') {
+                        elementOpen("a", null, ["role", "menuitem", "class", "o-app-header--truncate", "href", "#", "tabindex", "-1"], "onclick", function ($event) {item.onClick($event)})
+                          text("" + (item.text) + "")
+                        elementClose("a")
+                      }
+                      if (item.isCourseNav) {
+                        elementOpen("ul", null, ["class", "o-app-header__menu-items-course-nav o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])
+                          ;(Array.isArray(item.courseNavMenuItems) ? item.courseNavMenuItems : Object.keys(item.courseNavMenuItems)).forEach(function(courseNavItem, $index) {
+                            elementOpen("li", courseNavItem.key, ["role", "presentation"], "class", courseNavItem.classes)
+                              if (courseNavItem.href) {
+                                elementOpen("a", null, ["role", "menuitem", "class", "o-app-header--truncate", "tabindex", "-1"], "href", courseNavItem.href, "target", courseNavItem.target)
+                                  text("" + (courseNavItem.text) + "")
+                                elementClose("a")
+                              }
+                              if (typeof courseNavItem.onClick === 'function') {
+                                elementOpen("a", null, ["role", "menuitem", "class", "o-app-header--truncate", "href", "#", "tabindex", "-1"], "onclick", function ($event) {courseNavItem.onClick($event)})
+                                  text("" + (courseNavItem.text) + "")
                                 elementClose("a")
                               }
                             elementClose("li")
-                          }
-                        }
-                        if (appNavItems) {
-                          ;(Array.isArray(appNavItems) ? appNavItems : Object.keys(appNavItems)).forEach(function(key, $index) {
-                            elementOpen("li", $index, ["role", "presentation"], "class", appNavItems[key].active ? 'o-app-header__menu-item-app-nav o-dropdown-menu__menu-item o-dropdown-menu__menu-item--disabled' : 'o-app-header__menu-item-app-nav o-dropdown-menu__menu-item')
-                              if (typeof appNavItems[key] === 'string') {
-                                elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", appNavItems[key])
-                                  text("" + (key) + "")
-                                elementClose("a")
-                              }
-                              if (appNavItems[key].href) {
-                                elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", appNavItems[key].href, "target", appNavItems[key].target)
-                                  text("" + (key) + "")
-                                elementClose("a")
-                              }
-                              if (typeof appNavItems[key].onClick === 'function') {
-                                elementOpen("a", null, ["role", "menuitem", "href", "#", "tabindex", "-1"], "onclick", function ($event) {appNavItems[key].onClick($event)})
-                                  text("" + (key) + "")
-                                elementClose("a")
-                              }
-                            elementClose("li")
-                          }, appNavItems)
-                        }
-                      elementClose("ul")
-                    elementClose("li")
-                  }
-                  if (appAbout) {
-                    elementOpen("li", null, ["class", "o-app-header__menu-item-app-about o-dropdown-menu__menu-item", "role", "presentation"])
-                      if (appAbout.href) {
-                        elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", appAbout.href)
-                          text("" + (appAbout.text) + "")
-                        elementClose("a")
-                      }
-                      if (appAbout.onClick) {
-                        elementOpen("a", null, ["role", "menuitem", "href", "#", "tabindex", "-1"], "onclick", function ($event) {appAbout.onClick($event)})
-                          text("" + (appAbout.text) + "")
-                        elementClose("a")
+                          }, item.courseNavMenuItems)
+                        elementClose("ul")
                       }
                     elementClose("li")
-                    elementOpen("li", null, ["class", "o-dropdown-menu__divider", "role", "presentation"])
-                    elementClose("li")
-                  }
-                  elementOpen("li", null, ["class", "o-dropdown-menu__menu-item", "role", "presentation"])
-                    elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", data.links.myAccount)
-                      text("" + (translate('My Account')) + "")
-                    elementClose("a")
-                  elementClose("li")
-                  elementOpen("li", null, ["class", "o-dropdown-menu__divider", "role", "presentation"])
-                  elementClose("li")
-                  elementOpen("li", null, ["class", "o-dropdown-menu__menu-item o-app-header__menu-item-sign-out", "role", "presentation"])
-                    elementOpen("a", null, ["role", "menuitem", "href", "#", "tabindex", "-1"], "onclick", function ($event) {handlers.handleLogout($event)})
-                      text("" + (translate('Sign Out')) + "")
-                    elementClose("a")
-                  elementClose("li")
+                  }, data.menuItems)
                 elementClose("ul")
               elementClose("div")
-            elementClose("li")
-          }
+            }
+          elementClose("li")
         elementClose("ul")
       elementClose("nav")
     elementClose("section")

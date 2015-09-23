@@ -47,7 +47,9 @@ hr {
 .demo-content {
 	padding-top: 15px;
 	text-align: justify;
+}
 
+.demo-content-with-sidebar {
 	@media (min-width: $o-header-tablet-min) {
 		box-sizing: border-box;
 		float: right;
@@ -63,16 +65,23 @@ hr {
 	padding: 0;
 }
 
-.demo-nav-item > a {
-	display: block;
-	padding: 5px 5px 5px 15px;
-	text-decoration: none;
-	color: #272727;
-
-	&:hover,
-	&:focus {
+.demo-nav-item {
+	&.active > a {
 		color: #ffffff;
 		background-color: #8c8c8c;
+	}
+
+	> a {
+		display: block;
+		padding: 5px 5px 5px 15px;
+		text-decoration: none;
+		color: #272727;
+
+		&:hover,
+		&:focus {
+			color: #ffffff;
+			background-color: #8c8c8c;
+		}
 	}
 }
 

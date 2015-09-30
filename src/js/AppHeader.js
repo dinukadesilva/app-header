@@ -1,5 +1,3 @@
-/*global console*/
-
 'use strict';
 
 var assign = require('object-assign/index');
@@ -139,30 +137,6 @@ AppHeader.prototype.setState_ = function (newState, update) {
 AppHeader.prototype.validateSettings_ = function (settings) {
 	if (this.constants_.MODES.indexOf(settings.mode) === -1) {
 		throw new TypeError('Unrecognized mode, \'' + settings.mode + '\'');
-	}
-
-	if (Object.keys(settings.menu || {}).length) {
-		console.error('The menu configuration options are not considered stable and should not be used.');
-	}
-
-	function checkNavItemOptions(path, key) {
-		if (typeof get(settings, path) !== 'undefined') {
-			var items = settings.menu[key].items;
-			Object.keys(items).forEach(function (itemKey) {
-				if (items[itemKey].onClick) checkIsFunction(items[itemKey].onClick, 'onClick');
-			});
-		}
-	}
-
-	function checkIsFunction(value, name) {
-		if (typeof value !== 'function') throw new TypeError(name + ': value must be a function');
-	}
-
-	checkNavItemOptions('menu.siteNav.items', 'siteNav');
-	checkNavItemOptions('menu.appNav.items', 'appNav');
-
-	if (typeof get(settings, 'menu.appAbout') !== 'undefined') {
-		if (settings.menu.appAbout.onClick) checkIsFunction(settings.menu.appAbout.onClick);
 	}
 };
 

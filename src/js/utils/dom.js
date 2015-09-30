@@ -18,13 +18,3 @@ exports.dispatchEvent = function (element, name, data) {
 		element.dispatchEvent(event);
 	}
 };
-
-/**
- * Inserts a new DOM node after the specified node.
- * @param {[type]} newNode The new node.
- * @param {[type]} referenceNode The existing node after which the new node will be inserted.
- * @return {[type]} Returns the inserted node.
- */
-exports.insertAfter = function (newNode, referenceNode) {
-	referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-};

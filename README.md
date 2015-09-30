@@ -51,7 +51,6 @@ Creates a new instance of `AppHeader`.
 | Property                 | Type                   | Description                       |
 |--------------------------|------------------------|-----------------------------------|
 | consoleBaseUrl           | `string`               | The Console application base URL (default: https://console.pearson.com) |
-| session                  | `string` or `Object`   | The session object, or the name of the session object in the global scope. If set to `false`, the session controls will not be rendered. |
 | mode                     | `string`               | The mode. Refer to the [Modes](#modes) section for a list of supported modes and options. |
 
 ```js
@@ -86,6 +85,7 @@ new AppHeader({ mode: 'Signed Out', showLoginControls: false });
 | Property                 | Type                   | Description                       |
 |--------------------------|------------------------|-----------------------------------|
 | showLoginControls        | `Boolean`              | If true, show the 'Sign In' nav item. Default: true.
+| onLogin                  | `Function` or `string` | A callback function that will be called when the user clicks the *Sign In* nav item. If this value is a string, the component will look in the global scope for a function with a matching name. |
 
 ### Mode: Basic
 
@@ -114,6 +114,7 @@ new AppHeader({
 | courseItems.text         | `string`               | The menu item text.               |
 | courseItems.href         | `string`               | The menu item url.                |
 | courseItems.onClick      | `Function`             | If provided, the function will be called when the user clicks the menu item. |
+| onLogout                 | `Function` or `string` | A callback function that will be called when the user clicks the *Sign Out* menu item. If this value is a string, the component will look in the global scope for a function with a matching name. |
 
 ### Mode: Course
 
@@ -149,6 +150,7 @@ new AppHeader({
 | courseNav.items.text     | `string`               | The menu item text.               |
 | courseNav.items.href     | `string`               | The menu item url.                |
 | courseNav.items.active   | `Boolean`              | Represents the active area of the course. If true, the menu item will be disabled. Default: false. |
+| onLogout                 | `Function` or `string` | A callback function that will be called when the user clicks the *Sign Out* menu item. If this value is a string, the component will look in the global scope for a function with a matching name. |
 
 ### Mode: Integration
 
@@ -163,6 +165,8 @@ new AppHeader({ mode: 'Integration' });
 | Event Name               | Description                                         |
 |--------------------------|-----------------------------------------------------|
 | oAppHeader.help.toggle   | Fires when the **Help** nav item is clicked.        |
+| oAppHeader.login         | Fires when the **Sign In** nav item is clicked.     |
+| oAppHeader.logout        | Fires when the **Sign Out** menu item is clicked.   |
 
 ```js
 document.addEventListener('oAppHeader.help.toggle', function (e) {

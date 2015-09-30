@@ -1,5 +1,7 @@
 'use strict';
 
+var dispatchEvent = require('../src/js/utils/dom').dispatchEvent;
+
 exports.getHeaderEl = function () {
 	return document.querySelector('.o-app-header');
 };
@@ -50,4 +52,16 @@ exports.getSignOutMenuItemEl = function (headerEl) {
 
 exports.getUsernameEl = function (headerEl) {
 	return headerEl.querySelector('.o-app-header__username');
+};
+
+exports.clickSignIn = function (headerEl) {
+	var signInNavItemEl = exports.getSignInNavItemEl(headerEl);
+
+	dispatchEvent(signInNavItemEl.querySelector('a'), 'click');
+};
+
+exports.clickSignOut = function (headerEl) {
+	var signOutMenuItemEl = exports.getSignOutMenuItemEl(headerEl);
+
+	dispatchEvent(signOutMenuItemEl.querySelector('a'), 'click');
 };

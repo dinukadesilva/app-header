@@ -20,20 +20,22 @@ var getMenuItemEls = helpers.getMenuItemEls;
 var getMyAccountMenuItemEl = helpers.getMyAccountMenuItemEl;
 var getSignOutMenuItemEl = helpers.getSignOutMenuItemEl;
 var getUsernameEl = helpers.getUsernameEl;
+var clickSignIn = helpers.clickSignIn;
+var clickSignOut = helpers.clickSignOut;
 
 describe('AppHeader:', function () {
 
-	var sandbox, session;
+	var sandbox;
 
 	before(function () {
 		sandbox = sinon.sandbox.create();
-		session = require('./stubs/session');
 
 		var config = {
-			session: 'session',
 			user: { givenName: 'FooBar' }
 		};
+
 		var configEl = document.createElement('script');
+
 		configEl.setAttribute('data-o-app-header-config', '');
 		configEl.type = 'application/json';
 		configEl.innerHTML = JSON.stringify(config);
@@ -42,14 +44,12 @@ describe('AppHeader:', function () {
 
 	beforeEach(function () {
 		document.body.innerHTML = '';
+		window.handleLogin = undefined;
+		window.handleLogout = undefined;
 		sandbox.restore();
 	});
 
 	describe('new AppHeader(element, options):', function () {
-
-		it ('should throw an error when options.session is a string and the session object is undefined in the global scope', function () {
-			expect(AppHeader.init.bind(null, { session: 'nonexistent' })).to.throwException(/unable to find window\[\'nonexistent\'\]/);
-		});
 
 		it('should prepend to document.body when element is undefined', function () {
 			new AppHeader();
@@ -192,8 +192,6 @@ describe('AppHeader:', function () {
 			});
 
 			it('should close the account menu when clicked', function () {
-				sandbox.stub(session, 'on').withArgs(session.LoginEvent).yields();
-
 				new AppHeader({ mode: 'Basic' });
 
 				var appHeaderEl = getHeaderEl();
@@ -264,6 +262,49 @@ describe('AppHeader:', function () {
 			var logoEl = getLogoEl(appHeaderEl);
 
 			expect(logoEl.parentElement.tagName.toLowerCase()).to.not.be('a');
+		});
+
+		it('should emit oAppHeader.login when the mode is \'Signed Out\' and the sign in nav item is clicked', function (done) {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+
+			appHeader.setMode('Signed Out');
+
+			document.addEventListener('oAppHeader.login', done.bind(null, null));
+
+			clickSignIn(appHeaderEl);
+		});
+
+		it('should call the onLogin callback function when the mode is \'Signed Out\' and the sign in nav item is clicked', function () {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+			var handler = sinon.spy();
+
+			appHeader.setMode('Signed Out', { onLogin: handler });
+
+			clickSignIn(appHeaderEl);
+
+			expect(handler.calledOnce).to.be(true);
+		});
+
+		it('should locate and call the onLogin callback function when the mode is \'Signed Out\' and options.onLogin is a string and the sign in nav item is clicked', function () {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+
+			window.handleLogin = sinon.spy();
+
+			appHeader.setMode('Signed Out', { onLogin: 'handleLogin' });
+
+			clickSignIn(appHeaderEl);
+
+			expect(window.handleLogin.calledOnce).to.be(true);
+		});
+
+		it('should throw an error when the mode is \'Signed Out\' and options.onLogin is a string and the callback function cannot be found in the global scope', function () {
+			var appHeader = new AppHeader();
+
+			expect(function () { appHeader.setMode('Signed Out', { onLogin: 'invalid' }); })
+				.to.throwException(/Expected \'onLogin\' to be a function/);
 		});
 
 		it('should render the logo as a link when the mode is \'Basic\'', function () {
@@ -399,6 +440,49 @@ describe('AppHeader:', function () {
 			expect(handler.calledOnce).to.be(true);
 		});
 
+		it('should emit oAppHeader.logout when the mode is \'Basic\' and the sign out menu item is clicked', function (done) {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+
+			appHeader.setMode('Basic');
+
+			document.addEventListener('oAppHeader.logout', done.bind(null, null));
+
+			clickSignOut(appHeaderEl);
+		});
+
+		it('should call the onLogout callback function when the mode is \'Basic\' and the sign out menu item is clicked', function () {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+			var handler = sinon.spy();
+
+			appHeader.setMode('Basic', { onLogout: handler });
+
+			clickSignOut(appHeaderEl);
+
+			expect(handler.calledOnce).to.be(true);
+		});
+
+		it('should locate and call the onLogout callback function when the mode is \'Basic\' and options.onLogout is a string and the sign out menu item is clicked', function () {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+
+			window.handleLogout = sinon.spy();
+
+			appHeader.setMode('Basic', { onLogout: 'handleLogout' });
+
+			clickSignOut(appHeaderEl);
+
+			expect(window.handleLogout.calledOnce).to.be(true);
+		});
+
+		it('should throw an error when the mode is \'Basic\' and options.onLogout is a string and the callback function cannot be found in the global scope', function () {
+			var appHeader = new AppHeader();
+
+			expect(function () { appHeader.setMode('Basic', { onLogout: 'invalid' }); })
+				.to.throwException(/Expected \'onLogout\' to be a function/);
+		});
+
 		it('should render the logo as a link when the mode is \'Course\'', function () {
 			var appHeader = new AppHeader();
 			var appHeaderEl = getHeaderEl();
@@ -524,6 +608,49 @@ describe('AppHeader:', function () {
 			expect(appHeaderEl.classList.contains('o-header--theme-light')).to.be(false);
 		});
 
+		it('should emit oAppHeader.logout when the mode is \'Course\' and the sign out menu item is clicked', function (done) {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+
+			appHeader.setMode('Course');
+
+			document.addEventListener('oAppHeader.logout', done.bind(null, null));
+
+			clickSignOut(appHeaderEl);
+		});
+
+		it('should call the onLogout callback function when the mode is \'Course\' and the sign out menu item is clicked', function () {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+			var handler = sinon.spy();
+
+			appHeader.setMode('Course', { onLogout: handler });
+
+			clickSignOut(appHeaderEl);
+
+			expect(handler.calledOnce).to.be(true);
+		});
+
+		it('should locate and call the onLogout callback function when the mode is \'Course\' and options.onLogout is a string and the sign out menu item is clicked', function () {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+
+			window.handleLogout = sinon.spy();
+
+			appHeader.setMode('Course', { onLogout: 'handleLogout' });
+
+			clickSignOut(appHeaderEl);
+
+			expect(window.handleLogout.calledOnce).to.be(true);
+		});
+
+		it('should throw an error when the mode is \'Course\' and options.onLogout is a string and the callback function cannot be found in the global scope', function () {
+			var appHeader = new AppHeader();
+
+			expect(function () { appHeader.setMode('Course', { onLogout: 'invalid' }); })
+				.to.throwException(/Expected \'onLogout\' to be a function/);
+		});
+
 		it('should render the logo without a link when the mode is \'Integration\'', function () {
 			var appHeader = new AppHeader();
 			var appHeaderEl = getHeaderEl();
@@ -585,6 +712,49 @@ describe('AppHeader:', function () {
 			expect(menuItemEls[0].querySelector('a').href).to.be(menuItems[0].href);
 			expect(menuItemEls[1].querySelector('a').textContent).to.be(menuItems[1].text);
 			expect(menuItemEls[1].querySelector('a').href).to.be(menuItems[1].href);
+		});
+
+		it('should emit oAppHeader.logout when the mode is \'Legacy Course\' and the sign out menu item is clicked', function (done) {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+
+			appHeader.setMode('Legacy Course');
+
+			document.addEventListener('oAppHeader.logout', done.bind(null, null));
+
+			clickSignOut(appHeaderEl);
+		});
+
+		it('should call the onLogout callback function when the mode is \'Legacy Course\' and the sign out menu item is clicked', function () {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+			var handler = sinon.spy();
+
+			appHeader.setMode('Legacy Course', { onLogout: handler });
+
+			clickSignOut(appHeaderEl);
+
+			expect(handler.calledOnce).to.be(true);
+		});
+
+		it('should locate and call the onLogout callback function when the mode is \'Legacy Course\' and options.onLogout is a string and the sign out menu item is clicked', function () {
+			var appHeader = new AppHeader();
+			var appHeaderEl = getHeaderEl();
+
+			window.handleLogout = sinon.spy();
+
+			appHeader.setMode('Legacy Course', { onLogout: 'handleLogout' });
+
+			clickSignOut(appHeaderEl);
+
+			expect(window.handleLogout.calledOnce).to.be(true);
+		});
+
+		it('should throw an error when the mode is \'Legacy Course\' and options.onLogout is a string and the callback function cannot be found in the global scope', function () {
+			var appHeader = new AppHeader();
+
+			expect(function () { appHeader.setMode('Legacy Course', { onLogout: 'invalid' }); })
+				.to.throwException(/Expected \'onLogout\' to be a function/);
 		});
 
 	});

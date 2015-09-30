@@ -25,7 +25,9 @@ function AppHeader(element, options) {
 
 AppHeader.prototype.constants_ = {
 	MODES: ['Signed Out', 'Basic', 'Course', 'Integration', 'Legacy Course'],
-	MAX_COURSE_ITEMS: 5
+	MAX_COURSE_ITEMS: 5,
+	LOGIN_EVENT: 'oAppHeader.login',
+	LOGOUT_EVENT: 'oAppHeader.logout'
 };
 
 
@@ -34,7 +36,6 @@ AppHeader.prototype.constants_ = {
  * @type {Object}
  */
 AppHeader.defaultSettings = {
-	session: 'piSession',
 	consoleBaseUrl: 'https://console.pearson.com',
 	links: {
 		home: '{consoleBaseUrl}/console/home',
@@ -46,7 +47,9 @@ AppHeader.defaultSettings = {
 	mode: 'Signed Out',
 	// Mode options
 	showLoginControls: true,
-	menuItems: []
+	menuItems: [],
+	onLogin: noop,
+	onLogout: noop
 };
 
 
@@ -81,7 +84,6 @@ AppHeader.prototype.init = function (element, options) {
 
 	this.i18n_ = new I18n({ locale: settings.locale });
 	this.state_ = assign({}, settings);
-	this.initSession_(settings);
 
 	if (element === document.body) {
 		element.insertBefore(rootEl, element.firstChild);
@@ -194,62 +196,6 @@ AppHeader.prototype.resolveLink_ = function (key) {
 	if (!this.state_.links[key] || typeof this.state_.links[key] !== 'string') return;
 
 	return this.state_.links[key].replace('{consoleBaseUrl}', this.state_.consoleBaseUrl);
-};
-
-
-AppHeader.prototype.initSession_ = function (options) {
-	var state = this.state_;
-	var setState = this.setState_.bind(this);
-
-	if (!options.session) {
-		this.state_.session = false;
-	} else {
-		var session = (typeof options.session === 'string') ?
-			window[options.session] : options.session;
-
-		if (!session) throw new TypeError('Invalid configuration for \'session\': unable to find window[\'' + options.session + '\']');
-
-		var sessionState = session.hasValidSession(0);
-
-		if (sessionState === session.Success) {
-			this.state_.user.isAuthenticated = true;
-		} else if (sessionState === session.NoSession || sessionState === session.NoToken) {
-			this.state_.user.isAuthenticated = false;
-		}
-
-		this.handleSessionStateKnown_ = function (e) {
-			var user = assign({}, state.user,
-				{ isAuthenticated: (session.hasValidSession(0) === session.Success) });
-
-			setState({ user: user }, true);
-		};
-
-		this.handleSessionLogin_ = function (e) {
-			var user = assign({}, state.user, { isAuthenticated: true });
-
-			setState({ user: user }, true);
-		};
-
-		this.handleSessionLogout_ = function (e) {
-			var user = assign({}, state.user, { isAuthenticated: false });
-
-			setState({ user: user }, true);
-		};
-
-		this.handleSignInClick_ = function (e) {
-			e.preventDefault();
-			session.login(window.location.href);
-		};
-
-		this.handleSignOutClick_ = function (e) {
-			e.preventDefault();
-			session.logout(window.location.href);
-		};
-
-		session.on(session.SessionStateKnownEvent, this.handleSessionStateKnown_);
-		session.on(session.LoginEvent, this.handleSessionLogin_);
-		session.on(session.LogoutEvent, this.handleSessionLogout_);
-	}
 };
 
 
@@ -444,7 +390,7 @@ AppHeader.prototype.getDataForRender_ = function () {
 		// Sign Out
 		menuItems.push(createMenuItemDef({
 			text: this.i18n_.translate('Sign Out'),
-			onClick: this.handleSignOutClick_
+			onClick: this.getHandler_('onLogout', this.constants_.LOGOUT_EVENT)
 		}, {
 			classes: ['o-app-header__menu-item-sign-out']
 		}));
@@ -463,6 +409,24 @@ AppHeader.prototype.getDataForRender_ = function () {
 };
 
 
+AppHeader.prototype.getHandler_ = function (prop, eventName) {
+	var element = this.element;
+	var handler = this.state_[prop];
+
+	function wrapHandler(handler) {
+		return function (e) {
+			e.preventDefault();
+			if (eventName) dom.dispatchEvent(element, eventName);
+			handler.call();
+		};
+	}
+
+	if (typeof handler === 'function') return wrapHandler(handler);
+	else if (typeof window[handler] === 'function') return wrapHandler(window[handler]);
+	else throw new TypeError('Expected \'' + prop + '\' to be a function');
+};
+
+
 AppHeader.prototype.render_ = function () {
 	var element = this.element;
 	var i18n = this.i18n_;
@@ -470,7 +434,7 @@ AppHeader.prototype.render_ = function () {
 	var data = this.getDataForRender_();
 
 	var handlers = {
-		handleLogin: this.handleSignInClick_,
+		handleLogin: this.getHandler_('onLogin', this.constants_.LOGIN_EVENT),
 		handleHelpNavItemClick: this.handleHelpNavItemClick_.bind(this)
 	};
 
@@ -504,3 +468,5 @@ AppHeader.prototype.handleHelpNavItemClick_ = function (e) {
 
 	dom.dispatchEvent(this.element, 'oAppHeader.help.toggle');
 };
+
+function noop() {}

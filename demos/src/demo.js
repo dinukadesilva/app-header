@@ -1,4 +1,4 @@
-/*global require, alert*/
+/*global require, alert, console*/
 'use strict';
 
 require('o-dropdown-menu');
@@ -7,39 +7,6 @@ var assign = require('object-assign/index');
 var forEach = require('../../src/js/utils/forEach');
 
 document.addEventListener('DOMContentLoaded', function() {
-
-	window.session = {
-		sessionState: 'nosession',
-		eventHandlers: {},
-		login: function (redirectUrl) {
-			this.trigger(this.LoginEvent);
-		},
-		logout: function (redirectUrl) {
-			this.trigger(this.LogoutEvent);
-		},
-		hasValidSession: function (gracePeriodSeconds) { return this.sessionState; },
-		on: function (eventType, handler) {
-			this.eventHandlers[eventType] = this.eventHandlers[eventType] || [];
-			this.eventHandlers[eventType].push(handler);
-		},
-		off: function (eventType, handler) {},
-		trigger: function (eventType) {
-			(this.eventHandlers[eventType] || []).forEach(function (handler) {
-				handler.call();
-			});
-		},
-		// Events
-		SessionStateKnownEvent: 'sessionstateknown',
-		LoginEvent: 'login',
-		LogoutEvent: 'logout',
-		// States
-		Unknown: 'unknown',
-		NoSession: 'nosession',
-		NoToken: 'notoken',
-		RequiredLifetimeTooLong: 'requiredlifetimetoolong',
-		Success: 'success',
-		TimedOut: 'timedout'
-	};
 
 	function getModeOptions() {
 		var options = {};
@@ -65,7 +32,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	var config = assign({
 		session: 'session',
 		user: { givenName: 'XXXXXXXXXXXXXXXX' },
-		mode: mode
+		mode: mode,
+		onLogin: function () {
+			alert('You signed in');
+		},
+		onLogout: function () {
+			alert('You signed out');
+		}
 	}, modeOptions);
 
 	var appHeader = new AppHeader(config);
@@ -73,6 +46,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Help menu
 	document.addEventListener('oAppHeader.help.toggle', function () {
 		alert('You toggled help');
+		console.log('oAppHeader.help.toggle');
+	});
+
+	// Login/logout events
+	document.addEventListener('oAppHeader.login', function () {
+		console.log('oAppHeader.login');
+	});
+
+	document.addEventListener('oAppHeader.logout', function () {
+		console.log('oAppHeader.logout');
 	});
 
 	// Select mode option

@@ -1,3 +1,21 @@
+<a name="1.0.0-rc.2"></a>
+# [1.0.0-rc.2](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2015-10-06)
+
+
+### Features
+
+* add onLogin and onLogout callback options ([aa2867f](https://github.com/Pearson-Higher-Ed/o-app-header/commit/aa2867f))
+* add support for modes ([1dbc352](https://github.com/Pearson-Higher-Ed/o-app-header/commit/1dbc352))
+
+
+### BREAKING CHANGES
+
+* The `session` option has been removed. Consumers may
+provide `onLogin` or `onLogout` callback functions and/or subscribe to the
+`oAppHeader.login` or `oAppHeader.logout` events, depending on which
+mode is configured.
+
+
 <a name="1.0.0-rc.1"></a>
 # [1.0.0-rc.1](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v0.8.0...v1.0.0-rc.1) (2015-09-18)
 

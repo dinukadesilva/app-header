@@ -1,3 +1,13 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/Pearson-Higher-Ed/o-app-header/compare/1.0.0-rc.2...v1.0.0) (2015-10-29)
+
+
+### Features
+
+* add $o-app-header-height-mobile Sass variable ([c02591a](https://github.com/Pearson-Higher-Ed/o-app-header/commit/c02591a))
+
+
+
 <a name="1.0.0-rc.2"></a>
 # [1.0.0-rc.2](https://github.com/Pearson-Higher-Ed/o-app-header/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2015-10-06)
 

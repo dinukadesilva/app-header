@@ -36,6 +36,10 @@ Refer to the [options object](#api-ctor) for a list of properties.
 
 <!-- ## Responsive -->
 
+## Integration
+
+Refer to the [Integration examples](examples/INTEGRATION.md) document.  This document details use with piSession.js and context-based mode switching.
+
 ## API
 
 ### Constructor

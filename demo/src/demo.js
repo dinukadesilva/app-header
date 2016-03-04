@@ -1,7 +1,8 @@
 /*global require, alert, console*/
 'use strict';
 
-require('o-dropdown-menu');
+require('./demo.scss');
+
 var AppHeader = require('../../main');
 var assign = require('object-assign/index');
 var forEach = require('../../src/js/utils/forEach');
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}, modeOptions);
 
+	console.info(config);
 	var appHeader = new AppHeader(config);
 
 	// Help menu

@@ -3,10 +3,8 @@
 bower_components/
 node_modules/
 public/
-build/
-demos/local/
+demo/local/
 docs/
-
-# Included in the repository, but ignored by lintspaces
-src/js/template.js
-lib/*
+.idea
+build/*.js
+build/reports

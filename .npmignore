@@ -1,0 +1,10 @@
+webpack.config.js
+.travis.yml
+karma.conf.js
+bin
+demo
+test
+npm_scripts
+.idea
+build/dev_bundle.app-header.js
+build/dev_demo.app-header.js

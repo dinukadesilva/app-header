@@ -1,8 +1,15 @@
-# o-app-header [![Build Status](https://travis-ci.org/Pearson-Higher-Ed/o-app-header.svg?branch=master)](https://travis-ci.org/Pearson-Higher-Ed/o-app-header) [![Coverage Status](https://coveralls.io/repos/Pearson-Higher-Ed/o-app-header/badge.svg?branch=master&service=github)](https://coveralls.io/github/Pearson-Higher-Ed/o-app-header?branch=master)
+# app-header [![Build Status](https://travis-ci.org/Pearson-Higher-Ed/app-header.svg?branch=master)](https://travis-ci.org/Pearson-Higher-Ed/app-header) [![Coverage Status](https://coveralls.io/repos/Pearson-Higher-Ed/app-header/badge.svg?branch=master&service=github)](https://coveralls.io/github/Pearson-Higher-Ed/app-header?branch=master)
 
 ## Initialization
 
-You can initialize the application header by dispatching the `o.DOMContentLoaded` event or by calling the static `init()` method.
+You can initialize the application header by calling the static `init()` method or by dispatching the `o.DOMContentLoaded` event.
+
+Using `new`:
+
+```js
+var AppHeader = require('@pearson-components/app-header');
+var appHeader = new AppHeader();
+```
 
 Using `o.DOMContentLoaded`:
 
@@ -10,13 +17,6 @@ Using `o.DOMContentLoaded`:
 document.addEventListener('DOMContentLoaded', function() {
   document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
 });
-```
-
-Using `new`:
-
-```js
-var AppHeader = require('o-app-header');
-var appHeader = new AppHeader();
 ```
 
 ## Configuration
@@ -38,7 +38,7 @@ Refer to the [options object](#api-ctor) for a list of properties.
 
 ## Integration
 
-Refer to the [Integration examples](examples/INTEGRATION.md) document.  This document details use with piSession.js and context-based mode switching.
+Refer to the [Integration](INTEGRATION.md) document, which details use with piSession.js and context-based mode switching.
 
 ## API
 
@@ -58,7 +58,7 @@ Creates a new instance of `AppHeader`.
 | mode                     | `string`               | The mode. Refer to the [Modes](#modes) section for a list of supported modes and options. |
 
 ```js
-var AppHeader = require('o-app-header');
+var AppHeader = require('@pearson-components/app-header');
 var appHeader = new AppHeader({ mode: 'Signed Out', showLoginControls: false });
 ```
 
@@ -209,6 +209,24 @@ Browser versions that do not support [WeakMap](https://developer.mozilla.org/en-
 <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=default,WeakMap"></script>
 ```
 
+## Development
+
+### Toolchain
+
+- [Node.js](http://nodejs.org) `v4+`
+- [webpack](https://webpack.github.io/)
+
+Recommendation: If you are using different node versions on your machine, use [nvm](https://github.com/creationix/nvm) 
+to manage them.
+
+### Demo
+
+	npm run dev
+
+### Test
+
+	npm test
+	
 ## License
 
 This software is published by Pearson Education under the [MIT license](LICENSE).

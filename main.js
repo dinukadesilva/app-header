@@ -1,6 +1,9 @@
 /*global require, module*/
 'use strict';
 
+// bundled styling for app-header
+require('./main.scss');
+
 var AppHeader = require('./src/js/AppHeader');
 
 var instance;
@@ -13,8 +16,8 @@ var getOrCreateInstance = function (element, options) {
 	return instance;
 };
 
-var construct = function () {
-	getOrCreateInstance();
+var construct = function (e) {
+	getOrCreateInstance(e.detail.element, e.detail.config);
 	document.removeEventListener('o.DOMContentLoaded', construct);
 };
 

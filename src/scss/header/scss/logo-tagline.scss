@@ -1,0 +1,42 @@
+////
+/// @group o-header
+/// @link http://registry.origami.ft.com/components/o-header
+////
+
+.o-header__logo,
+.o-header__tagline {
+	display: block;
+}
+
+.o-header__logo--pearson,
+.o-header__tagline--always-learning {
+	height: $o-header-height-mobile;
+	background: url(oHeaderAsset('img/pearson-sprite.svg')) no-repeat;
+
+	@media (min-width: $o-header-desktop-min) {
+		height: $o-header-height;
+	}
+}
+
+.o-header__logo--pearson {
+	width: 100px;
+	background-position: right ($o-header-height-mobile - $o-header-sprite-height) / 2;
+
+	@media (min-width: $o-header-desktop-min) {
+		background-position: right ($o-header-height - $o-header-sprite-height) / 2;
+	}
+}
+
+.o-header__tagline {
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+.o-header__tagline--always-learning {
+	width: 170px;
+	background-position: left ($o-header-height-mobile - $o-header-sprite-height) / 2;
+
+	@media (min-width: $o-header-desktop-min) {
+		background-position: left ($o-header-height - $o-header-sprite-height) / 2;
+	}
+}

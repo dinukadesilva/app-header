@@ -37,9 +37,8 @@ module.exports = function(config) {
 		browserify: {
 			debug: true,
 			transform: [
-				'debowerify',
 				require('browserify-istanbul')({
-					ignore: ['node_modules/**', 'test/**', '**/lib/**']
+					ignore: ['node_modules/**', 'test/**', '**/lib/**', 'build/**', 'npm_scripts/**']
 				}),
 				require('textrequireify').create({
 					rootDirectory: process.cwd()

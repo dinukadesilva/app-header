@@ -1,32 +1,21 @@
 language: node_js
 sudo: false
 node_js:
+- 'stable'
+- '4.4'
 - '0.12'
-
-env:
-  matrix:
-    - BROWSER=chrome  BVER=stable CHROME_BIN=./browsers/bin/chrome-stable
-#    - BROWSER=firefox BVER=stable FIREFOX_BIN=./browsers/bin/firefox-stable
-
-matrix:
-  fast_finish: true
-
-before_install:
-- npm install -g Financial-Times/origami-build-tools#node12
-- obt install
-
-before_script:
-  - ./node_modules/travis-multirunner/setup.sh
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-
 script:
-- obt verify
-- npm test -- --browsers $BROWSER --reporter dots
-
+- npm run ci
 after_success:
   - cat ./build/reports/coverage/coverage.lcov | node_modules/coveralls/bin/coveralls.js
-
 after_failure:
   - for file in *.log; do echo $file; echo "======================"; cat $file; done || true
-
+deploy:
+  provider: npm
+  email: pearson-design-accelerator@pearson.com
+  api_key:
+    secure: PmA6CQLTjC6rFvKt4Lsf3HuGHtxBqtNgJyPYlU6H/dN181VRYa7kFuFyYElp3+5sHq8gzj4XCb5sdcJE7fpr4ZT831+kQXYdiERVWyyv1rsNvYAn6QN1a+D2ZV7x766yePDTo1+sLKDy1js8tegLEHYp3MZq3HMUkX4WkCZjkx6g2s8lQPZSs0Iw5ZDbrs/n0iidu2+/r43Wu4Y1pt3/Jfxe2WwnM7zfHi0C9zb4nAaAQRAmP6tPke6Rl1DuSX2dicPF87Ud1YzyFEgkvFzpS74Y6lEtWWkGhwZC4jpfcaPb492k+xNYPHvR1LcbTdnSDDpoG8mIcjAWpNdblehrAj/MjGtsYIoTrKoqkGLX+71W4iBbPZvovy4M0WMjGj57e8fTs+9uznv9ATkHY/pnciX6h5LhAqfsXYkJX8q1sFkHj4cTB8JU+v/z3YbjW6cBK+iZCe7tTLU89Li8LrNgUpN097tnuak9wsE9TRUXWGjzor7XAhf4PoS9a5Ce3rNbGsjkEX4tMVdFnpxCI12LN0zwUquX0t68EuEmx+dJJAtRTADIz/w0WEUtXuanrf9bEhMK/trK2IfHEL/3tjfyx+u4G5mvmn0o14oQJDG4a5hDUgTZrhz+mozAOsnxieNabPHyANQ2Gg6Dssihp5JVyAl63jNvuE22SdwhIjeqoOg=
+  skip_cleanup: true
+  on:
+    branch: master
+    tags: true

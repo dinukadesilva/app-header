@@ -7,7 +7,7 @@ var forEach = require('./utils/forEach');
 var patch = require('../../lib/incremental-dom').patch;
 var template = require('./template');
 var I18n = require('./utils/I18n');
-var DropdownMenu = require('o-dropdown-menu');
+var DropdownMenu = require('../scss/dropdown/main.js');
 
 module.exports = AppHeader;
 

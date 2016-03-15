@@ -21,6 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }));
 
+	config.user = { givenName: 'Bender' };
+
+  document.dispatchEvent(new CustomEvent('o.DOMContentLoaded', {
+    detail: {
+      element: element,
+      config: config
+    }
+  }));
+
+	// Event Listeners
+
   // Help menu
 	document.addEventListener('oAppHeader.help.toggle', function () {
 		alert('You toggled help');

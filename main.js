@@ -11,14 +11,18 @@ var instance;
 var getOrCreateInstance = function (element, options) {
 	if (!instance) {
 		instance = new AppHeader(element, options);
+		return instance;
 	}
 
-	return instance;
+	return instance.setMode(options.mode, options);
 };
 
 var construct = function (e) {
+
+	if (!e.detail || !e.detail.element || !e.detail.config) {
+		console.error('Missing element or configuration for app header.');
+	}
 	getOrCreateInstance(e.detail.element, e.detail.config);
-	document.removeEventListener('o.DOMContentLoaded', construct);
 };
 
 document.addEventListener('o.DOMContentLoaded', construct);

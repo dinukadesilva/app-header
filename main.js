@@ -20,8 +20,9 @@ var getOrCreateInstance = function (element, options) {
 var construct = function (e) {
 
 	if (!e.detail || !e.detail.element || !e.detail.config) {
-		console.error('Missing element or configuration for app header.');
+		window.console && console.warn('AppHeader received an incorrectly structured event or missing e.detail.element and/or e.detail.config');
 	}
+	
 	getOrCreateInstance(e.detail.element, e.detail.config);
 };
 

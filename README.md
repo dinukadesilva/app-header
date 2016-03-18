@@ -1,27 +1,41 @@
 # app-header [![Build Status](https://travis-ci.org/Pearson-Higher-Ed/app-header.svg?branch=master)](https://travis-ci.org/Pearson-Higher-Ed/app-header) [![Coverage Status](https://coveralls.io/repos/Pearson-Higher-Ed/app-header/badge.svg?branch=master&service=github)](https://coveralls.io/github/Pearson-Higher-Ed/app-header?branch=master)
 
-## Initialization
+## How to Consume in an Application
 
-You can initialize the application header by calling the static `init()` method or by dispatching the `o.DOMContentLoaded` event.
+### Using the Bundle (Preferred)
 
-Using `new`:
+Assumption: You have Node v4+ installed. If so, install the app-header from npm:
+
+	> npm i @pearson-components/app-header
+	
+You will find the javascript bundle in node_modules/@pearson-components/app-header/build/dist.app-header.js.
+Add the following script include bundle to your web page:
+
+```html
+	<script src="path/to/dist.app-header.js"></script>
+```
+
+Please see the [demo code](https://github.com/Pearson-Higher-Ed/app-header/blob/master/demo/src/bundle-eventing.js) for 
+examples of how to dispatch the `o.DOMContentLoaded` event to initialize the app-header. Configuration options are outlined 
+further down in this README.
+
+### CommonJS
+
+This method requires a web bundler such as webpack or browserify.
+
+**Due to a dependencies handling bug in npm, you may need to be on the latest npm v3 in order to use this method.**
+
+After installing the app-header from npm, define the target element and configuration options.
 
 ```js
 var AppHeader = require('@pearson-components/app-header');
-var appHeader = new AppHeader();
+var appHeader = new AppHeader(element, options);
 ```
 
-Using `o.DOMContentLoaded`:
+### Configuration
 
-```js
-document.addEventListener('DOMContentLoaded', function() {
-  document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
-});
-```
-
-## Configuration
-
-Configuration properties may be passed as an object argument to the constructor or defined in a configuration block on the page:
+Configuration properties may be passed as an object argument (preferred) to the constructor or defined in a configuration 
+block on the page:
 
 ```html
 <script data-o-app-header-config type="application/json">
@@ -36,7 +50,7 @@ Refer to the [options object](#api-ctor) for a list of properties.
 
 <!-- ## Responsive -->
 
-## Integration
+### Integration
 
 Refer to the [Integration](INTEGRATION.md) document, which details use with piSession.js and context-based mode switching.
 
@@ -209,7 +223,7 @@ Browser versions that do not support [WeakMap](https://developer.mozilla.org/en-
 <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=default,WeakMap"></script>
 ```
 
-## Development
+## How to Develop
 
 ### Toolchain
 
@@ -221,9 +235,14 @@ to manage them.
 
 ### Demo
 
+The following npm script will build the component, fire up a webpack dev server at localhost:8080/demo, and hot reload 
+any saved changes to the source without having to refresh the browser.
+
 	npm run dev
 
 ### Test
+
+The following npm script will execute the unit tests.
 
 	npm test
 	

@@ -1,3 +1,6 @@
+// Uses the native CustomEvent constructor that no version of IE supports (MS Edge does!).
+// See usage of polyfill-customevent.js to work in IE.
+
 document.addEventListener('DOMContentLoaded', function() {
 
   var element = document.querySelector('.demo-container');
@@ -12,8 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			alert('You signed out');}
   };
 
-  console.info(config);
-
   document.dispatchEvent(new CustomEvent('o.DOMContentLoaded', {
     detail: {
       element: element,
@@ -21,14 +22,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }));
 
-	config.user = { givenName: 'Bender' };
+  setTimeout(function() {
 
-  document.dispatchEvent(new CustomEvent('o.DOMContentLoaded', {
-    detail: {
-      element: element,
-      config: config
-    }
-  }));
+    config.user = { givenName: 'Bender' };
+
+    document.dispatchEvent(new CustomEvent('o.DOMContentLoaded', {
+      detail: {
+        element: element,
+        config: config
+      }
+    }));
+  }, 2000);
+
+
 
 	// Event Listeners
 

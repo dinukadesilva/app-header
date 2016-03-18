@@ -13,6 +13,10 @@
     "release": "node ./npm_scripts/release.js",
     "postpublish": "npm access public && echo 'Package scope set to public!'"
   },
+  "keywords": [
+    "Pearson",
+    "header"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Pearson-Higher-Ed/app-header.git"

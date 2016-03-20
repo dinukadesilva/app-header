@@ -8,3 +8,4 @@ npm_scripts
 .idea
 build/dev_bundle.app-header.js
 build/dev_demo.app-header.js
+o-header

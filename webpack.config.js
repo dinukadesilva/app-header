@@ -16,20 +16,6 @@ module.exports = {
         test: /\.scss$/,
         loader: 'style!css!sass',
         exclude: /node_modules/
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          presets: ['es2015']
-        },
-        exclude: /node_modules/
-      },
-      {
-        test: /\.svg$/,
-        loader: 'url?limit=100000',
-        exclude: /node_modules/
       }
     ]
   }

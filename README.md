@@ -23,8 +23,6 @@ further down in this README.
 
 This method requires a web bundler such as webpack or browserify.
 
-**Due to a dependencies handling bug in npm, you may need to be on the latest npm v3 in order to use this method.**
-
 After installing the app-header from npm, define the target element and configuration options.
 
 ```js

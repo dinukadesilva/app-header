@@ -1,3 +1,13 @@
+<a name="0.1.6"></a>
+## [0.1.6](https://github.com/Pearson-Higher-Ed/app-header/compare/v0.1.5...v0.1.6) (2016-03-22)
+
+
+### Bug Fixes
+
+* **build:** Remove optional, low-level Mac-specific fsevents library from shrinkwrap, and re ([842dff2](https://github.com/Pearson-Higher-Ed/app-header/commit/842dff2))
+
+
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/Pearson-Higher-Ed/app-header/compare/v0.1.4...v0.1.5) (2016-03-17)
 

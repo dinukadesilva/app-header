@@ -1,3 +1,13 @@
+<a name="0.1.7"></a>
+## [0.1.7](https://github.com/Pearson-Higher-Ed/app-header/compare/v0.1.6...v0.1.7) (2016-03-23)
+
+
+### Bug Fixes
+
+* Do not attempt to construct instance if initialization detail is missing. ([69e5149](https://github.com/Pearson-Higher-Ed/app-header/commit/69e5149))
+
+
+
 <a name="0.1.6"></a>
 ## [0.1.6](https://github.com/Pearson-Higher-Ed/app-header/compare/v0.1.5...v0.1.6) (2016-03-22)
 

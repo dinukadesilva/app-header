@@ -20,7 +20,8 @@ var getOrCreateInstance = function (element, options) {
 var construct = function (e) {
 
 	if (!e.detail || !e.detail.element || !e.detail.config) {
-		window.console && console.warn('AppHeader received an incorrectly structured event or missing e.detail.element and/or e.detail.config');
+		window.console && console.warn('AppHeader received event missing e.detail.element and/or e.detail.config');
+		return;
 	}
 	
 	getOrCreateInstance(e.detail.element, e.detail.config);

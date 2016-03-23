@@ -14,8 +14,8 @@
     "postpublish": "npm access public && echo 'Package scope set to public!'"
   },
   "keywords": [
-    "Pearson",
-    "header"
+    "pearson-components",
+    "app-header"
   ],
   "repository": {
     "type": "git",

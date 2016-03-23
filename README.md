@@ -2,26 +2,37 @@
 
 ## How to Consume in an Application
 
-### Using the Bundle (Preferred)
+Assumption: You have Node v4+ and npm 2+ installed.
 
-Assumption: You have Node v4+ installed. If so, install the app-header from npm:
+	> npm i --save @pearson-components/app-header
 
-	> npm i @pearson-components/app-header
-	
-You will find the javascript bundle in node_modules/@pearson-components/app-header/build/dist.app-header.js.
-Add the following script include bundle to your web page:
+### Script Include (Preferred)
+
+The javascript bundle is available in /node_modules/@pearson-components/app-header/build/dist.app-header.js.
+
+Add the following script include to your web page:
 
 ```html
 	<script src="path/to/dist.app-header.js"></script>
 ```
 
 Please see the [demo code](https://github.com/Pearson-Higher-Ed/app-header/blob/master/demo/src/bundle-eventing.js) for 
-examples of how to dispatch the `o.DOMContentLoaded` event to initialize the app-header. Configuration options are outlined 
-further down in this README.
+examples of how to dispatch the event to initialize the app-header.
+
+```js
+document.dispatchEvent(new CustomEvent('o.DOMContentLoaded', {
+    detail: {
+      element: element,
+      config: config
+    }
+  }));
+```
+  
+The config property options are outlined further down in this README.
 
 ### CommonJS
 
-This method requires a web bundler such as webpack or browserify.
+This method requires a web bundler, such as webpack or browserify.
 
 After installing the app-header from npm, define the target element and configuration options.
 

@@ -210,8 +210,8 @@ describe('AppHeader:', function () {
 				expect(menuMenuEl.classList.contains('o-dropdown-menu--expanded')).to.be(false);
 
 				forEach(menuIconEls, function (idx, el) {
-					expect(el.classList.contains('o-app-header__icon-chevron-up')).to.be(false);
-					expect(el.classList.contains('o-app-header__icon-chevron-down')).to.be(true);
+					expect(el.classList.contains('pe-icon--chevron-up')).to.be(false);
+					expect(el.classList.contains('pe-icon--chevron-down')).to.be(true);
 				});
 			});
 

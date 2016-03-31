@@ -7,7 +7,7 @@ var fs = require('fs');
 var superviews = require('superviews.js');
 
 function printUsage() {
-  console.log('usage: gen-template source_file target_file');
+  console.log('usage: node gen-template source_file target_file');
 }
 
 function main(argv) {

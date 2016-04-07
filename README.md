@@ -242,6 +242,12 @@ Browser versions that do not support [WeakMap](https://developer.mozilla.org/en-
 Recommendation: If you are using different node versions on your machine, use [nvm](https://github.com/creationix/nvm) 
 to manage them.
 
+### Install Dev Dependencies
+
+The following will ignore an available shrinkwrap file and use the package.json instead.
+
+	npm install --no-shrinkwrap
+
 ### Demo
 
 The following npm script will build the component, fire up a webpack dev server at localhost:8080/demo, and hot reload 

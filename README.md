@@ -2,6 +2,9 @@
 
 ## How to Consume in an Application
 
+If you are consuming version 1.0.0+ of app-header, you must consume the Elements SDK, as it is a required dependency. It 
+is looking for the /fonts directory in the root of your served application.
+
 Assumption: You have Node v4+ and npm 2+ installed.
 
 	> npm i --save @pearson-components/app-header

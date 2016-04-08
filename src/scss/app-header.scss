@@ -1,5 +1,4 @@
 .o-app-header {
-	font-family: oFontsGetFontFamilyWithFallbacks(HelveticaNeue);
 	-webkit-font-smoothing: antialiased;
 	z-index: $o-app-header-z-index;
 }
@@ -9,7 +8,6 @@
 }
 
 // Visibility utilities
-// TODO: move to o-visibility
 .o-app-header--truncate {
 	white-space: nowrap;
 	overflow: hidden;
@@ -29,38 +27,11 @@
 	border: 0;
 }
 
-// Icons
-// TODO: replace with o-icons
+// App-header-specific styling
 .o-app-header__icon {
 	font-style: normal;
 	margin: 0 5px;
 	font: normal 12px/12px helvetica;
-}
-
-.o-app-header__icon-chevron-up,
-.o-app-header__icon-chevron-down {
-	&:before {
-		display: inline-block;
-		transform: scale(2, 1) translateY(-2px);
-	}
-}
-
-.o-app-header__icon-chevron-up {
-	&:before {
-		content: '\2227';
-	}
-}
-
-.o-app-header__icon-chevron-down {
-	&:before {
-		content: '\2228';
-	}
-}
-
-.o-app-header__icon-left-arrow {
-	&:before {
-		content: '\2190';
-	}
 }
 
 // Menu

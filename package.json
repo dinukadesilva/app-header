@@ -6,7 +6,8 @@
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
     "build": "webpack -p",
-    "dev": "webpack-dev-server --devtool eval --hot --progress --colors",
+    "dev-setup": "mkdir -p fonts && cp ./node_modules/pearson-elements/dist/fonts/* ./fonts",
+    "dev": "npm run dev-setup && webpack-dev-server --devtool eval --hot --progress --colors",
     "version": "npm run gen-changelog && git add CHANGELOG.md",
     "ci": "npm test && npm run build",
     "gen-changelog": "node ./npm_scripts/gen-changelog.js",
@@ -21,6 +22,7 @@
     "type": "git",
     "url": "https://github.com/Pearson-Higher-Ed/app-header.git"
   },
+  "license": "MIT",
   "devDependencies": {
     "browserify": "^10.2.4",
     "browserify-istanbul": "^0.2.1",
@@ -39,6 +41,7 @@
     "karma-sinon": "^1.0.4",
     "mocha": "^2.1.0",
     "node-sass": "^3.4.2",
+    "pearson-elements": "^0.2.0",
     "sass-loader": "^3.1.2",
     "sinon": "^1.15.3",
     "style-loader": "^0.13.0",

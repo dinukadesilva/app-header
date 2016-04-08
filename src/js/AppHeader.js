@@ -183,15 +183,15 @@ AppHeader.prototype.constructRootEl_ = function (options) {
 
 	element.addEventListener('oDropdownMenu.expand', function (e) {
 		forEach(e.target.querySelectorAll('.o-app-header__icon'), function (idx, item) {
-			item.classList.remove('o-app-header__icon-chevron-down');
-			item.classList.add('o-app-header__icon-chevron-up');
+			item.classList.remove('pe-icon--chevron-down');
+			item.classList.add('pe-icon--chevron-up');
 		});
 	});
 
 	element.addEventListener('oDropdownMenu.collapse', function (e) {
 		forEach(e.target.querySelectorAll('.o-app-header__icon'), function (idx, item) {
-			item.classList.remove('o-app-header__icon-chevron-up');
-			item.classList.add('o-app-header__icon-chevron-down');
+			item.classList.remove('pe-icon--chevron-up');
+			item.classList.add('pe-icon--chevron-down');
 		});
 	});
 
@@ -435,8 +435,8 @@ AppHeader.prototype.handleHelpNavItemClick_ = function (e) {
 		var accountMenuIconEls = accountMenuEl.querySelectorAll('.o-app-header__icon');
 
 		forEach(accountMenuIconEls, function (idx, el) {
-			el.classList.remove('o-app-header__icon-chevron-up');
-			el.classList.add('o-app-header__icon-chevron-down');
+			el.classList.remove('pe-icon--chevron-up');
+			el.classList.add('pe-icon--chevron-down');
 		});
 	}
 

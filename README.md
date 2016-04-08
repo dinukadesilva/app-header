@@ -1,6 +1,8 @@
-# app-header [![Build Status](https://travis-ci.org/Pearson-Higher-Ed/app-header.svg?branch=master)](https://travis-ci.org/Pearson-Higher-Ed/app-header) [![Coverage Status](https://coveralls.io/repos/Pearson-Higher-Ed/app-header/badge.svg?branch=master&service=github)](https://coveralls.io/github/Pearson-Higher-Ed/app-header?branch=master)
-
+# app-header [![Build Status](https://travis-ci.org/Pearson-Higher-Ed/app-header.svg?branch=master)](https://travis-ci.org/Pearson-Higher-Ed/app-header)
 ## How to Consume in an Application
+
+If you are consuming version 1.0.0+ of app-header, you must consume the Elements SDK, as it is a required dependency. It 
+is looking for the /fonts directory in the root of your served application.
 
 Assumption: You have Node v4+ and npm 2+ installed.
 
@@ -241,6 +243,12 @@ Browser versions that do not support [WeakMap](https://developer.mozilla.org/en-
 
 Recommendation: If you are using different node versions on your machine, use [nvm](https://github.com/creationix/nvm) 
 to manage them.
+
+### Install Dev Dependencies
+
+The following will ignore an available shrinkwrap file and use the package.json instead.
+
+	npm install --no-shrinkwrap
 
 ### Demo
 

@@ -1,6 +1,6 @@
 {
   "name": "@pearson-components/app-header",
-  "version": "0.1.7",
+  "version": "1.0.0",
   "dependencies": {
     "abbrev": {
       "version": "1.0.7",

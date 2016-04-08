@@ -1,3 +1,14 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/Pearson-Higher-Ed/app-header/compare/v0.1.7...v1.0.0) (2016-04-08)
+
+
+### Features
+
+* Replace fonts file proxy dependency with Elements SDK dependency. ([9a391bd](https://github.com/Pearson-Higher-Ed/app-header/commit/9a391bd))
+* Replace icons file proxy dependency with Elements SDK dependency. ([9161157](https://github.com/Pearson-Higher-Ed/app-header/commit/9161157))
+
+
+
 <a name="0.1.7"></a>
 ## [0.1.7](https://github.com/Pearson-Higher-Ed/app-header/compare/v0.1.6...v0.1.7) (2016-03-23)
 

@@ -1,14 +1,15 @@
 # app-header [![Build Status](https://travis-ci.org/Pearson-Higher-Ed/app-header.svg?branch=master)](https://travis-ci.org/Pearson-Higher-Ed/app-header)
-## How to Consume in an Application
+
+## Usage
 
 If you are consuming version 1.0.0+ of app-header, you must consume the Elements SDK, as it is a required dependency. It 
-is looking for the /fonts directory in the root of your served application.
+is looking for the /fonts assets in the root of your served application.
 
 Assumption: You have Node v4+ and npm 2+ installed.
 
 	> npm i --save @pearson-components/app-header
 
-### Script Include (Preferred)
+### Script Include (Recommended)
 
 The javascript bundle is available in /node_modules/@pearson-components/app-header/build/dist.app-header.js.
 
@@ -234,7 +235,7 @@ Browser versions that do not support [WeakMap](https://developer.mozilla.org/en-
 <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=default,WeakMap"></script>
 ```
 
-## How to Develop
+## Contributing
 
 ### Toolchain
 

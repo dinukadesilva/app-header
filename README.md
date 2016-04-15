@@ -20,7 +20,9 @@ Add the following script include to your web page:
 ```
 
 Please see the [demo code](https://github.com/Pearson-Higher-Ed/app-header/blob/master/demo/src/bundle-eventing.js) for 
-examples of how to dispatch the event to initialize the app-header.
+examples of how to dispatch the event to initialize the app-header. 
+
+**Note this example is using CustomEvent, which must be poly-filled for IE.**
 
 ```js
 document.dispatchEvent(new CustomEvent('o.DOMContentLoaded', {

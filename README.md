@@ -9,7 +9,7 @@ Assumption: You have Node v4+ and npm 2+ installed.
 
 	> npm i --save @pearson-components/app-header
 
-### Script Include (Recommended)
+### Bundle (Recommended)
 
 The javascript bundle is available in /node_modules/@pearson-components/app-header/build/dist.app-header.js.
 

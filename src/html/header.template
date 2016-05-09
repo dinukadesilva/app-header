@@ -15,7 +15,7 @@
 		<section class="o-header__section o-header__section--right">
 			<nav class="o-header__nav">
 				<ul class="o-header__nav-items">
-					<li class="o-header__nav-item o-app-header__nav-item-notification">
+					<li class="o-header__nav-item o-app-header__nav-item-notification" aria-hidden="true">
 					</li>
 					<li class="o-header__nav-item o-app-header__nav-item-help">
 						<a href="#" onclick="{handlers.handleHelpNavItemClick($event)}" if="!data.help">{translate('Help')}</a>

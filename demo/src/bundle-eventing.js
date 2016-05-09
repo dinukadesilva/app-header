@@ -1,8 +1,6 @@
 // Uses the native CustomEvent constructor that no version of IE supports (MS Edge does!).
 // See usage of polyfill-customevent.js to work in IE.
 
-require('../../node_modules/pearson-elements/scss/elements.scss');
-
 document.addEventListener('DOMContentLoaded', function() {
 
   var element = document.querySelector('.demo-container');

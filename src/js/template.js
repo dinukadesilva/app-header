@@ -31,6 +31,8 @@ function template (data, handlers, translate) {
     elementOpen("section", null, ["class", "o-header__section o-header__section--right"])
       elementOpen("nav", null, ["class", "o-header__nav"])
         elementOpen("ul", null, ["class", "o-header__nav-items"])
+          elementOpen("li", null, ["class", "o-header__nav-item o-app-header__nav-item-notification", "aria-hidden", "true"])
+          elementClose("li")
           elementOpen("li", null, ["class", "o-header__nav-item o-app-header__nav-item-help"])
             if (!data.help) {
               elementOpen("a", null, ["href", "#"], "onclick", function ($event) {handlers.handleHelpNavItemClick($event)})

@@ -43,6 +43,7 @@
     "pearson-elements": "^0.2.0",
     "phantomjs-polyfill": "0.0.2",
     "sass-loader": "^3.1.2",
+    "semver": "^5.1.0",
     "sinon": "^1.15.3",
     "style-loader": "^0.13.0",
     "superviews.js": "0.0.5",

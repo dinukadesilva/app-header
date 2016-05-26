@@ -22,9 +22,14 @@
 		@include nav-link;
 	}
 
+
 	@media (min-width: $o-header-desktop-min) {
 		height: $o-header-height;
 	}
+}
+
+.o-app-header__nav-item-notification {
+	@include nav-link;
 }
 
 .o-header__nav-item--active {

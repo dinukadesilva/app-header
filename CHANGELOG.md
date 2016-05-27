@@ -1,3 +1,13 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/Pearson-Higher-Ed/app-header/compare/v1.1.0...v1.1.1) (2016-05-27)
+
+
+### Features
+
+* **notification:** positioning the notification item([9e43681](https://github.com/Pearson-Higher-Ed/app-header/commit/9e43681))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/Pearson-Higher-Ed/app-header/compare/v1.0.1...v1.1.0) (2016-05-20)
 

@@ -100,6 +100,7 @@ Sets the mode. Refer to the [Modes](#modes) section for a list of supported mode
 - `options`: an object containing the mode options.
 
 <a name="modes"></a>
+
 ## Modes
 
 The application header supports multiple modes that can be configured depending on the type and state of the application.
@@ -261,6 +262,11 @@ The following npm script will execute the unit tests.
 
 	npm test
 	
+### How do I debug?
+
+Source maps are enabled for the webpack dev server. Using **Chrome dev tools** - open the "Sources" tab, navigate to 
+`top/webpack://./`, and you will find the original source files for which you can set breakpoints in Chrome's debugger.
+
 ## License
 
 This software is published by Pearson Education under the [MIT license](LICENSE).

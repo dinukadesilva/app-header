@@ -28,10 +28,6 @@
 	}
 }
 
-.o-app-header__nav-item-notification {
-	@include nav-link;
-}
-
 .o-header__nav-item--active {
 	background: $o-header-nav-link-active-bg;
 }

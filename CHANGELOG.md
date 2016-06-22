@@ -1,5 +1,10 @@
-<a name="1.1.1"></a>
-## [1.1.1](https://github.com/Pearson-Higher-Ed/app-header/compare/v1.1.0...v1.1.1) (2016-05-27)
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/Pearson-Higher-Ed/app-header/compare/v1.1.0...v1.1.2) (2016-06-22)
+
+
+### Bug Fixes
+
+* **css:** Remove inheritance for o-app-header__nav-item-notification.([e3c0343](https://github.com/Pearson-Higher-Ed/app-header/commit/e3c0343))
 
 
 ### Features

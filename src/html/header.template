@@ -8,7 +8,7 @@
 					</a>
 				</if>
 				<if condition="data.mode ==='Signed Out' || data.mode === 'Integration'">
-					<div class="o-header__logo o-header__logo--pearson"></div>
+					<div class="o-header__logo o-header__logo--pearso"></div>
 				</if>
 			</div>
 		</section>

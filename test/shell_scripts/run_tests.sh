@@ -6,7 +6,7 @@ echo "Trigger the Selenium tests for master branch: ux-test-platform repo...."
 body="{
 \"request\": {
 \"message\": \"feat(app-header): Run App Header Tests\",
-\"branch\":\"master\",
+\"branch\":\"demo-master\",
 \"config\": {
 \"script\": [
 \"export component=app-header\",
@@ -44,7 +44,7 @@ do
   get_state_value=${BRANCH#*:}
   BRANCH="${get_state_value//\"}"
 
-  if [ $BRANCH == "master" ] #If condition to check if the last triggered build is master
+  if [ $BRANCH == "demo-master" ] #If condition to check if the last triggered build is master
     sleep 5
     curl -i $REPO_URI > test.json
   then LATEST_ID=$(grep -o '"id":.[0-9]*' test.json | head -1  | grep ':.[0-9]*') #

@@ -240,6 +240,8 @@ Browser versions that do not support [WeakMap](https://developer.mozilla.org/en-
 
 ## Contributing
 
+Please review the [guidelines](https://github.com/Pearson-Higher-Ed/docs/blob/master/origami-contributions.md) for contributing before getting started.
+
 ### Toolchain
 
 - [Node.js](http://nodejs.org) `v4+`

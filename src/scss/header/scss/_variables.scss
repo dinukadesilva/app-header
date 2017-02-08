@@ -1,7 +1,3 @@
-////
-/// @group o-header
-/// @link https://origami.pearsoned.com/registry/components/o-header
-////
 
 // Color palettes
 // TODO: replace with o-colors
@@ -18,8 +14,8 @@ $o-header-gray-90: oHeaderMakeGrayColor(90%);
 
 // Basics
 $o-header-sprite-height: 16px !default;
-$o-header-height: 54px !default;
-$o-header-height-mobile: 44px !default;
+$o-header-height: 70px !default;
+$o-header-height-mobile: 60px !default;
 $o-header-padding-horizontal: 15px !default;
 $o-header-bg: #000000 !default;
 $o-header-text-color: #ffffff !default;
@@ -27,7 +23,7 @@ $o-header-base-font-size: 14px !default;
 
 // Links
 $o-header-link-color: $o-header-gray-20 !default;
-$o-header-link-hover-color: $o-header-gray-5 !default;
+$o-header-link-hover-color: #252525 !default;
 
 // Nav
 $o-header-nav-link-active-bg: $o-header-gray-70 !default;

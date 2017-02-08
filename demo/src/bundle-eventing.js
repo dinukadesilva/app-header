@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var element = document.querySelector('.demo-container');
   var config = {
     session: 'session',
-		user: { givenName: 'XXXXXXXXXXXXXXXX' },
+		user: { givenName: 'Sign in' },
 		mode: 'Basic',
 		onLogin: function () {
 			alert('You signed in');

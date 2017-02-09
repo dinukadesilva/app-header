@@ -116,12 +116,6 @@ AppHeader.prototype.setMode = function (mode, options) {
 	this.setState_(newState, true);
 };
 
-
-/**
- * Private methods
- */
-
-
 /**
  * Updates the internal state by replacing the existing object with a new
  * object containing the new state.
@@ -180,20 +174,6 @@ AppHeader.prototype.constructRootEl_ = function (options) {
 	element.setAttribute('role', 'banner');
 	element.classList.add('o-header');
 	element.classList.add('o-header--fixed');
-
-	// element.addEventListener('oDropdownMenu.expand', function (e) {
-	// 	forEach(e.target.querySelectorAll('.o-app-header__icon'), function (idx, item) {
-	// 		item.classList.remove('pe-icon--chevron-down');
-	// 		item.classList.add('pe-icon--chevron-up');
-	// 	});
-	// });
-
-	// element.addEventListener('oDropdownMenu.collapse', function (e) {
-	// 	forEach(e.target.querySelectorAll('.o-app-header__icon'), function (idx, item) {
-	// 		item.classList.remove('pe-icon--chevron-up');
-	// 		item.classList.add('pe-icon--chevron-down');
-	// 	});
-	// });
 
 	return element;
 };
@@ -355,7 +335,7 @@ AppHeader.prototype.getDataForRender_ = function () {
 	if (mode === 'Basic' || mode === 'Course' || mode === 'Legacy Course') {
 		// My Account
 		menuItems.push(createMenuItemDef({
-			text: this.i18n_.translate('My Account'),
+			text: this.i18n_.translate('Account Settings'),
 			href: this.resolveLink_('myAccount')
 		}, {
 			classes: ['o-app-header__menu-item-my-account']

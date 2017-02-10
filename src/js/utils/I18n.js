@@ -20,7 +20,6 @@ I18n.prototype.translate = function (key) {
 I18n.prototype.strings = {
 	en: {
 		'All courses': 'All courses',
-		'Help': 'Help',
 		'Menu': 'Menu',
 		'User account menu': 'User account menu',
 		'My Account': 'My Account',

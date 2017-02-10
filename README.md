@@ -2,7 +2,7 @@
 
 ## Usage
 
-If you are consuming version 1.0.0+ of app-header, you must consume the Elements SDK, as it is a required dependency. It 
+If you are consuming version 1.0.0+ of app-header, you must consume the Elements SDK, as it is a required dependency. It
 is looking for the /fonts assets in the root of your served application.
 
 Assumption: You have Node v4+ and npm 2+ installed.
@@ -19,8 +19,8 @@ Add the following script include to your web page:
 	<script src="path/to/dist.app-header.js"></script>
 ```
 
-Please see the [demo code](https://github.com/Pearson-Higher-Ed/app-header/blob/master/demo/src/bundle-eventing.js) for 
-examples of how to dispatch the event to initialize the app-header. 
+Please see the [demo code](https://github.com/Pearson-Higher-Ed/app-header/blob/master/demo/src/bundle-eventing.js) for
+examples of how to dispatch the event to initialize the app-header.
 
 **Note this example is using CustomEvent, which must be poly-filled for IE.**
 
@@ -32,7 +32,7 @@ document.dispatchEvent(new CustomEvent('o.DOMContentLoaded', {
     }
   }));
 ```
-  
+
 The config property options are outlined further down in this README.
 
 ### CommonJS
@@ -48,7 +48,7 @@ var appHeader = new AppHeader(element, options);
 
 ### Configuration
 
-Configuration properties may be passed as an object argument (preferred) to the constructor or defined in a configuration 
+Configuration properties may be passed as an object argument (preferred) to the constructor or defined in a configuration
 block on the page:
 
 ```html
@@ -197,15 +197,8 @@ new AppHeader({ mode: 'Integration' });
 
 | Event Name               | Description                                         |
 |--------------------------|-----------------------------------------------------|
-| oAppHeader.help.toggle   | Fires when the **Help** nav item is clicked.        |
 | oAppHeader.login         | Fires when the **Sign In** nav item is clicked.     |
 | oAppHeader.logout        | Fires when the **Sign Out** menu item is clicked.   |
-
-```js
-document.addEventListener('oAppHeader.help.toggle', function (e) {
-	// Do something
-});
-```
 
 ## z-index
 
@@ -247,12 +240,12 @@ Please review the [guidelines](https://github.com/Pearson-Higher-Ed/docs/blob/ma
 - [Node.js](http://nodejs.org) `v4+`
 - [webpack](https://webpack.github.io/)
 
-Recommendation: If you are using different node versions on your machine, use [nvm](https://github.com/creationix/nvm) 
+Recommendation: If you are using different node versions on your machine, use [nvm](https://github.com/creationix/nvm)
 to manage them.
 
 ### Demo
 
-The following npm script will build the component, fire up a webpack dev server at localhost:8080/demo, and hot reload 
+The following npm script will build the component, fire up a webpack dev server at localhost:8080/demo, and hot reload
 any saved changes to the source without having to refresh the browser.
 
 	npm install
@@ -263,10 +256,10 @@ any saved changes to the source without having to refresh the browser.
 The following npm script will execute the unit tests.
 
 	npm test
-	
+
 ### How do I debug?
 
-Source maps are enabled for the webpack dev server. Using **Chrome dev tools** - open the "Sources" tab, navigate to 
+Source maps are enabled for the webpack dev server. Using **Chrome dev tools** - open the "Sources" tab, navigate to
 `top/webpack://./`, and you will find the original source files for which you can set breakpoints in Chrome's debugger.
 
 ## License

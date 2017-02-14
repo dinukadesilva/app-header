@@ -20,6 +20,7 @@
 
 .o-header__logo--pearson {
 	width: 100px;
+	height: 37px;
 	background-position: right ($o-header-height-mobile - $o-header-sprite-height) / 2;
 
 	@media (min-width: $o-header-desktop-min) {

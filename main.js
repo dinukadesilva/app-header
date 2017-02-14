@@ -23,7 +23,7 @@ var construct = function (e) {
 		window.console && console.warn('AppHeader received event missing e.detail.element and/or e.detail.config');
 		return;
 	}
-	
+
 	getOrCreateInstance(e.detail.element, e.detail.config);
 };
 

@@ -1,16 +1,11 @@
-// scss-lint:disable ImportantRule
-
-////
-/// @group o-header
-/// @link https://origami.pearsoned.com/registry/components/o-header
-////
+@import 'node_modules/pearson-elements/scss/elements/color/_variables';
 
 @mixin nav-link {
 	display: block;
 	padding: (($o-header-height-mobile - $o-header-nav-link-line-height) / 2) $o-header-nav-link-padding;
 	line-height: $o-header-nav-link-line-height;
 	text-decoration: none;
-	color: #6A7070;
+	color: $pe-color-medium-gray;
 	font-size: 16px;
 
 	&:hover,

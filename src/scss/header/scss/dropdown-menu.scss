@@ -50,14 +50,26 @@
 		}
 	}
 
-	.o-dropdown-menu__menu-item {
-		// scss-lint:disable NestingDepth
-		> a {
-			height: $o-header-dropdown-menu-item-height;
-			padding: (($o-header-dropdown-menu-item-height - $o-header-base-font-size) / 2) 14px;
-			color: #6a7070;
+	.o-app-header__menu-item-my-account {
+		margin-top: 25px !important;
+	}
 
+	.o-dropdown-menu__menu-item {
+		> a {
+			margin-top: 12px;
+			font-size: 14px;
+			line-height: 18px;
+			text-decoration: underline;
 		}
+	}
+
+	.o-dropdown-menu__menu-item-title {
+		line-height: 26px;
+		font-size: 20px;
+		color: #252525;
+		padding-bottom: 25px;
+		border-bottom: 1px solid #D9D9D9;
+		border-bottom-width: 0.5px;
 	}
 
 	.o-dropdown-menu__divider {

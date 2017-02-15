@@ -1,3 +1,5 @@
+@import 'node_modules/pearson-elements/scss/elements/color/_variables';
+
 .o-dropdown-menu {
 	position: relative;
 	font-size: $o-dropdown-menu-base-font-size;
@@ -36,17 +38,17 @@
 .o-dropdown-menu__menu-item > a,
 .o-dropdown-menu__menu-item > button {
 	display: block;
-	padding: $o-dropdown-menu-menu-item-padding;
+	// padding: $o-dropdown-menu-menu-item-padding;
 	clear: both;
 	text-decoration: none;
-	color: #047a9c !important;
+	color: $pe-color-digital-pearson-blue !important;
 	white-space: nowrap;
 	outline-offset: -2px;
 
-	&:hover,
-	&:focus {
-		border: 1px solid white;
-	}
+	// &:hover,
+	// &:focus {
+	// 	border: 1px solid white;
+	// }
 
 }
 
@@ -81,7 +83,7 @@
 }
 
 .o-dropdown-menu__heading:not(.o-dropdown-menu__menu-item) {
-	padding: $o-dropdown-menu-menu-item-padding;
+	// padding: $o-dropdown-menu-menu-item-padding;
 	color: $o-dropdown-menu-heading-color;
 
 	> a {
@@ -109,52 +111,3 @@
 	}
 
 }
-
-// // Inverse
-// .o-dropdown-menu--inverse {
-//
-// 	.o-dropdown-menu__menu-items {
-// 		background-color: $o-dropdown-menu-bg-inverse;
-// 		border: 1px solid $o-dropdown-menu-border-inverse;
-// 	}
-//
-// 	.o-dropdown-menu__menu-item > a,
-// 	.o-dropdown-menu__menu-item > button {
-// 		color: $o-dropdown-menu-link-color-inverse;
-//
-// 		&:hover,
-// 		&:focus {
-// 			color: $o-dropdown-menu-link-hover-color-inverse;
-// 			background-color: $o-dropdown-menu-link-hover-bg-inverse;
-// 		}
-// 	}
-//
-// 	.o-dropdown-menu__menu-item > button {
-// 		background-color: $o-dropdown-menu-bg-inverse;
-// 	}
-//
-// 	.o-dropdown-menu__menu-item--disabled > a,
-// 	.o-dropdown-menu__menu-item > button:disabled {
-//
-// 		&,
-// 		&:hover,
-// 		&:focus {
-// 			color: $o-dropdown-menu-link-disabled-color-inverse;
-// 		}
-//
-// 		// Remove hover/focus effects
-// 		&:hover,
-// 		&:focus {
-// 			text-decoration: none;
-// 			background-color: transparent;
-// 			background-image: none;
-// 			cursor: not-allowed;
-// 		}
-//
-// 	}
-//
-// 	.o-dropdown-menu__divider {
-// 		background-color: $o-dropdown-menu-divider-bg-inverse;
-// 	}
-//
-// }

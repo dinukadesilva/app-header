@@ -17,8 +17,6 @@
 	margin: 0;
 	list-style: none;
 	text-align: left;
-	// background-color: $o-dropdown-menu-bg;
-	// border: 1px solid $o-dropdown-menu-border;
 }
 
 .o-dropdown-menu--expanded > .o-dropdown-menu__menu-items {
@@ -38,18 +36,11 @@
 .o-dropdown-menu__menu-item > a,
 .o-dropdown-menu__menu-item > button {
 	display: block;
-	// padding: $o-dropdown-menu-menu-item-padding;
 	clear: both;
 	text-decoration: none;
 	color: $pe-color-digital-pearson-blue !important;
 	white-space: nowrap;
 	outline-offset: -2px;
-
-	// &:hover,
-	// &:focus {
-	// 	border: 1px solid white;
-	// }
-
 }
 
 .o-dropdown-menu__menu-item > button {
@@ -67,6 +58,15 @@
 		padding: 0;
 		border: 0;
 	}
+}
+
+.o-dropdown-menu__menu-close {
+	position: relative;
+	border: none;
+	background: transparent;
+	float: right;
+	top: -57px;
+	padding: 0;
 }
 
 // Divider

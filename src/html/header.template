@@ -34,7 +34,18 @@
 									<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">{translate('Menu')}</span>
 								</a>
 								<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-user-menu-label">
-									<h2 class="o-dropdown-menu__menu-item-title">{translate('My Account')}</h2>
+									<li>
+										<h2 class="o-dropdown-menu__menu-item-title">{translate('My Account')}</h2>
+										<button class="o-dropdown-menu__menu-close">
+											<svg role="img"
+													aria-labelledby="r2"
+													focusable="false"
+													class="pe-icon--remove-sm-24">
+												<title id="r2">Close dropdown menu</title>
+												<use xlink:href="#remove-sm-24"></use>
+											</svg>
+										</button>
+									</li>
 									<li class="{item.classes}"
 										role="presentation"
 										each="item, item.key in data.menuItems">

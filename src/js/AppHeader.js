@@ -5,7 +5,7 @@ var dom = require('./utils/dom');
 var get = require('./utils/get');
 var forEach = require('./utils/forEach');
 var patch = require('../../lib/incremental-dom').patch;
-var template = require('./template');
+var template = require('./test');
 var I18n = require('./utils/I18n');
 var DropdownMenu = require('../scss/dropdown/main.js');
 

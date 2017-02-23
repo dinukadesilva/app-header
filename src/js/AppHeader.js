@@ -388,7 +388,8 @@ AppHeader.prototype.render_ = function () {
 	var data = this.getDataForRender_();
 
 	var handlers = {
-		handleLogin: this.getHandler_('onLogin', this.constants_.LOGIN_EVENT)
+		handleLogin: this.getHandler_('onLogin', this.constants_.LOGIN_EVENT),
+		handleHelpNavItemClick: this.handleHelpNavItemClick_.bind(this)
 	};
 
 	this.setThemeForMode_();
@@ -398,6 +399,23 @@ AppHeader.prototype.render_ = function () {
 		DropdownMenu.init(element);
 		dom.dispatchEvent(element, 'oAppHeader.didUpdate');
 	});
+};
+
+AppHeader.prototype.handleHelpNavItemClick_ = function (e) {
+	e.preventDefault();
+
+	// Since we prevent the default action, the dropdown menu nav items
+	// will not collapse automatically.
+	var accountMenuEl = this.element.querySelector('.o-app-header__menu-menu');
+
+	if (accountMenuEl) {
+		accountMenuEl.classList.remove('o-dropdown-menu--expanded');
+
+		var accountMenuIconEls = accountMenuEl.querySelectorAll('.o-app-header__icon');
+
+	}
+
+	dom.dispatchEvent(this.element, 'oAppHeader.help.toggle');
 };
 
 

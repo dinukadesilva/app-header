@@ -28,6 +28,18 @@
 	}
 }
 
+.o-header__nav-item a i {
+	height: 20px;
+	width: 20px;
+	overflow: hidden;
+	display: block;
+}
+
+.o-header__nav-item:hover .hover-image,
+.o-header__nav-item:focus .hover-image {
+	margin-top: -20px;
+}
+
 .o-header__nav-item--active {
 	background: $o-header-nav-link-active-bg;
 }

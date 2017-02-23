@@ -20,6 +20,29 @@
 				<ul class="o-header__nav-items">
 					<li class="o-header__nav-item o-app-header__nav-item-notification" aria-hidden="true">
 					</li>
+					<li class="o-header__nav-item o-app-header__nav-item-help">
+						<a href="#" onclick="{handlers.handleHelpNavItemClick($event)}" if="!data.help">
+							<i>
+								<img class="hover-image" src="../../o-header/img/help-hover&focus.png" alt="help button">
+							</i>
+						</a>
+						<a href="{data.help}" if="typeof data.help === 'string'"></a>
+						<div class="o-dropdown-menu o-dropdown-menu--right" if="typeof data.help === 'object'">
+							<a href="#"
+								id="o-app-header-help-menu-toggle"
+								class="o-dropdown-menu__toggle"
+								data-toggle="dropdown-menu"
+								aria-haspopup="true"
+								aria-expanded="false"></a>
+							<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-menu-toggle-help">
+								<li class="o-dropdown-menu__menu-item" role="presentation" each="key in data.help">
+									<a role="menuitem" href="{data.help[key]}" tabindex="-1" if="typeof data.help[key] === 'string'">{key}</a>
+									<a role="menuitem" href="{data.help[key].href}" tabindex="-1" target="{data.help[key].target}" if="data.help[key].href">{key}</a>
+									<a role="menuitem" href="#" tabindex="-1" onclick="{data.help[key].onClick($event)}" if="typeof data.help[key].onClick === 'function'">{key}</a>
+								</li>
+							</ul>
+						</div>
+					</li>
 					<li class="{data.menuNavItemClasses}">
 						<if condition="data.mode === 'Signed Out' && data.showLoginControls">
 							<a href="#" onclick="{handlers.handleLogin($event)}">{translate('Sign In')}</a>
@@ -36,7 +59,7 @@
 									<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible">{data.user.givenName}</span>
 									<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">
 										<i>
-											<img src="../../o-header/img/person-hover&normal.png" alt="account button">
+											<img class="hover-image" src="../../o-header/img/person-hover&normal.png" alt="account button">
 										</i>
 									</span>
 								</a>

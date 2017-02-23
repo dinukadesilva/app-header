@@ -35,6 +35,47 @@ function template (data, handlers, translate) {
         elementOpen("ul", null, ["class", "o-header__nav-items"])
           elementOpen("li", null, ["class", "o-header__nav-item o-app-header__nav-item-notification", "aria-hidden", "true"])
           elementClose("li")
+          elementOpen("li", null, ["class", "o-header__nav-item o-app-header__nav-item-help"])
+            if (!data.help) {
+              elementOpen("a", null, ["href", "#"], "onclick", function ($event) {handlers.handleHelpNavItemClick($event)})
+                elementOpen("i")
+                  elementOpen("img", null, ["class", "hover-image", "src", "../../o-header/img/help-hover&focus.png", "alt", "help button"])
+                  elementClose("img")
+                elementClose("i")
+              elementClose("a")
+            }
+            if (typeof data.help === 'string') {
+              elementOpen("a", null, null, "href", data.help)
+              elementClose("a")
+            }
+            if (typeof data.help === 'object') {
+              elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right"])
+                elementOpen("a", null, ["href", "#", "id", "o-app-header-help-menu-toggle", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
+                elementClose("a")
+                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-menu-toggle-help"])
+                  ;(Array.isArray(data.help) ? data.help : Object.keys(data.help)).forEach(function(key, $index) {
+                    elementOpen("li", $index, ["class", "o-dropdown-menu__menu-item", "role", "presentation"])
+                      if (typeof data.help[key] === 'string') {
+                        elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", data.help[key])
+                          text("" + (key) + "")
+                        elementClose("a")
+                      }
+                      if (data.help[key].href) {
+                        elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", data.help[key].href, "target", data.help[key].target)
+                          text("" + (key) + "")
+                        elementClose("a")
+                      }
+                      if (typeof data.help[key].onClick === 'function') {
+                        elementOpen("a", null, ["role", "menuitem", "href", "#", "tabindex", "-1"], "onclick", function ($event) {data.help[key].onClick($event)})
+                          text("" + (key) + "")
+                        elementClose("a")
+                      }
+                    elementClose("li")
+                  }, data.help)
+                elementClose("ul")
+              elementClose("div")
+            }
+          elementClose("li")
           elementOpen("li", null, null, "class", data.menuNavItemClasses)
             if (data.mode === 'Signed Out' && data.showLoginControls) {
               elementOpen("a", null, ["href", "#"], "onclick", function ($event) {handlers.handleLogin($event)})
@@ -52,7 +93,7 @@ function template (data, handlers, translate) {
                   elementClose("span")
                   elementOpen("span", null, ["class", "o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])
                     elementOpen("i")
-                      elementOpen("img", null, ["src", "../../o-header/img/person-hover&normal.png", "alt", "account button"])
+                      elementOpen("img", null, ["class", "hover-image", "src", "../../o-header/img/person-hover&normal.png", "alt", "account button"])
                       elementClose("img")
                     elementClose("i")
                   elementClose("span")

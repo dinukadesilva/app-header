@@ -32,23 +32,16 @@
 	left: auto;
 }
 
- i {
+ .o-dropdown-menu__toggle i {
 	height: 20px;
 	width: 20px;
 	overflow: hidden;
 	display: block;
 }
 
-.o-dropdown-menu__toggle:hover {
-	img {
-		margin-top: -20px;
-	}
-}
-
-.o-dropdown-menu__toggle:focus {
-	img {
-		margin-top: -20px;
-	}
+.o-dropdown-menu__toggle:hover .hover-image,
+.o-dropdown-menu__toggle:focus .hover-image {
+	margin-top: -20px;
 }
 
 // Menu item

@@ -38,6 +38,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Event Listeners
 
+  // Help menu
+  document.addEventListener('oAppHeader.help.toggle', function () {
+		alert('You toggled help');
+		console.log('oAppHeader.help.toggle');
+	});
+
   // Sign out event
   document.addEventListener('oAppHeader.logout', function () {
 		console.log('oAppHeader.logout');

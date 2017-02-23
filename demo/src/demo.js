@@ -46,6 +46,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	console.info(config);
 	var appHeader = new AppHeader(config);
 
+	// Help menu
+	document.addEventListener('oAppHeader.help.toggle', function () {
+		alert('You toggled help');
+		console.log('oAppHeader.help.toggle');
+	});
+
 	// Login/logout events
 	document.addEventListener('oAppHeader.login', function () {
 		console.log('oAppHeader.login');

@@ -40,11 +40,15 @@
 }
 
 .o-dropdown-menu__toggle:hover {
-	margin-top: -20px;
+	img {
+		margin-top: -20px;
+	}
 }
 
-.o-header__viewport-tablet--hidden > img {
-	margin-top: -20px;
+.o-dropdown-menu__toggle:focus {
+	img {
+		margin-top: -20px;
+	}
 }
 
 // Menu item

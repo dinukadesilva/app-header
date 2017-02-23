@@ -19,6 +19,8 @@ function template (data, handlers, translate) {
         if (data.mode === 'Basic' || data.mode === 'Course' || data.mode === 'Legacy Course') {
           elementOpen("a", null, null, "href", data.links.home)
             elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
+              elementOpen("img", null, ["src", "../../o-header/img/logo_large.png", "alt", "console home"])
+              elementClose("img")
             elementClose("div")
           elementClose("a")
         }
@@ -46,10 +48,11 @@ function template (data, handlers, translate) {
                     text("" + (translate('User account menu')) + "")
                   elementClose("span")
                   elementOpen("span", null, ["class", "o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible"])
-                    text("" + (data.user.givenName || translate('Menu')) + "")
+                    text("" + (data.user.givenName) + "")
                   elementClose("span")
                   elementOpen("span", null, ["class", "o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])
-                    text("" + (translate('Menu')) + "")
+                    elementOpen("img", null, ["src", "../../o-header/img/person-hover&normal.png", "alt", "account button"])
+                    elementClose("img")
                   elementClose("span")
                 elementClose("a")
                 elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-user-menu-label"])

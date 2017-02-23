@@ -4,11 +4,14 @@
 			<div class="o-header__brand">
 				<if condition="data.mode === 'Basic' || data.mode === 'Course' || data.mode === 'Legacy Course'">
 					<a href="{data.links.home}">
-						<div class="o-header__logo o-header__logo--pearson"></div>
+						<div class="o-header__logo o-header__logo--pearson">
+							<img src="../../o-header/img/logo_large.png" alt="console home">
+						</div>
 					</a>
 				</if>
 				<if condition="data.mode ==='Signed Out' || data.mode === 'Integration'">
-					<div class="o-header__logo o-header__logo--pearson"></div>
+					<div class="o-header__logo o-header__logo--pearson">
+					</div>
 				</if>
 			</div>
 		</section>
@@ -30,8 +33,10 @@
 									aria-haspopup="true"
 									aria-expanded="false">
 									<span id="o-app-header-user-menu-label" class="o-app-header--sr-only">{translate('User account menu')}</span>
-									<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible">{data.user.givenName || translate('Menu')}</span>
-									<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">{translate('Menu')}</span>
+									<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible">{data.user.givenName}</span>
+									<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">
+										<img src="../../o-header/img/person-hover&normal.png" alt="account button">
+									</span>
 								</a>
 								<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-user-menu-label">
 									<li>

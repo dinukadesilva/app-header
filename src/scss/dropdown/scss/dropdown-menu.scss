@@ -32,6 +32,16 @@
 	left: auto;
 }
 
+.o-header__viewport-tablet--hidden {
+	height: 20px;
+	width: 20px;
+	overflow: hidden;
+}
+
+.o-header__viewport-tablet--hidden > img:hover {
+	margin-top: -20px;
+}
+
 // Menu item
 .o-dropdown-menu__menu-item > a,
 .o-dropdown-menu__menu-item > button {

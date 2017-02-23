@@ -36,15 +36,9 @@
 								<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-user-menu-label">
 									<li>
 										<h2 class="o-dropdown-menu__menu-item-title">{translate('My Account')}</h2>
-										<button class="o-dropdown-menu__menu-close">
-											<svg role="img"
-													aria-labelledby="r2"
-													focusable="false"
-													class="pe-icon--remove-sm-24">
-												<title id="r2">Close dropdown menu</title>
-												<use xlink:href="#remove-sm-24"></use>
-											</svg>
-										</button>
+										<div class="o-dropdown-menu__menu-close">
+											<img src="../../o-header/img/close.png" alt="close-button">
+										</div>
 									</li>
 									<li class="{item.classes}"
 										role="presentation"

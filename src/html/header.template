@@ -21,7 +21,7 @@
 					<li class="o-header__nav-item o-app-header__nav-item-notification" aria-hidden="true">
 					</li>
 					<li class="o-header__nav-item o-app-header__nav-item-help">
-						<a href="#" onclick="{handlers.handleHelpNavItemClick($event)}" if="!data.help">
+						<a href="#" id="header-nav-link" onclick="{handlers.handleHelpNavItemClick($event)}" if="!data.help">
 							<i>
 								<img class="hover-image" src="../../o-header/img/help-hover&focus.png" alt="help button">
 							</i>
@@ -52,6 +52,7 @@
 							<div class="o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu">
 								<a href="#"
 									class="o-dropdown-menu__toggle"
+									id="header-nav-link"
 									data-toggle="dropdown-menu"
 									aria-haspopup="true"
 									aria-expanded="false">

@@ -28,8 +28,8 @@
 
 }
 
-.o-header__logo--pearson ~ img {
-	height: 50px;
+.o-header__logo--pearson img {
+	height: 37px;
 
 	@media (max-width: $o-header-phone-max) {
 		height: 30px;

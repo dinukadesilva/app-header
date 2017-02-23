@@ -1,6 +1,7 @@
 .o-app-header {
 	-webkit-font-smoothing: antialiased;
 	z-index: $o-app-header-z-index;
+	padding: 0 15px;
 }
 
 .o-app-header__username {

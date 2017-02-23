@@ -56,7 +56,7 @@ $o-header-desktop-min: 1024px !default;
 $o-header-dropdown-menu-items-breakpoint: 479px !default;
 
 // Width at which the height changes
-$o-header-height-breakpoint: $o-header-desktop-min !default;
+$o-header-height-breakpoint: $o-header-phone-max !default;
 
 /// Theme: light
 

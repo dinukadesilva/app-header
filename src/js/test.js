@@ -37,7 +37,7 @@ function template (data, handlers, translate) {
           elementClose("li")
           elementOpen("li", null, ["class", "o-header__nav-item o-app-header__nav-item-help"])
             if (!data.help) {
-              elementOpen("a", null, ["href", "#"], "onclick", function ($event) {handlers.handleHelpNavItemClick($event)})
+              elementOpen("a", null, ["href", "#", "id", "header-nav-link"], "onclick", function ($event) {handlers.handleHelpNavItemClick($event)})
                 elementOpen("i")
                   elementOpen("img", null, ["class", "hover-image", "src", "../../o-header/img/help-hover&focus.png", "alt", "help button"])
                   elementClose("img")
@@ -84,7 +84,7 @@ function template (data, handlers, translate) {
             }
             if (data.mode === 'Basic' || data.mode === 'Course' || data.mode === 'Legacy Course') {
               elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu"])
-                elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
+                elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "id", "header-nav-link", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
                   elementOpen("span", null, ["id", "o-app-header-user-menu-label", "class", "o-app-header--sr-only"])
                     text("" + (translate('User account menu')) + "")
                   elementClose("span")

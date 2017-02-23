@@ -35,7 +35,9 @@
 									<span id="o-app-header-user-menu-label" class="o-app-header--sr-only">{translate('User account menu')}</span>
 									<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible">{data.user.givenName}</span>
 									<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">
-										<img src="../../o-header/img/person-hover&normal.png" alt="account button">
+										<i>
+											<img src="../../o-header/img/person-hover&normal.png" alt="account button">
+										</i>
 									</span>
 								</a>
 								<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-user-menu-label">

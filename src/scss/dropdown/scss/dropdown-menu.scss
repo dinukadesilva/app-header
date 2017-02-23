@@ -32,13 +32,18 @@
 	left: auto;
 }
 
-.o-header__viewport-tablet--hidden {
+ i {
 	height: 20px;
 	width: 20px;
 	overflow: hidden;
+	display: block;
 }
 
-.o-header__viewport-tablet--hidden > img:hover {
+.o-dropdown-menu__toggle:hover {
+	margin-top: -20px;
+}
+
+.o-header__viewport-tablet--hidden > img {
 	margin-top: -20px;
 }
 

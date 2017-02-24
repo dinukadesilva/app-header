@@ -22,10 +22,6 @@
 		@include nav-link;
 	}
 
-
-	@media (min-width: $o-header-desktop-min) {
-		height: $o-header-height;
-	}
 }
 
 .o-header__nav-item a i {

@@ -13,7 +13,7 @@
 		color: $o-header-link-hover-color;
 	}
 
-	@media (min-width: $o-header-desktop-min) {
+	@media (min-width: 768px) {
 		padding: (($o-header-height - $o-header-nav-link-line-height) / 2) $o-header-nav-link-padding;
 	}
 }

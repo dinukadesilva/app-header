@@ -42,7 +42,7 @@
 		clear: both;
 	}
 
-	@media (min-width: $o-header-height-breakpoint) {
+	@media (min-width: 768px) {
 		min-height: $o-header-height;
 	}
 }

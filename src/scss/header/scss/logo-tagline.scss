@@ -12,7 +12,7 @@
 .o-header__tagline--always-learning {
 	height: $o-header-height-mobile;
 
-	@media (min-width: $o-header-desktop-min) {
+	@media (min-width: 768px) {
 		height: $o-header-height;
 	}
 }

@@ -7,8 +7,4 @@
 	float: left;
 	height: $o-header-height-mobile;
 	padding: 0;
-
-	@media (min-width: $o-header-desktop-min) {
-		height: $o-header-height;
-	}
 }

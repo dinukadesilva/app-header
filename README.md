@@ -197,8 +197,15 @@ new AppHeader({ mode: 'Integration' });
 
 | Event Name               | Description                                         |
 |--------------------------|-----------------------------------------------------|
+| oAppHeader.help.toggle	 | Fires when the **Help** nav item is clicked.				 |
 | oAppHeader.login         | Fires when the **Sign In** nav item is clicked.     |
 | oAppHeader.logout        | Fires when the **Sign Out** menu item is clicked.   |
+
+```js
+document.addEventListener('oAppHeader.help.toggle', function (e) {
+	// Do stuff
+});
+```
 
 ## z-index
 

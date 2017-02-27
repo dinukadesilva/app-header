@@ -19,6 +19,8 @@ function template (data, handlers, translate) {
         if (data.mode === 'Basic' || data.mode === 'Course' || data.mode === 'Legacy Course') {
           elementOpen("a", null, null, "href", data.links.home)
             elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
+              elementOpen("img", null, ["src", "../../o-header/img/logo_large.png", "alt", "console home"])
+              elementClose("img")
             elementClose("div")
           elementClose("a")
         }
@@ -33,6 +35,47 @@ function template (data, handlers, translate) {
         elementOpen("ul", null, ["class", "o-header__nav-items"])
           elementOpen("li", null, ["class", "o-header__nav-item o-app-header__nav-item-notification", "aria-hidden", "true"])
           elementClose("li")
+          elementOpen("li", null, ["class", "o-header__nav-item o-app-header__nav-item-help"])
+            if (!data.help) {
+              elementOpen("a", null, ["href", "#", "id", "header-nav-link"], "onclick", function ($event) {handlers.handleHelpNavItemClick($event)})
+                elementOpen("i")
+                  elementOpen("img", null, ["class", "hover-image", "src", "../../o-header/img/help-hover&focus.png", "alt", "help button"])
+                  elementClose("img")
+                elementClose("i")
+              elementClose("a")
+            }
+            if (typeof data.help === 'string') {
+              elementOpen("a", null, null, "href", data.help)
+              elementClose("a")
+            }
+            if (typeof data.help === 'object') {
+              elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right"])
+                elementOpen("a", null, ["href", "#", "id", "o-app-header-help-menu-toggle", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
+                elementClose("a")
+                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-menu-toggle-help"])
+                  ;(Array.isArray(data.help) ? data.help : Object.keys(data.help)).forEach(function(key, $index) {
+                    elementOpen("li", $index, ["class", "o-dropdown-menu__menu-item", "role", "presentation"])
+                      if (typeof data.help[key] === 'string') {
+                        elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", data.help[key])
+                          text("" + (key) + "")
+                        elementClose("a")
+                      }
+                      if (data.help[key].href) {
+                        elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", data.help[key].href, "target", data.help[key].target)
+                          text("" + (key) + "")
+                        elementClose("a")
+                      }
+                      if (typeof data.help[key].onClick === 'function') {
+                        elementOpen("a", null, ["role", "menuitem", "href", "#", "tabindex", "-1"], "onclick", function ($event) {data.help[key].onClick($event)})
+                          text("" + (key) + "")
+                        elementClose("a")
+                      }
+                    elementClose("li")
+                  }, data.help)
+                elementClose("ul")
+              elementClose("div")
+            }
+          elementClose("li")
           elementOpen("li", null, null, "class", data.menuNavItemClasses)
             if (data.mode === 'Signed Out' && data.showLoginControls) {
               elementOpen("a", null, ["href", "#"], "onclick", function ($event) {handlers.handleLogin($event)})
@@ -41,21 +84,30 @@ function template (data, handlers, translate) {
             }
             if (data.mode === 'Basic' || data.mode === 'Course' || data.mode === 'Legacy Course') {
               elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu"])
-                elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
+                elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "id", "header-nav-link", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
                   elementOpen("span", null, ["id", "o-app-header-user-menu-label", "class", "o-app-header--sr-only"])
                     text("" + (translate('User account menu')) + "")
                   elementClose("span")
                   elementOpen("span", null, ["class", "o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible"])
-                    text("" + (data.user.givenName || translate('Menu')) + "")
+                    text("" + (data.user.givenName) + "")
                   elementClose("span")
                   elementOpen("span", null, ["class", "o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])
-                    text("" + (translate('Menu')) + "")
+                    elementOpen("i")
+                      elementOpen("img", null, ["class", "hover-image", "src", "../../o-header/img/person-hover&normal.png", "alt", "account button"])
+                      elementClose("img")
+                    elementClose("i")
                   elementClose("span")
                 elementClose("a")
                 elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-user-menu-label"])
-                  elementOpen("h2", null, ["class", "o-dropdown-menu__menu-item-title"])
-                    text("" + (translate('My Account')) + "")
-                  elementClose("h2")
+                  elementOpen("li")
+                    elementOpen("h2", null, ["class", "o-dropdown-menu__menu-item-title"])
+                      text("" + (translate('My Account')) + "")
+                    elementClose("h2")
+                    elementOpen("div", null, ["class", "o-dropdown-menu__menu-close"])
+                      elementOpen("img", null, ["src", "../../o-header/img/close.png", "alt", "close-button"])
+                      elementClose("img")
+                    elementClose("div")
+                  elementClose("li")
                   ;(Array.isArray(data.menuItems) ? data.menuItems : Object.keys(data.menuItems)).forEach(function(item, $index) {
                     elementOpen("li", item.key, ["role", "presentation"], "class", item.classes)
                       if (item.href) {

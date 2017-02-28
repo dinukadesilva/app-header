@@ -23,7 +23,7 @@
 					<li class="o-header__nav-item o-app-header__nav-item-help">
 						<a href="#" id="header-nav-link" onclick="{handlers.handleHelpNavItemClick($event)}" if="!data.help">
 							<i>
-								<img class="hover-image" src="../../o-header/img/help-hover&focus.png" alt="help button">
+								<img class="hover-image" src="../../o-header/img/help-hover_normal.png" alt="help button">
 							</i>
 						</a>
 						<a href="{data.help}" if="typeof data.help === 'string'"></a>
@@ -60,7 +60,7 @@
 									<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible">{data.user.givenName}</span>
 									<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">
 										<i>
-											<img class="hover-image" src="../../o-header/img/person-hover&normal.png" alt="account button">
+											<img class="hover-image" src="../../o-header/img/person-hover_normal.png" alt="account button">
 										</i>
 									</span>
 								</a>

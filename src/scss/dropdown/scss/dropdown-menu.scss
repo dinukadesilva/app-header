@@ -7,7 +7,7 @@
 
 // Menu item container
 .o-dropdown-menu__menu-items {
-	position: absolute;
+	position: fixed;
 	left: 0;
 	z-index: $o-dropdown-menu-z-index;
 	display: none;

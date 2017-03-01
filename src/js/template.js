@@ -16,7 +16,7 @@ function template (data, handlers, translate) {
   elementOpen("div", null, ["class", "o-header__container"])
     elementOpen("section", null, ["class", "o-header__section"])
       elementOpen("div", null, ["class", "o-header__brand"])
-        if (data.mode === 'Basic' || data.mode === 'Course' || data.mode === 'Legacy Course') {
+        if (data.mode === 'Basic' || data.mode === 'Legacy Course') {
           elementOpen("a", null, null, "href", data.links.home)
             elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
               elementOpen("img", null, ["src", "../../img/logo_large.png", "alt", "console home"])
@@ -84,7 +84,7 @@ function template (data, handlers, translate) {
                 text("" + (translate('Sign In')) + "")
               elementClose("a")
             }
-            if (data.mode === 'Basic' || data.mode === 'Course' || data.mode === 'Legacy Course') {
+            if (data.mode === 'Basic' || data.mode === 'Legacy Course') {
               elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu"])
                 elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "id", "header-nav-link", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
                   elementOpen("span", null, ["id", "o-app-header-user-menu-label", "class", "o-app-header--sr-only"])

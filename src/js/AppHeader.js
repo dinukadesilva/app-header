@@ -22,7 +22,7 @@ function AppHeader(element, options) {
 
 
 AppHeader.prototype.constants_ = {
-	MODES: ['Signed Out', 'Basic', 'Course', 'Integration', 'Legacy Course'],
+	MODES: ['Signed Out', 'Basic', 'Integration', 'Legacy Course'],
 	MAX_COURSE_ITEMS: 5,
 	LOGIN_EVENT: 'oAppHeader.login',
 	LOGOUT_EVENT: 'oAppHeader.logout'
@@ -180,7 +180,7 @@ AppHeader.prototype.constructRootEl_ = function (options) {
 
 
 AppHeader.prototype.setThemeForMode_ = function () {
-	if ((this.state_.mode === 'Course' || this.state_.mode === 'Legacy Course') &&
+	if (this.state_.mode === 'Legacy Course' &&
 		this.state_.theme === 'light') {
 		this.element.classList.add('o-header--theme-light');
 	} else {
@@ -221,7 +221,6 @@ AppHeader.prototype.getDataForRender_ = function () {
 	}
 
 	if (mode === 'Basic' ||
-		mode === 'Course' ||
 		mode === 'Legacy Course') {
 		menuNavItemClasses.push('o-app-header__nav-item-menu');
 	}
@@ -271,7 +270,7 @@ AppHeader.prototype.getDataForRender_ = function () {
 		}
 	}
 
-	if (mode === 'Course' || mode === 'Legacy Course') {
+	if (mode === 'Legacy Course') {
 		menuItems.push(createMenuItemDef({
 			text: this.i18n_.translate('All courses'),
 			href: this.resolveLink_('home')
@@ -332,7 +331,7 @@ AppHeader.prototype.getDataForRender_ = function () {
 		menuItems.push(createMenuItemDef({}, { classes: ['o-dropdown-menu__divider'] }));
 	}
 
-	if (mode === 'Basic' || mode === 'Course' || mode === 'Legacy Course') {
+	if (mode === 'Basic' || mode === 'Legacy Course') {
 		// My Account
 		menuItems.push(createMenuItemDef({
 			text: this.i18n_.translate('Account Settings'),

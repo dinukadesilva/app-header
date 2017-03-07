@@ -6,7 +6,7 @@ node_js:
 script:
 - npm run ci
 - chmod 777 ./test/shell_scripts/run_tests.sh
-- "./test/shell_scripts/run_tests.sh"
+- ./test/shell_scripts/run_tests.sh
 after_success:
 - cat ./build/reports/coverage/coverage.lcov | node_modules/coveralls/bin/coveralls.js
 after_failure:
@@ -16,7 +16,7 @@ deploy:
   provider: npm
   email: pearson-design-accelerator@pearson.com
   api_key:
-    secure: I7MhEd++LqQyxQcivH7thVwazRHmV1By4TzjdKicHHur4qHaQzjiq5a5pM7LtPzrDbgxZapBwA/9okz13iSGeqG+/Nks8Nc2ac1wGOpnewnOSNnCw4e8tJT7Ug88s5cdcIfKeA0GhzUrRie5xEADBk1+9T+UXUujGiUNYcVftmqwV2xEHeE2FqjLGat0OLLx33llpM7ppt3pC00W7dRz/1IEY1Ov/U4lSqEqlppGfbLhi3X7SrgK66eqAiBS21lHUc2EF+/9Z5cebYjVMB6Wlbb6DcbYsm2rUEXiNmKu23P89yOBgLx9VEImDnyfOAfwGXX0H8fHgDXXC0dQboC9pCcBMbe6v4PH9zg0qs2pfUbsBTEX8m376dI1jm8RZhwVAQ0o1wsqLe0d11+p9hEROp0vs4Vgi7Uern7Fzyvpsi/b/ZpxIxbldqbhyb9GVgcrepfBvG3OFCVxNTcjYjyUjn1BATHZA9MdFQgsZTf//AjsbuQp6KGEPzCUTRLlzc5TvJ6LwsPw5Kvbj5hTLUblcgbPNTQH31vcHxkqWaQ8cnwSFinjiKJtdYn5SCHHpMLxdGSg2Pr16mNP+uByf6/A7tpb304TOJGzv3WQdZrwaOTG0KFRIGb4Lurjn+sZXzIsKkboUsJDijdnuxOLCl5a7aPT0JfP+I2IR0GHcAdpG0M=
+    secure: qgHH2/jcM35KN9qLFLdn4UBXCy54U8kqmCy/ami1TLbYwZ+96J1zxDaSN0erygKVk18St/FO+kAnyRpzytvFSckIWpnGH7/THdnEqeIhzrXFCSJQGiyrBqdIHshLBIi78kmws5aJxo5GT2A31ch5+N0NUBhdpfLpJwtjVPsdVkx7Xjjl+nBrdjn8+p1npgIYpOen6GJEStqLNYessd6BAa8n8sKEoKdAmi7omYtiFemUgF7kVUqPCD8xqfD0LTPZOVvgMcbGYfQz3Nmenw7EWNOs6PYWlsg5H2IJMG4HJzv1Gy/6Vy8m/90S99dMaFStrSnMqyyajb+TPUR6FKYInHk13QDcCwdTFGhIDqWVPhlehEku3sOZ4uVNxKvyRS53JwhiYdz/uT6E6Fgl11t4CXr5kNc395WoMfs4nuesl/5Mz5vg/J4gnghQUcoVawXSxuetKkY+45OXyVQqFzVZAzlUFThfDT2YKE7VbevasfMuLAOF8gKrqTsiOhqI4ptsH3PW1mnnDqKzQYB/zj0iYAPIQwiZlnQVbc79RLpoJ14fOVnbZsegenPSjXN5uGNwFtt9eoFC/5wYKtGUVDHEgu3W6HJz3eBogmzJq2w2y8STnP36zSrzSQGsEDqMeWqGvEZZbrXKEzHuQgeufFsdi2MfOA1/26mUcL8C4jU/BGQ=
   skip_cleanup: true
   on:
     branch: master

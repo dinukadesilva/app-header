@@ -112,19 +112,6 @@ describe('AppHeader:', function () {
 			expect(appHeader.getMode()).to.be('Signed Out');
 		});
 
-		it('should set the light theme when options.mode is \'Course\' and options.theme is \'light\'', function () {
-			var options = {
-				mode: 'Course',
-				theme: 'light'
-			};
-
-			new AppHeader(options);
-
-			var appHeaderEl = getHeaderEl();
-
-			expect(appHeaderEl.classList.contains('o-header--theme-light')).to.be(true);
-		});
-
 		describe('Help nav item:', function () {
 
 			it('should emit oAppHeader.help.toggle when the Help nav item is clicked', function (done) {
@@ -343,18 +330,6 @@ describe('AppHeader:', function () {
 			expect(usernameEl.textContent.trim()).to.be(user.givenName);
 		});
 
-		it('should render a default string when the mode is \'Basic\' and options.user.givenName is undefined', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-			var user = { givenName: undefined };
-
-			appHeader.setMode('Basic', { user: user });
-
-			var usernameEl = getUsernameEl(appHeaderEl);
-
-			expect(usernameEl.textContent.trim()).to.be('Menu');
-		});
-
 		it('should render the My Account menu item when the mode is \'Basic\'', function () {
 			var appHeader = new AppHeader();
 			var appHeaderEl = getHeaderEl();
@@ -483,122 +458,6 @@ describe('AppHeader:', function () {
 				.to.throwException(/Expected \'onLogout\' to be a function/);
 		});
 
-		it('should render the logo as a link when the mode is \'Course\'', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-
-			appHeader.setMode('Course');
-
-			var logoEl = getLogoEl(appHeaderEl);
-
-			expect(logoEl.parentElement.tagName.toLowerCase()).to.be('a');
-		});
-
-		it('should render user.givenName when the mode is \'Course\' and options.user.givenName is defined', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-			var user = { givenName: 'Foo' };
-
-			appHeader.setMode('Course', { user: user });
-
-			var usernameEl = getUsernameEl(appHeaderEl);
-
-			expect(usernameEl.textContent.trim()).to.be(user.givenName);
-		});
-
-		it('should render a default string when the mode is \'Course\' and options.user.givenName is undefined', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-			var user = { givenName: undefined };
-
-			appHeader.setMode('Course', { user: user });
-
-			var usernameEl = getUsernameEl(appHeaderEl);
-
-			expect(usernameEl.textContent.trim()).to.be('Menu');
-		});
-
-		it('should render the \'All courses\' menu item when the mode is \'Course\'', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-
-			appHeader.setMode('Course');
-
-			var allCoursesMenuItemEl = getAllCoursesMenuItemEl(appHeaderEl);
-
-			expect(allCoursesMenuItemEl).to.not.be(null);
-			expect(allCoursesMenuItemEl.querySelector('a').textContent).to.match(/All courses$/);
-		});
-
-		it('should render the course nav section when the mode is \'Course\' and options.courseNav is defined', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-
-			var heading = { text: 'Foo', href: 'https://example.com/foo' };
-			var courseNav = { heading: heading, items: [] };
-
-			var i;
-
-			for (i = 0; i < 5; i++) {
-				courseNav.items.push({
-					text: 'Item ' + (i + 1),
-					href: 'https://example.com/' + (i + 1)
-				});
-			}
-
-			appHeader.setMode('Course', { courseNav: courseNav });
-
-			var courseNavMenuItemEls = getCourseNavMenuItemEls(appHeaderEl);
-
-			// One menu item for the heading and one for each course nav item
-			expect(courseNavMenuItemEls.length).to.be(6);
-
-			expect(courseNavMenuItemEls[0].querySelector('a').textContent).to.be(courseNav.heading.text);
-			expect(courseNavMenuItemEls[0].querySelector('a').href).to.be(courseNav.heading.href);
-
-			for (i = 0; i < courseNav.items.length; i++) {
-				expect(courseNavMenuItemEls[i + 1].querySelector('a').textContent).to.be(courseNav.items[i].text);
-				expect(courseNavMenuItemEls[i + 1].querySelector('a').href).to.be(courseNav.items[i].href);
-			}
-		});
-
-		it('should render the menu item as disabled when the mode is \'Course\' and options.courseNav[n].active is true', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-
-			var courseNav = { items: [{ text: 'Foo', href: 'https://example.com/foo', active: true }] };
-
-			appHeader.setMode('Course', { courseNav: courseNav });
-
-			var courseNavMenuItemEls = getCourseNavMenuItemEls(appHeaderEl);
-
-			expect(courseNavMenuItemEls[0].classList.contains('o-dropdown-menu__menu-item--disabled')).to.be(true);
-		});
-
-		it('should call the handler when the mode is \'Course\' and options.courseNav[n].onClick is a function', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-			var handler = sinon.spy();
-			var courseNav = { items: [{ text: 'Foo', onClick: handler }] };
-
-			appHeader.setMode('Course', { courseNav: courseNav });
-
-			var courseNavMenuItemEls = getCourseNavMenuItemEls(appHeaderEl);
-
-			dispatchEvent(courseNavMenuItemEls[0].querySelector('a'), 'click');
-
-			expect(handler.calledOnce).to.be(true);
-		});
-
-		it('should render the light theme when the mode is \'Course\' and options.theme is \'light\'', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-
-			appHeader.setMode('Course', { theme: 'light' });
-
-			expect(appHeaderEl.classList.contains('o-header--theme-light')).to.be(true);
-		});
-
 		it('should not render the light theme when the mode is not \'Course\' and options.theme is \'light\'', function () {
 			var appHeader = new AppHeader();
 			var appHeaderEl = getHeaderEl();
@@ -606,49 +465,6 @@ describe('AppHeader:', function () {
 			appHeader.setMode('Basic', { theme: 'light' });
 
 			expect(appHeaderEl.classList.contains('o-header--theme-light')).to.be(false);
-		});
-
-		it('should emit oAppHeader.logout when the mode is \'Course\' and the sign out menu item is clicked', function (done) {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-
-			appHeader.setMode('Course');
-
-			document.addEventListener('oAppHeader.logout', done.bind(null, null));
-
-			clickSignOut(appHeaderEl);
-		});
-
-		it('should call the onLogout callback function when the mode is \'Course\' and the sign out menu item is clicked', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-			var handler = sinon.spy();
-
-			appHeader.setMode('Course', { onLogout: handler });
-
-			clickSignOut(appHeaderEl);
-
-			expect(handler.calledOnce).to.be(true);
-		});
-
-		it('should locate and call the onLogout callback function when the mode is \'Course\' and options.onLogout is a string and the sign out menu item is clicked', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-
-			window.handleLogout = sinon.spy();
-
-			appHeader.setMode('Course', { onLogout: 'handleLogout' });
-
-			clickSignOut(appHeaderEl);
-
-			expect(window.handleLogout.calledOnce).to.be(true);
-		});
-
-		it('should throw an error when the mode is \'Course\' and options.onLogout is a string and the callback function cannot be found in the global scope', function () {
-			var appHeader = new AppHeader();
-
-			expect(function () { appHeader.setMode('Course', { onLogout: 'invalid' }); })
-				.to.throwException(/Expected \'onLogout\' to be a function/);
 		});
 
 		it('should render the logo without a link when the mode is \'Integration\'', function () {
@@ -681,18 +497,6 @@ describe('AppHeader:', function () {
 			var usernameEl = getUsernameEl(appHeaderEl);
 
 			expect(usernameEl.textContent.trim()).to.be(user.givenName);
-		});
-
-		it('should render a default string when the mode is \'Legacy Course\' and options.user.givenName is undefined', function () {
-			var appHeader = new AppHeader();
-			var appHeaderEl = getHeaderEl();
-			var user = { givenName: undefined };
-
-			appHeader.setMode('Legacy Course', { user: user });
-
-			var usernameEl = getUsernameEl(appHeaderEl);
-
-			expect(usernameEl.textContent.trim()).to.be('Menu');
 		});
 
 		it('should render additional menu items when the mode is \'Legacy Course\' and options.menuItems is defined', function () {

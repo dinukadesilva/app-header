@@ -4,6 +4,11 @@
 // bundled styling for app-header
 require('./main.scss');
 
+require('./img/close.png');
+require('./img/help-hover_normal.png');
+require('./img/logo_large.png');
+require('./img/person-hover_normal.png');
+
 var AppHeader = require('./src/js/AppHeader');
 
 var instance;

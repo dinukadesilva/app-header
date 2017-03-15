@@ -4,6 +4,7 @@
 node_modules/
 build/*.js
 build/reports
+build/img
 fonts
 demo/elements.css
 app-header.iml

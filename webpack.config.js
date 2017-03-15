@@ -1,4 +1,5 @@
 // [name] under the output section denotes the entry prop names
+
 module.exports = {
   entry: {
    dev_demo: ['webpack/hot/dev-server', './demo/src/demo.js'],
@@ -15,6 +16,10 @@ module.exports = {
       {
         test: /\.scss$/,
         loader: 'style!css!sass'
+      },
+      {
+        test: /\.png$/,
+        loader: 'file-loader?name=build/img/[name].[ext]'
       }
     ]
   }

@@ -19,14 +19,14 @@ function template (data, handlers, translate) {
         if (data.mode === 'Basic' || data.mode === 'Legacy Course') {
           elementOpen("a", null, null, "href", data.links.home)
             elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
-              elementOpen("img", null, ["src", "../../img/logo_large.png", "alt", "console home"])
+              elementOpen("img", null, ["src", "../../build/img/logo_large.png", "alt", "console home"])
               elementClose("img")
             elementClose("div")
           elementClose("a")
         }
         if (data.mode ==='Signed Out' || data.mode === 'Integration') {
           elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
-            elementOpen("img", null, ["src", "../../img/logo_large.png", "alt", "console home"])
+            elementOpen("img", null, ["src", "../../build/img/logo_large.png", "alt", "console home"])
             elementClose("img")
           elementClose("div")
         }
@@ -41,7 +41,7 @@ function template (data, handlers, translate) {
             if (!data.help) {
               elementOpen("a", null, ["href", "#", "id", "header-nav-link"], "onclick", function ($event) {handlers.handleHelpNavItemClick($event)})
                 elementOpen("i")
-                  elementOpen("img", null, ["class", "hover-image", "src", "../../img/help-hover_normal.png", "alt", "help button"])
+                  elementOpen("img", null, ["class", "hover-image", "src", "../../build/img/help-hover_normal.png", "alt", "help button"])
                   elementClose("img")
                 elementClose("i")
               elementClose("a")
@@ -95,7 +95,7 @@ function template (data, handlers, translate) {
                   elementClose("span")
                   elementOpen("span", null, ["class", "o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])
                     elementOpen("i")
-                      elementOpen("img", null, ["class", "hover-image", "src", "../../img/person-hover_normal.png", "alt", "account button"])
+                      elementOpen("img", null, ["class", "hover-image", "src", "../../build/img/person-hover_normal.png", "alt", "account button"])
                       elementClose("img")
                     elementClose("i")
                   elementClose("span")
@@ -106,7 +106,7 @@ function template (data, handlers, translate) {
                       text("" + (translate('My Account')) + "")
                     elementClose("h2")
                     elementOpen("div", null, ["class", "o-dropdown-menu__menu-close"])
-                      elementOpen("img", null, ["src", "../../img/close.png", "alt", "close-button"])
+                      elementOpen("img", null, ["src", "../../build/img/close.png", "alt", "close-button"])
                       elementClose("img")
                     elementClose("div")
                   elementClose("li")

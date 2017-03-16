@@ -1,3 +1,13 @@
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.1...v2.0.2) (2017-03-16)
+
+
+### Bug Fixes
+
+* images being bundled through webpack ([060ae8d](https://github.com/Pearson-Higher-Ed/app-header/commit/060ae8d))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.0...v2.0.1) (2017-03-07)
 

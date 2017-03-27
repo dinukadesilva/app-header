@@ -19,14 +19,14 @@ function template (data, handlers, translate) {
         if (data.mode === 'Basic' || data.mode === 'Legacy Course') {
           elementOpen("a", null, null, "href", data.links.home)
             elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
-              elementOpen("img", null, ["src", "../../images/logo_large.png", "alt", "console home"])
+              elementOpen("img", null, ["src", "/images/logo_large.png", "alt", "console home"])
               elementClose("img")
             elementClose("div")
           elementClose("a")
         }
         if (data.mode ==='Signed Out' || data.mode === 'Integration') {
           elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
-            elementOpen("img", null, ["src", "../../images/logo_large.png", "alt", "console home"])
+            elementOpen("img", null, ["src", "/images/logo_large.png", "alt", "console home"])
             elementClose("img")
           elementClose("div")
         }
@@ -106,7 +106,7 @@ function template (data, handlers, translate) {
                       text("" + (translate('My Account')) + "")
                     elementClose("h2")
                     elementOpen("div", null, ["class", "o-dropdown-menu__menu-close"])
-                      elementOpen("img", null, ["src", "../../images/close.png", "alt", "close-button"])
+                      elementOpen("img", null, ["src", "/images/close.png", "alt", "close-button"])
                       elementClose("img")
                     elementClose("div")
                   elementClose("li")

@@ -41,7 +41,7 @@ function template (data, handlers, translate) {
             if (!data.help) {
               elementOpen("a", null, ["href", "#", "id", "header-nav-link"], "onclick", function ($event) {handlers.handleHelpNavItemClick($event)})
                 elementOpen("i")
-                  elementOpen("img", null, ["class", "hover-image", "src", "../../images/help-hover_normal.png", "alt", "help button"])
+                  elementOpen("img", null, ["class", "hover-image", "src", "/images/help-hover_normal.png", "alt", "help button"])
                   elementClose("img")
                 elementClose("i")
               elementClose("a")
@@ -95,7 +95,7 @@ function template (data, handlers, translate) {
                   elementClose("span")
                   elementOpen("span", null, ["class", "o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])
                     elementOpen("i")
-                      elementOpen("img", null, ["class", "hover-image", "src", "../../images/person-hover_normal.png", "alt", "account button"])
+                      elementOpen("img", null, ["class", "hover-image", "src", "/images/person-hover_normal.png", "alt", "account button"])
                       elementClose("img")
                     elementClose("i")
                   elementClose("span")

@@ -69,7 +69,9 @@
 									<li>
 										<h2 class="o-dropdown-menu__menu-item-title">{translate('My Account')}</h2>
 										<div class="o-dropdown-menu__menu-close">
-											<img src="/images/close.png" alt="close-button">
+											<button class="dropdown-close-button">
+												<img src="/images/close.png" alt="close-button">
+											</button>
 										</div>
 									</li>
 									<li class="{item.classes}"

@@ -106,8 +106,10 @@ function template (data, handlers, translate) {
                       text("" + (translate('My Account')) + "")
                     elementClose("h2")
                     elementOpen("div", null, ["class", "o-dropdown-menu__menu-close"])
-                      elementOpen("img", null, ["src", "/images/close.png", "alt", "close-button"])
-                      elementClose("img")
+                      elementOpen("button", null, ["class", "dropdown-close-button"])
+                        elementOpen("img", null, ["src", "/images/close.png", "alt", "close-button"])
+                        elementClose("img")
+                      elementClose("button")
                     elementClose("div")
                   elementClose("li")
                   ;(Array.isArray(data.menuItems) ? data.menuItems : Object.keys(data.menuItems)).forEach(function(item, $index) {

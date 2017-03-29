@@ -58,17 +58,17 @@ function template (data, handlers, translate) {
                   ;(Array.isArray(data.help) ? data.help : Object.keys(data.help)).forEach(function(key, $index) {
                     elementOpen("li", $index, ["class", "o-dropdown-menu__menu-item", "role", "presentation"])
                       if (typeof data.help[key] === 'string') {
-                        elementOpen("a", null, ["tabindex", "0"], "href", data.help[key])
+                        elementOpen("a", null, null, "href", data.help[key])
                           text("" + (key) + "")
                         elementClose("a")
                       }
                       if (data.help[key].href) {
-                        elementOpen("a", null, ["tabindex", "0"], "href", data.help[key].href, "target", data.help[key].target)
+                        elementOpen("a", null, null, "href", data.help[key].href, "target", data.help[key].target)
                           text("" + (key) + "")
                         elementClose("a")
                       }
                       if (typeof data.help[key].onClick === 'function') {
-                        elementOpen("a", null, ["href", "#", "tabindex", "0"], "onclick", function ($event) {data.help[key].onClick($event)})
+                        elementOpen("a", null, ["href", "#"], "onclick", function ($event) {data.help[key].onClick($event)})
                           text("" + (key) + "")
                         elementClose("a")
                       }
@@ -115,12 +115,12 @@ function template (data, handlers, translate) {
                   ;(Array.isArray(data.menuItems) ? data.menuItems : Object.keys(data.menuItems)).forEach(function(item, $index) {
                     elementOpen("li", item.key, ["role", "presentation"], "class", item.classes)
                       if (item.href) {
-                        elementOpen("a", null, ["class", "o-app-header--truncate", "tabindex", "0"], "href", item.href, "target", item.target)
+                        elementOpen("a", null, ["class", "o-app-header--truncate"], "href", item.href, "target", item.target)
                           text("" + (item.text) + "")
                         elementClose("a")
                       }
                       if (typeof item.onClick === 'function') {
-                        elementOpen("a", null, ["class", "o-app-header--truncate", "href", "#", "tabindex", "0"], "onclick", function ($event) {item.onClick($event)})
+                        elementOpen("a", null, ["class", "o-app-header--truncate", "href", "#"], "onclick", function ($event) {item.onClick($event)})
                           text("" + (item.text) + "")
                         elementClose("a")
                       }
@@ -129,12 +129,12 @@ function template (data, handlers, translate) {
                           ;(Array.isArray(item.courseNavMenuItems) ? item.courseNavMenuItems : Object.keys(item.courseNavMenuItems)).forEach(function(courseNavItem, $index) {
                             elementOpen("li", courseNavItem.key, ["role", "presentation"], "class", courseNavItem.classes)
                               if (courseNavItem.href) {
-                                elementOpen("a", null, ["class", "o-app-header--truncate", "tabindex", "0"], "href", courseNavItem.href, "target", courseNavItem.target)
+                                elementOpen("a", null, ["class", "o-app-header--truncate"], "href", courseNavItem.href, "target", courseNavItem.target)
                                   text("" + (courseNavItem.text) + "")
                                 elementClose("a")
                               }
                               if (typeof courseNavItem.onClick === 'function') {
-                                elementOpen("a", null, ["class", "o-app-header--truncate", "href", "#", "tabindex", "0"], "onclick", function ($event) {courseNavItem.onClick($event)})
+                                elementOpen("a", null, ["class", "o-app-header--truncate", "href", "#"], "onclick", function ($event) {courseNavItem.onClick($event)})
                                   text("" + (courseNavItem.text) + "")
                                 elementClose("a")
                               }

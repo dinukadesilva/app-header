@@ -36,7 +36,7 @@
 								aria-haspopup="true"
 								aria-expanded="false"></a>
 							<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-menu-toggle-help">
-								<li class="o-dropdown-menu__menu-item" role="presentation" each="key in data.help">
+								<li class="o-dropdown-menu__menu-item" each="key in data.help">
 									<a  href="{data.help[key]}" if="typeof data.help[key] === 'string'">{key}</a>
 									<a  href="{data.help[key].href}" target="{data.help[key].target}" if="data.help[key].href">{key}</a>
 									<a  href="#" onclick="{data.help[key].onClick($event)}" if="typeof data.help[key].onClick === 'function'">{key}</a>
@@ -53,7 +53,7 @@
 							<div class="o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu">
 								<a href="#"
 									class="o-dropdown-menu__toggle"
-									id="header-nav-link"
+									id="header-nav-link-account"
 									data-toggle="dropdown-menu"
 									aria-haspopup="true"
 									aria-expanded="false">
@@ -75,30 +75,24 @@
 										</div>
 									</li>
 									<li class="{item.classes}"
-										role="presentation"
 										each="item, item.key in data.menuItems">
-										<a
-											class="o-app-header--truncate"
+										<a	class="o-app-header--truncate"
 											href="{item.href}"
 											target="{item.target}"
 											if="item.href">{item.text}</a>
-										<a
-											class="o-app-header--truncate"
+										<a	class="o-app-header--truncate"
 											href="#"
 											onclick="{item.onClick($event)}"
 											if="typeof item.onClick === 'function'">{item.text}</a>
 										<if condition="item.isCourseNav">
 											<ul class="o-app-header__menu-items-course-nav o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">
 												<li class="{courseNavItem.classes}"
-													role="presentation"
 													each="courseNavItem, courseNavItem.key in item.courseNavMenuItems">
-													<a
-														class="o-app-header--truncate"
+													<a	class="o-app-header--truncate"
 														href="{courseNavItem.href}"
 														target="{courseNavItem.target}"
 														if="courseNavItem.href">{courseNavItem.text}</a>
-													<a
-														class="o-app-header--truncate"
+													<a	class="o-app-header--truncate"
 														href="#"
 														onclick="{courseNavItem.onClick($event)}"
 														if="typeof courseNavItem.onClick === 'function'">{courseNavItem.text}</a>

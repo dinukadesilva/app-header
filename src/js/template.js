@@ -56,7 +56,7 @@ function template (data, handlers, translate) {
                 elementClose("a")
                 elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-menu-toggle-help"])
                   ;(Array.isArray(data.help) ? data.help : Object.keys(data.help)).forEach(function(key, $index) {
-                    elementOpen("li", $index, ["class", "o-dropdown-menu__menu-item", "role", "presentation"])
+                    elementOpen("li", $index, ["class", "o-dropdown-menu__menu-item"])
                       if (typeof data.help[key] === 'string') {
                         elementOpen("a", null, null, "href", data.help[key])
                           text("" + (key) + "")
@@ -86,7 +86,7 @@ function template (data, handlers, translate) {
             }
             if (data.mode === 'Basic' || data.mode === 'Legacy Course') {
               elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu"])
-                elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "id", "header-nav-link", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
+                elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "id", "header-nav-link-account", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
                   elementOpen("span", null, ["id", "o-app-header-user-menu-label", "class", "o-app-header--sr-only"])
                     text("" + (translate('User account menu')) + "")
                   elementClose("span")
@@ -113,7 +113,7 @@ function template (data, handlers, translate) {
                     elementClose("div")
                   elementClose("li")
                   ;(Array.isArray(data.menuItems) ? data.menuItems : Object.keys(data.menuItems)).forEach(function(item, $index) {
-                    elementOpen("li", item.key, ["role", "presentation"], "class", item.classes)
+                    elementOpen("li", item.key, null, "class", item.classes)
                       if (item.href) {
                         elementOpen("a", null, ["class", "o-app-header--truncate"], "href", item.href, "target", item.target)
                           text("" + (item.text) + "")
@@ -127,7 +127,7 @@ function template (data, handlers, translate) {
                       if (item.isCourseNav) {
                         elementOpen("ul", null, ["class", "o-app-header__menu-items-course-nav o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])
                           ;(Array.isArray(item.courseNavMenuItems) ? item.courseNavMenuItems : Object.keys(item.courseNavMenuItems)).forEach(function(courseNavItem, $index) {
-                            elementOpen("li", courseNavItem.key, ["role", "presentation"], "class", courseNavItem.classes)
+                            elementOpen("li", courseNavItem.key, null, "class", courseNavItem.classes)
                               if (courseNavItem.href) {
                                 elementOpen("a", null, ["class", "o-app-header--truncate"], "href", courseNavItem.href, "target", courseNavItem.target)
                                   text("" + (courseNavItem.text) + "")

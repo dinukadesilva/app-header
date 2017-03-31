@@ -179,9 +179,10 @@ function selectAll(element) {
 }
 
 function closeOnTab() {
-	var lastLink = document.querySelectorAll('.o-app-header--truncate')[2];
+	var dropDownLinks = document.querySelectorAll('.o-app-header--truncate');
+	var lastDropDownLink = dropDownLinks[dropDownLinks.length - 1];
 
-	lastLink.addEventListener("keydown", function () {
+	lastDropDownLink.addEventListener("keydown", function () {
 		event.shiftKey ? null : collapseAll();
 	}, false);
 

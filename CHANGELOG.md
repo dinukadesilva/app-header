@@ -1,3 +1,16 @@
+<a name="2.0.4"></a>
+## [2.0.4](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.3...v2.0.4) (2017-04-03)
+
+
+### Bug Fixes
+
+* Close button in the drawer now able to be tabbed to and from ([0f3bb57](https://github.com/Pearson-Higher-Ed/app-header/commit/0f3bb57))
+* correctly targets the last link where the number of links is unknown ([50b4981](https://github.com/Pearson-Higher-Ed/app-header/commit/50b4981))
+* Drawer able to be tabbed through ([06183a6](https://github.com/Pearson-Higher-Ed/app-header/commit/06183a6))
+* Tab now closes the drawer properly ([b8f4f96](https://github.com/Pearson-Higher-Ed/app-header/commit/b8f4f96))
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.2...v2.0.3) (2017-03-27)
 

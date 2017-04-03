@@ -54,7 +54,7 @@ function template (data, handlers, translate) {
               elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right"])
                 elementOpen("a", null, ["href", "#", "id", "o-app-header-help-menu-toggle", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
                 elementClose("a")
-                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-menu-toggle-help"])
+                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "aria-labelledby", "o-app-header-menu-toggle-help"])
                   ;(Array.isArray(data.help) ? data.help : Object.keys(data.help)).forEach(function(key, $index) {
                     elementOpen("li", $index, ["class", "o-dropdown-menu__menu-item"])
                       if (typeof data.help[key] === 'string') {
@@ -100,7 +100,7 @@ function template (data, handlers, translate) {
                     elementClose("i")
                   elementClose("span")
                 elementClose("a")
-                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-user-menu-label"])
+                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "aria-labelledby", "o-app-header-user-menu-label"])
                   elementOpen("li")
                     elementOpen("h2", null, ["class", "o-dropdown-menu__menu-item-title"])
                       text("" + (translate('My Account')) + "")

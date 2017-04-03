@@ -35,7 +35,7 @@
 								data-toggle="dropdown-menu"
 								aria-haspopup="true"
 								aria-expanded="false"></a>
-							<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-menu-toggle-help">
+							<ul class="o-dropdown-menu__menu-items" aria-labelledby="o-app-header-menu-toggle-help">
 								<li class="o-dropdown-menu__menu-item" each="key in data.help">
 									<a  href="{data.help[key]}" if="typeof data.help[key] === 'string'">{key}</a>
 									<a  href="{data.help[key].href}" target="{data.help[key].target}" if="data.help[key].href">{key}</a>
@@ -65,7 +65,7 @@
 										</i>
 									</span>
 								</a>
-								<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-user-menu-label">
+								<ul class="o-dropdown-menu__menu-items" aria-labelledby="o-app-header-user-menu-label">
 									<li>
 										<h2 class="o-dropdown-menu__menu-item-title">{translate('My Account')}</h2>
 										<div class="o-dropdown-menu__menu-close">

@@ -147,6 +147,7 @@ DropdownMenu.prototype.toggle = function () {
 
 	var isExpanded = element.classList.contains('o-dropdown-menu--expanded');
 
+	closeOnTab();
 	collapseAll();
 
 	if (isDisabled) return;
@@ -175,6 +176,16 @@ function selectAll(element) {
 	}
 
 	return element.querySelectorAll('.o-dropdown-menu');
+}
+
+function closeOnTab() {
+	var dropDownLinks = document.querySelectorAll('.o-app-header--truncate');
+	var lastDropDownLink = dropDownLinks[dropDownLinks.length - 1];
+
+	lastDropDownLink.addEventListener("keydown", function () {
+		event.shiftKey ? null : collapseAll();
+	}, false);
+
 }
 
 function collapseAll() {

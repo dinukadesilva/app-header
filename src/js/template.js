@@ -54,21 +54,21 @@ function template (data, handlers, translate) {
               elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right"])
                 elementOpen("a", null, ["href", "#", "id", "o-app-header-help-menu-toggle", "class", "o-dropdown-menu__toggle", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
                 elementClose("a")
-                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-menu-toggle-help"])
+                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "aria-labelledby", "o-app-header-menu-toggle-help"])
                   ;(Array.isArray(data.help) ? data.help : Object.keys(data.help)).forEach(function(key, $index) {
-                    elementOpen("li", $index, ["class", "o-dropdown-menu__menu-item", "role", "presentation"])
+                    elementOpen("li", $index, ["class", "o-dropdown-menu__menu-item"])
                       if (typeof data.help[key] === 'string') {
-                        elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", data.help[key])
+                        elementOpen("a", null, null, "href", data.help[key])
                           text("" + (key) + "")
                         elementClose("a")
                       }
                       if (data.help[key].href) {
-                        elementOpen("a", null, ["role", "menuitem", "tabindex", "-1"], "href", data.help[key].href, "target", data.help[key].target)
+                        elementOpen("a", null, null, "href", data.help[key].href, "target", data.help[key].target)
                           text("" + (key) + "")
                         elementClose("a")
                       }
                       if (typeof data.help[key].onClick === 'function') {
-                        elementOpen("a", null, ["role", "menuitem", "href", "#", "tabindex", "-1"], "onclick", function ($event) {data.help[key].onClick($event)})
+                        elementOpen("a", null, ["href", "#"], "onclick", function ($event) {data.help[key].onClick($event)})
                           text("" + (key) + "")
                         elementClose("a")
                       }
@@ -86,7 +86,7 @@ function template (data, handlers, translate) {
             }
             if (data.mode === 'Basic' || data.mode === 'Legacy Course') {
               elementOpen("div", null, ["class", "o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu"])
-                elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "id", "header-nav-link", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
+                elementOpen("a", null, ["href", "#", "class", "o-dropdown-menu__toggle", "id", "header-nav-link-account", "data-toggle", "dropdown-menu", "aria-haspopup", "true", "aria-expanded", "false"])
                   elementOpen("span", null, ["id", "o-app-header-user-menu-label", "class", "o-app-header--sr-only"])
                     text("" + (translate('User account menu')) + "")
                   elementClose("span")
@@ -100,39 +100,41 @@ function template (data, handlers, translate) {
                     elementClose("i")
                   elementClose("span")
                 elementClose("a")
-                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "role", "menu", "aria-labelledby", "o-app-header-user-menu-label"])
+                elementOpen("ul", null, ["class", "o-dropdown-menu__menu-items", "aria-labelledby", "o-app-header-user-menu-label"])
                   elementOpen("li")
                     elementOpen("h2", null, ["class", "o-dropdown-menu__menu-item-title"])
                       text("" + (translate('My Account')) + "")
                     elementClose("h2")
                     elementOpen("div", null, ["class", "o-dropdown-menu__menu-close"])
-                      elementOpen("img", null, ["src", "/images/close.png", "alt", "close-button"])
-                      elementClose("img")
+                      elementOpen("button", null, ["class", "dropdown-close-button"])
+                        elementOpen("img", null, ["src", "/images/close.png", "alt", "close-button"])
+                        elementClose("img")
+                      elementClose("button")
                     elementClose("div")
                   elementClose("li")
                   ;(Array.isArray(data.menuItems) ? data.menuItems : Object.keys(data.menuItems)).forEach(function(item, $index) {
-                    elementOpen("li", item.key, ["role", "presentation"], "class", item.classes)
+                    elementOpen("li", item.key, null, "class", item.classes)
                       if (item.href) {
-                        elementOpen("a", null, ["role", "menuitem", "class", "o-app-header--truncate", "tabindex", "-1"], "href", item.href, "target", item.target)
+                        elementOpen("a", null, ["class", "o-app-header--truncate"], "href", item.href, "target", item.target)
                           text("" + (item.text) + "")
                         elementClose("a")
                       }
                       if (typeof item.onClick === 'function') {
-                        elementOpen("a", null, ["role", "menuitem", "class", "o-app-header--truncate", "href", "#", "tabindex", "-1"], "onclick", function ($event) {item.onClick($event)})
+                        elementOpen("a", null, ["class", "o-app-header--truncate", "href", "#"], "onclick", function ($event) {item.onClick($event)})
                           text("" + (item.text) + "")
                         elementClose("a")
                       }
                       if (item.isCourseNav) {
                         elementOpen("ul", null, ["class", "o-app-header__menu-items-course-nav o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])
                           ;(Array.isArray(item.courseNavMenuItems) ? item.courseNavMenuItems : Object.keys(item.courseNavMenuItems)).forEach(function(courseNavItem, $index) {
-                            elementOpen("li", courseNavItem.key, ["role", "presentation"], "class", courseNavItem.classes)
+                            elementOpen("li", courseNavItem.key, null, "class", courseNavItem.classes)
                               if (courseNavItem.href) {
-                                elementOpen("a", null, ["role", "menuitem", "class", "o-app-header--truncate", "tabindex", "-1"], "href", courseNavItem.href, "target", courseNavItem.target)
+                                elementOpen("a", null, ["class", "o-app-header--truncate"], "href", courseNavItem.href, "target", courseNavItem.target)
                                   text("" + (courseNavItem.text) + "")
                                 elementClose("a")
                               }
                               if (typeof courseNavItem.onClick === 'function') {
-                                elementOpen("a", null, ["role", "menuitem", "class", "o-app-header--truncate", "href", "#", "tabindex", "-1"], "onclick", function ($event) {courseNavItem.onClick($event)})
+                                elementOpen("a", null, ["class", "o-app-header--truncate", "href", "#"], "onclick", function ($event) {courseNavItem.onClick($event)})
                                   text("" + (courseNavItem.text) + "")
                                 elementClose("a")
                               }

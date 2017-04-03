@@ -35,11 +35,11 @@
 								data-toggle="dropdown-menu"
 								aria-haspopup="true"
 								aria-expanded="false"></a>
-							<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-menu-toggle-help">
-								<li class="o-dropdown-menu__menu-item" role="presentation" each="key in data.help">
-									<a role="menuitem" href="{data.help[key]}" tabindex="-1" if="typeof data.help[key] === 'string'">{key}</a>
-									<a role="menuitem" href="{data.help[key].href}" tabindex="-1" target="{data.help[key].target}" if="data.help[key].href">{key}</a>
-									<a role="menuitem" href="#" tabindex="-1" onclick="{data.help[key].onClick($event)}" if="typeof data.help[key].onClick === 'function'">{key}</a>
+							<ul class="o-dropdown-menu__menu-items" aria-labelledby="o-app-header-menu-toggle-help">
+								<li class="o-dropdown-menu__menu-item" each="key in data.help">
+									<a  href="{data.help[key]}" if="typeof data.help[key] === 'string'">{key}</a>
+									<a  href="{data.help[key].href}" target="{data.help[key].target}" if="data.help[key].href">{key}</a>
+									<a  href="#" onclick="{data.help[key].onClick($event)}" if="typeof data.help[key].onClick === 'function'">{key}</a>
 								</li>
 							</ul>
 						</div>
@@ -53,7 +53,7 @@
 							<div class="o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu">
 								<a href="#"
 									class="o-dropdown-menu__toggle"
-									id="header-nav-link"
+									id="header-nav-link-account"
 									data-toggle="dropdown-menu"
 									aria-haspopup="true"
 									aria-expanded="false">
@@ -65,43 +65,35 @@
 										</i>
 									</span>
 								</a>
-								<ul class="o-dropdown-menu__menu-items" role="menu" aria-labelledby="o-app-header-user-menu-label">
+								<ul class="o-dropdown-menu__menu-items" aria-labelledby="o-app-header-user-menu-label">
 									<li>
 										<h2 class="o-dropdown-menu__menu-item-title">{translate('My Account')}</h2>
 										<div class="o-dropdown-menu__menu-close">
-											<img src="/images/close.png" alt="close-button">
+											<button class="dropdown-close-button">
+												<img src="/images/close.png" alt="close-button">
+											</button>
 										</div>
 									</li>
 									<li class="{item.classes}"
-										role="presentation"
 										each="item, item.key in data.menuItems">
-										<a role="menuitem"
-											class="o-app-header--truncate"
+										<a	class="o-app-header--truncate"
 											href="{item.href}"
-											tabindex="-1"
 											target="{item.target}"
 											if="item.href">{item.text}</a>
-										<a role="menuitem"
-											class="o-app-header--truncate"
+										<a	class="o-app-header--truncate"
 											href="#"
-											tabindex="-1"
 											onclick="{item.onClick($event)}"
 											if="typeof item.onClick === 'function'">{item.text}</a>
 										<if condition="item.isCourseNav">
 											<ul class="o-app-header__menu-items-course-nav o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">
 												<li class="{courseNavItem.classes}"
-													role="presentation"
 													each="courseNavItem, courseNavItem.key in item.courseNavMenuItems">
-													<a role="menuitem"
-														class="o-app-header--truncate"
+													<a	class="o-app-header--truncate"
 														href="{courseNavItem.href}"
-														tabindex="-1"
 														target="{courseNavItem.target}"
 														if="courseNavItem.href">{courseNavItem.text}</a>
-													<a role="menuitem"
-														class="o-app-header--truncate"
+													<a	class="o-app-header--truncate"
 														href="#"
-														tabindex="-1"
 														onclick="{courseNavItem.onClick($event)}"
 														if="typeof courseNavItem.onClick === 'function'">{courseNavItem.text}</a>
 												</li>

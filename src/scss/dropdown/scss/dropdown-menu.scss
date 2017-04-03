@@ -20,12 +20,12 @@
 }
 
 .o-app-header__nav-item-help {
-	padding: 0 26px !important;
+	padding: 0 26px;
 }
 
 .o-dropdown-menu__toggle {
-	padding-left: 0 !important;
-	padding-right: 0 !important;
+	padding-left: 0;
+	padding-right: 0;
 }
 
 .o-dropdown-menu--expanded > .o-dropdown-menu__menu-items {
@@ -59,7 +59,7 @@
 	display: block;
 	clear: both;
 	text-decoration: none;
-	color: $pe-color-digital-pearson-blue !important;
+	color: $pe-color-digital-pearson-blue;
 	white-space: nowrap;
 	outline-offset: -2px;
 }
@@ -87,6 +87,11 @@
 	top: -57px;
 	float: right;
 	padding: 0;
+}
+
+.dropdown-close-button {
+	background: none;
+	border: none
 }
 
 // Divider

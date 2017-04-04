@@ -1,0 +1,21 @@
+{
+  "name": "@pearson-components/app-header",
+  "description": "Global responsive header for Pearson applications.",
+  "main": "./main.js",
+  "authors": [
+    "Dinuka De Silva <l.dinukadesilva@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "pearson-components",
+    "app-header"
+  ],
+  "homepage": "https://github.com/dinukadesilva/app-header",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

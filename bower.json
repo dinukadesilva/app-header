@@ -1,5 +1,5 @@
 {
-  "name": "@pearson-components/app-header",
+  "name": "app-header",
   "description": "Global responsive header for Pearson applications.",
   "main": "./main.js",
   "authors": [

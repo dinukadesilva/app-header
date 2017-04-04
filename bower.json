@@ -10,6 +10,9 @@
     "pearson-components",
     "app-header"
   ],
+  "scripts": {
+    "postinstall": "npm install"
+  },
   "homepage": "https://github.com/dinukadesilva/app-header",
   "dependencies": {
     "jquery": "^3.2.1"

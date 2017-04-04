@@ -1,5 +1,7 @@
 {
   "scripts": {
-    "postinstall": "npm install"
+    "preinstall": "npm install",
+    "postinstall": "npm install",
+    "preuninstall": "npm install"
   }
 }

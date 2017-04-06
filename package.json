@@ -48,7 +48,7 @@
     "style-loader": "^0.13.0",
     "superviews.js": "0.0.5",
     "textrequireify": "^2.1.1",
-    "travis-multirunner": "^2.7.0",
+    "travis-multirunner": "3.1.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"

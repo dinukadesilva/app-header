@@ -46,7 +46,22 @@
 	}
 
 	.o-app-header__menu-item-my-account {
-		margin-top: 25px !important;
+		margin-top: 25px;
+	}
+
+	.o-app-header__menu-item-sign-out {
+		margin-top: 30px;
+	}
+
+	.sign-out-button {
+		text-decoration: none !important;
+		font-size: 18px !important;
+		line-height: 44px !important;
+		text-align: center;
+		color: #FFF;
+		&:hover {
+			color: #FFF;
+		}
 	}
 
 	.o-dropdown-menu__menu-item {

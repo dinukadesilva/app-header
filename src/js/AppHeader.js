@@ -37,7 +37,9 @@ AppHeader.defaultSettings = {
 	consoleBaseUrl: 'https://console.pearson.com',
 	links: {
 		home: '{consoleBaseUrl}/console/home',
-		myAccount: '{consoleBaseUrl}/account/manage/account'
+		myAccount: '{consoleBaseUrl}/account/manage/account',
+		termsOfUse: '{consoleBaseUrl}/account/manage/tos',
+		privacyPolicy: '{consoleBaseUrl}/account/manage/privacy'
 	},
 	menu: {
 		// showAllCoursesMenuItem: false
@@ -334,15 +336,29 @@ AppHeader.prototype.getDataForRender_ = function () {
 	if (mode === 'Basic' || mode === 'Legacy Course') {
 		// My Account
 		menuItems.push(createMenuItemDef({
-			text: this.i18n_.translate('Account Settings'),
+			text: this.i18n_.translate('Account settings'),
 			href: this.resolveLink_('myAccount')
 		}, {
 			classes: ['o-app-header__menu-item-my-account']
 		}));
 
+		menuItems.push(createMenuItemDef({
+			text: this.i18n_.translate('Terms of Use'),
+			href: this.resolveLink_('termsOfUse')
+		}, {
+			classes: ['o-app-header__menu-item-tou']
+		}));
+
+		menuItems.push(createMenuItemDef({
+			text: this.i18n_.translate('Privacy Policy'),
+			href: this.resolveLink_('privacyPolicy')
+		}, {
+			classes: ['o-app-header__menu-item-pp']
+		}));
+
 		// Sign Out
 		menuItems.push(createMenuItemDef({
-			text: this.i18n_.translate('Sign Out'),
+			text: this.i18n_.translate('Sign out'),
 			onClick: this.getHandler_('onLogout', this.constants_.LOGOUT_EVENT)
 		}, {
 			classes: ['o-app-header__menu-item-sign-out']

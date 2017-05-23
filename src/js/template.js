@@ -121,7 +121,7 @@ function template (data, handlers, translate) {
                         elementClose("a")
                       }
                       if (typeof item.onClick === 'function') {
-                        elementOpen("a", null, ["class", "o-app-header--truncate", "href", "#"], "onclick", function ($event) {item.onClick($event)})
+                        elementOpen("a", null, ["class", "pe-btn__primary--btn_xlarge o-app-header--truncate sign-out-button", "role", "button", "href", "#"], "onclick", function ($event) {item.onClick($event)})
                           text("" + (item.text) + "")
                         elementClose("a")
                       }

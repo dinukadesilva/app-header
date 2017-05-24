@@ -58,8 +58,11 @@
 		font-size: 18px !important;
 		line-height: 44px !important;
 		text-align: center;
+		background-color: #19A5A3;
 		color: #FFF;
-		&:hover {
+		&:hover,
+		&:focus {
+			background-color: #179599;
 			color: #FFF;
 		}
 	}

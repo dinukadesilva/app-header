@@ -80,8 +80,7 @@
 											href="{item.href}"
 											target="{item.target}"
 											if="item.href">{item.text}</a>
-										<a	class="pe-btn__primary--btn_xlarge o-app-header--truncate sign-out-button"
-											role="button"
+										<button	class="pe-btn__primary--btn_xlarge o-app-header--truncate sign-out-button"
 											href="#"
 											onclick="{item.onClick($event)}"
 											if="typeof item.onClick === 'function'">{item.text}</a>

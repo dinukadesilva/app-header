@@ -81,9 +81,8 @@
 											target="{item.target}"
 											if="item.href">{item.text}</a>
 										<button	class="pe-btn__primary--btn_xlarge o-app-header--truncate sign-out-button"
-											href="#"
 											onclick="{item.onClick($event)}"
-											if="typeof item.onClick === 'function'">{item.text}</a>
+											if="typeof item.onClick === 'function'">{item.text}</button>
 										<if condition="item.isCourseNav">
 											<ul class="o-app-header__menu-items-course-nav o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">
 												<li class="{courseNavItem.classes}"

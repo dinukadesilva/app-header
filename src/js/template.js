@@ -121,27 +121,27 @@ function template (data, handlers, translate) {
                         elementClose("a")
                       }
                       if (typeof item.onClick === 'function') {
-                        elementOpen("button", null, ["class", "pe-btn__primary--btn_xlarge o-app-header--truncate sign-out-button", "href", "#"], "onclick", function ($event) {item.onClick($event)})
+                        elementOpen("button", null, ["class", "pe-btn__primary--btn_xlarge o-app-header--truncate sign-out-button"], "onclick", function ($event) {item.onClick($event)})
                           text("" + (item.text) + "")
-                          if (item.isCourseNav) {
-                            elementOpen("ul", null, ["class", "o-app-header__menu-items-course-nav o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])
-                              ;(Array.isArray(item.courseNavMenuItems) ? item.courseNavMenuItems : Object.keys(item.courseNavMenuItems)).forEach(function(courseNavItem, $index) {
-                                elementOpen("li", courseNavItem.key, null, "class", courseNavItem.classes)
-                                  if (courseNavItem.href) {
-                                    elementOpen("a", null, ["class", "o-app-header--truncate"], "href", courseNavItem.href, "target", courseNavItem.target)
-                                      text("" + (courseNavItem.text) + "")
-                                    elementClose("a")
-                                  }
-                                  if (typeof courseNavItem.onClick === 'function') {
-                                    elementOpen("a", null, ["class", "o-app-header--truncate", "href", "#"], "onclick", function ($event) {courseNavItem.onClick($event)})
-                                      text("" + (courseNavItem.text) + "")
-                                    elementClose("a")
-                                  }
-                                elementClose("li")
-                              }, item.courseNavMenuItems)
-                            elementClose("ul")
-                          }
                         elementClose("button")
+                      }
+                      if (item.isCourseNav) {
+                        elementOpen("ul", null, ["class", "o-app-header__menu-items-course-nav o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])
+                          ;(Array.isArray(item.courseNavMenuItems) ? item.courseNavMenuItems : Object.keys(item.courseNavMenuItems)).forEach(function(courseNavItem, $index) {
+                            elementOpen("li", courseNavItem.key, null, "class", courseNavItem.classes)
+                              if (courseNavItem.href) {
+                                elementOpen("a", null, ["class", "o-app-header--truncate"], "href", courseNavItem.href, "target", courseNavItem.target)
+                                  text("" + (courseNavItem.text) + "")
+                                elementClose("a")
+                              }
+                              if (typeof courseNavItem.onClick === 'function') {
+                                elementOpen("a", null, ["class", "o-app-header--truncate", "href", "#"], "onclick", function ($event) {courseNavItem.onClick($event)})
+                                  text("" + (courseNavItem.text) + "")
+                                elementClose("a")
+                              }
+                            elementClose("li")
+                          }, item.courseNavMenuItems)
+                        elementClose("ul")
                       }
                     elementClose("li")
                   }, data.menuItems)

@@ -1,3 +1,13 @@
+<a name="2.0.6"></a>
+## [2.0.6](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.5...v2.0.6) (2017-05-25)
+
+
+### Bug Fixes
+
+* link styles ([1836688](https://github.com/Pearson-Higher-Ed/app-header/commit/1836688))
+
+
+
 <a name="2.0.5"></a>
 ## [2.0.5](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.4...v2.0.5) (2017-04-07)
 

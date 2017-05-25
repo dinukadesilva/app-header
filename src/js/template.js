@@ -121,9 +121,9 @@ function template (data, handlers, translate) {
                         elementClose("a")
                       }
                       if (typeof item.onClick === 'function') {
-                        elementOpen("button", null, ["class", "pe-btn__primary--btn_xlarge o-app-header--truncate sign-out-button"], "onclick", function ($event) {item.onClick($event)})
+                        elementOpen("a", null, ["class", "pe-btn__primary--btn_xlarge o-app-header--truncate sign-out-button", "href", "#"], "onclick", function ($event) {item.onClick($event)})
                           text("" + (item.text) + "")
-                        elementClose("button")
+                        elementClose("a")
                       }
                       if (item.isCourseNav) {
                         elementOpen("ul", null, ["class", "o-app-header__menu-items-course-nav o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden"])

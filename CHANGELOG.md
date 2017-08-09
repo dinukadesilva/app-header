@@ -1,3 +1,13 @@
+<a name="2.0.8"></a>
+## [2.0.8](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.7...v2.0.8) (2017-08-09)
+
+
+### Bug Fixes
+
+* Change alt text ([5429007](https://github.com/Pearson-Higher-Ed/app-header/commit/5429007))
+
+
+
 <a name="2.0.7"></a>
 ## [2.0.7](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.6...v2.0.7) (2017-06-19)
 

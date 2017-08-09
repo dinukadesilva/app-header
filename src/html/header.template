@@ -24,7 +24,7 @@
 					<li class="o-header__nav-item o-app-header__nav-item-help">
 						<a href="#" id="header-nav-link" onclick="{handlers.handleHelpNavItemClick($event)}" if="!data.help">
 							<i>
-								<img class="hover-image" src="{images.helpHoverNormal}" alt="help button">
+								<img class="hover-image" src="{images.helpHoverNormal}" alt="help">
 							</i>
 						</a>
 						<a href="{data.help}" if="typeof data.help === 'string'"></a>
@@ -61,7 +61,7 @@
 									<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible">{data.user.givenName}</span>
 									<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">
 										<i>
-											<img class="hover-image" src="{images.personHoverNormal}" alt="account button">
+											<img class="hover-image" src="{images.personHoverNormal}" alt="account">
 										</i>
 									</span>
 								</a>
@@ -70,7 +70,7 @@
 										<h2 class="o-dropdown-menu__menu-item-title">{translate('My Account')}</h2>
 										<div class="o-dropdown-menu__menu-close">
 											<button class="dropdown-close-button">
-												<img src="{images.close}" alt="close-button">
+												<img src="{images.close}" alt="close">
 											</button>
 										</div>
 									</li>

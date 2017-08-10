@@ -31,6 +31,9 @@
 			color: $pe-color-digital-pearson-blue;
 		}
 	}
+        .o-header__brand a {
+          display: block;
+        }
 
 	&::before,
 	&::after {

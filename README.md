@@ -82,8 +82,11 @@ Creates a new instance of `AppHeader`.
 
 | Property                 | Type                   | Description                       |
 |--------------------------|------------------------|-----------------------------------|
-| consoleBaseUrl           | `string`               | The Console application base URL (default: https://console.pearson.com) |
+| consoleBaseUrl           | `string`               | The consuming application base URL (default: https://console.pearson.com) |
+| links                    | `object`               | Links in the user dropdown. Refer to the [Links](#links) section for the default list  |
 | mode                     | `string`               | The mode. Refer to the [Modes](#modes) section for a list of supported modes and options. |
+
+
 
 ```js
 var AppHeader = require('@pearson-components/app-header');
@@ -98,6 +101,22 @@ Sets the mode. Refer to the [Modes](#modes) section for a list of supported mode
 
 - `mode`: a string that indicates the header mode.
 - `options`: an object containing the mode options.
+
+
+<a name="links"></a>
+
+## Links object
+
+By default the links object looks like:
+
+| Link Name                | URL                                           |
+|--------------------------|-----------------------------------------------|
+| home                     | `{consoleBaseUrl}/console/home`               |
+| myAccount                | `{consoleBaseUrl}/account/manage/account`     |
+| termsOfUse               | `{consoleBaseUrl}/account/manage/tos`         |
+| privacyPolicy            | `{consoleBaseUrl}/account/manage/privacy`     |
+
+
 
 <a name="modes"></a>
 

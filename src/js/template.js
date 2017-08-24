@@ -20,7 +20,7 @@ function template (data, handlers, translate) {
         if (data.mode === 'Basic' || data.mode === 'Legacy Course') {
           elementOpen("a", null, null, "href", data.links.home)
             elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
-              elementOpen("img", null, ["alt", "console home"], "src", images.logoLarge)
+              elementOpen("img", null, ["alt", "home"], "src", images.logoLarge)
               elementClose("img")
             elementClose("div")
           elementClose("a")

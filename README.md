@@ -230,6 +230,22 @@ document.addEventListener('oAppHeader.help.toggle', function (e) {
 
 By default, the header's `z-index` property is set to 1000. This value can be changed by setting the `$o-app-header-z-index` SASS variable.
 
+
+## Changing the header.template
+
+If you make changes to the header.template file, the template generator needs to be run (manually). 
+
+```
+node bin/gen-template srcFile endFile
+```
+
+The `endFile` here is template.js, meaning if you made a change in header.template, your command is
+
+```
+node bin/gen-template src/html/header.template src/js/template.js
+```
+
+
 <!-- ## i18n
 
 Setting the `locale` configuration property will render the header with the translated strings, if the locale is supported.

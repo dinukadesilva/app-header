@@ -82,8 +82,11 @@ Creates a new instance of `AppHeader`.
 
 | Property                 | Type                   | Description                       |
 |--------------------------|------------------------|-----------------------------------|
-| consoleBaseUrl           | `string`               | The Console application base URL (default: https://console.pearson.com) |
+| consoleBaseUrl           | `string`               | The consuming application base URL (default: https://console.pearson.com) |
+| links                    | `object`               | Links in the user dropdown. Refer to the [Links](#links) section for the default list  |
 | mode                     | `string`               | The mode. Refer to the [Modes](#modes) section for a list of supported modes and options. |
+
+
 
 ```js
 var AppHeader = require('@pearson-components/app-header');
@@ -98,6 +101,22 @@ Sets the mode. Refer to the [Modes](#modes) section for a list of supported mode
 
 - `mode`: a string that indicates the header mode.
 - `options`: an object containing the mode options.
+
+
+<a name="links"></a>
+
+## Links object
+
+By default the links object looks like:
+
+| Link Name                | URL                                           |
+|--------------------------|-----------------------------------------------|
+| home                     | `{consoleBaseUrl}/console/home`               |
+| myAccount                | `{consoleBaseUrl}/account/manage/account`     |
+| termsOfUse               | `{consoleBaseUrl}/account/manage/tos`         |
+| privacyPolicy            | `{consoleBaseUrl}/account/manage/privacy`     |
+
+
 
 <a name="modes"></a>
 
@@ -210,6 +229,22 @@ document.addEventListener('oAppHeader.help.toggle', function (e) {
 ## z-index
 
 By default, the header's `z-index` property is set to 1000. This value can be changed by setting the `$o-app-header-z-index` SASS variable.
+
+
+## Changing the header.template
+
+If you make changes to the header.template file, the template generator needs to be run (manually). 
+
+```
+node bin/gen-template srcFile endFile
+```
+
+The `endFile` here is template.js, meaning if you made a change in header.template, your command is
+
+```
+node bin/gen-template src/html/header.template src/js/template.js
+```
+
 
 <!-- ## i18n
 

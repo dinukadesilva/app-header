@@ -53,10 +53,11 @@
 		margin-top: 30px;
 	}
 
-	.sign-out-button {
-		text-decoration: none !important;
-		font-size: 18px !important;
-		line-height: 44px !important;
+	.pe-btn__primary--btn_xlarge.sign-out-button {
+		text-decoration: none;
+		font-size: 18px; 
+		line-height: 44px;
+		font-weight: 700;
 		text-align: center;
 		background-color: #19A5A3;
 		color: #FFF;

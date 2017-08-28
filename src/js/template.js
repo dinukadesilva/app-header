@@ -27,7 +27,7 @@ function template (data, handlers, translate) {
         }
         if (data.mode ==='Signed Out' || data.mode === 'Integration') {
           elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
-            elementOpen("img", null, ["alt", "console home"], "src", images.logoLarge)
+            elementOpen("img", null, ["alt", "home"], "src", images.logoLarge)
             elementClose("img")
           elementClose("div")
         }

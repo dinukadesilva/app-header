@@ -11,7 +11,7 @@
 				</if>
 				<if condition="data.mode ==='Signed Out' || data.mode === 'Integration'">
 					<div class="o-header__logo o-header__logo--pearson">
-						<img src="{images.logoLarge}" alt="console home">
+						<img src="{images.logoLarge}" alt="home">
 					</div>
 				</if>
 			</div>

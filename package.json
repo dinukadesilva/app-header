@@ -21,7 +21,7 @@
     "type": "git",
     "url": "https://github.com/Pearson-Higher-Ed/app-header.git"
   },
-  "license": "MIT",
+  "license": "PEARSON PROPRIETARY AND CONFIDENTIAL INFORMATION SUBJECT TO NDA",
   "devDependencies": {
     "conventional-changelog": "^1.1.0",
     "coveralls": "^2.11.4",

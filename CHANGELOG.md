@@ -1,5 +1,15 @@
+<a name="2.0.11"></a>
+## [2.0.11](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.10...v2.0.11) (2017-09-27)
+
+
+
 <a name="2.0.10"></a>
-## [2.0.10](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.8...v2.0.10) (2017-09-11)
+## [2.0.10](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.9...v2.0.10) (2017-09-11)
+
+
+
+<a name="2.0.9"></a>
+## [2.0.9](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.8...v2.0.9) (2017-08-28)
 
 
 
@@ -155,7 +165,7 @@
 
 ### Bug Fixes
 
-* **ci:** In TravisCI, upgrade to npm 3.7+ before install so Node v4 build doesn't error out on fsevents[@1](https://github.com/1).0.8. ([e299458](https://github.com/Pearson-Higher-Ed/app-header/commit/e299458))
+* **ci:** In TravisCI, upgrade to npm 3.7+ before install so Node v4 build doesn't error out on fsevents@1.0.8. ([e299458](https://github.com/Pearson-Higher-Ed/app-header/commit/e299458))
 
 
 

@@ -8,6 +8,7 @@
 	float: left;
 }
 
+
 .o-header__nav-items {
 	margin: 0;
 	padding: 0;
@@ -17,11 +18,15 @@
 .o-header__nav-item {
 	float: left;
 	height: $o-header-height-mobile;
+        padding: 0 13px;
 
 	> a {
 		@include nav-link;
 	}
 
+}
+.o-header__nav .o-header__nav-item:last-child {
+  padding-right: 0;
 }
 
 .o-header__nav-item a i {

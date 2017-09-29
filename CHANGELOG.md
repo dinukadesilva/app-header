@@ -1,5 +1,5 @@
-<a name="2.0.11"></a>
-## [2.0.11](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.10...v2.0.11) (2017-09-27)
+<a name="2.0.12"></a>
+## [2.0.12](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.10...v2.0.12) (2017-09-29)
 
 
 

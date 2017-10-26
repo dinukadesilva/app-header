@@ -55,17 +55,11 @@
 
 	.pe-btn__primary--btn_xlarge.sign-out-button {
 		text-decoration: none;
-		font-size: 18px; 
+		font-size: 18px;
 		line-height: 44px;
 		font-weight: 700;
 		text-align: center;
-		background-color: #19A5A3;
 		color: #FFF;
-		&:hover,
-		&:focus {
-			background-color: #179599;
-			color: #FFF;
-		}
 	}
 
 	.o-dropdown-menu__menu-item {

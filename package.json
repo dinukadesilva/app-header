@@ -1,6 +1,6 @@
 {
   "name": "@pearson-components/app-header",
-  "version": "2.0.13",
+  "version": "2.0.12",
   "description": "Global responsive header for Pearson applications.",
   "main": "./main.js",
   "scripts": {

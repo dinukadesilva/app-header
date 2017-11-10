@@ -425,9 +425,6 @@ AppHeader.prototype.handleHelpNavItemClick_ = function (e) {
 
 	if (accountMenuEl) {
 		accountMenuEl.classList.remove('o-dropdown-menu--expanded');
-
-		var accountMenuIconEls = accountMenuEl.querySelectorAll('.o-app-header__icon');
-
 	}
 
 	dom.dispatchEvent(this.element, 'oAppHeader.help.toggle');

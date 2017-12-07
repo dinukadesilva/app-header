@@ -49,7 +49,8 @@
 	}
 
 	.o-dropdown-menu__menu-item--disabled {
-		> a {
+		> a,
+		> button {
 			color: $o-app-header-menu-item-disabled-color;
 		}
 	}
@@ -63,7 +64,8 @@
 }
 
 .o-app-header__menu-item-course-nav {
-	&.o-dropdown-menu__menu-item > a {
+	&.o-dropdown-menu__menu-item > a,
+	&.o-dropdown-menu__menu-item > button {
 		padding-left: 30px;
 	}
 }
@@ -74,7 +76,8 @@
 
 	.o-app-header__menu-menu {
 
-		.o-dropdown-menu__menu-item--disabled > a {
+		.o-dropdown-menu__menu-item--disabled > a,
+		.o-dropdown-menu__menu-item--disabled > button {
 			color: $o-app-header-menu-item-disabled-color-light;
 		}
 	}

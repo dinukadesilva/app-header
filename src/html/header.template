@@ -51,7 +51,7 @@
 
 						<if condition="data.mode === 'Basic' || data.mode === 'Legacy Course'">
 							<div class="o-dropdown-menu o-dropdown-menu--right o-app-header__menu-menu">
-								<a href="#"
+								<button type="button"
 									class="o-dropdown-menu__toggle"
 									id="header-nav-link-account"
 									data-toggle="dropdown-menu"
@@ -61,16 +61,16 @@
 									<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible">{data.user.givenName}</span>
 									<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">
 										<i>
-											<img class="hover-image" src="{images.personHoverNormal}" alt="account">
+											<img class="hover-image" src="{images.personHoverNormal}" alt="{translate('User account menu')}">
 										</i>
 									</span>
-								</a>
+								</button>
 								<ul class="o-dropdown-menu__menu-items" aria-labelledby="o-app-header-user-menu-label">
 									<li>
 										<h2 class="o-dropdown-menu__menu-item-title">{translate('My Account')}</h2>
 										<div class="o-dropdown-menu__menu-close">
 											<button class="dropdown-close-button">
-												<img src="{images.close}" alt="close">
+												<img src="{images.close}" alt="{translate('close')}">
 											</button>
 										</div>
 									</li>

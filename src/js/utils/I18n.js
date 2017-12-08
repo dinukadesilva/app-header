@@ -25,6 +25,8 @@ I18n.prototype.strings = {
 		'My Account': 'My Account',
 		'Sign In': 'Sign In',
 		'Sign Out': 'Sign Out',
-                'close': 'close'
+                'close': 'close',
+                'home': 'home',
+                'help': 'help'
 	}
 };

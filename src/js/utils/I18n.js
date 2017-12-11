@@ -24,6 +24,9 @@ I18n.prototype.strings = {
 		'User account menu': 'User account menu',
 		'My Account': 'My Account',
 		'Sign In': 'Sign In',
-		'Sign Out': 'Sign Out'
+		'Sign Out': 'Sign Out',
+                'close': 'close',
+                'home': 'home',
+                'help': 'help'
 	}
 };

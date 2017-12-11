@@ -3,12 +3,13 @@
 .o-header {
 
 	.o-dropdown-menu {
-
-		> a {
+		> a,
+		> button {
 			@include nav-link;
 		}
 
-		> a > span {
+		> a > span,
+		> button > span {
 			color: inherit;
 		}
 
@@ -19,14 +20,16 @@
 
 	.o-dropdown-menu--expanded {
 
-		> a {
+		> a,
+		> button {
 			position: relative;
 			z-index: 0;
 			background-color: $pe-color-white;
 		}
 
 		@media (min-width: $o-header-desktop-min) {
-			> a::before {
+			> a::before,
+			> button::before {
 				top: 0;
 			}
 		}
@@ -63,7 +66,8 @@
 	}
 
 	.o-dropdown-menu__menu-item {
-		> a {
+		> a,
+		> button {
 			margin-top: 12px;
 			font-size: 14px;
 			line-height: 18px;

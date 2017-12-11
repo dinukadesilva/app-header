@@ -13,6 +13,7 @@ var ESC = constants.ESC;
 var SPACE = constants.SPACE;
 var UP_ARROW = constants.UP_ARROW;
 var DOWN_ARROW = constants.DOWN_ARROW;
+var TAB = constants.TAB;
 
 var matchKeys = new RegExp(UP_ARROW + '|' + DOWN_ARROW + '|' + ESC + '|' + SPACE);
 
@@ -32,7 +33,7 @@ function DropdownMenu(element) {
 	if (!toggleElement) throw new Error('unable to locate a child element with selector: [data-toggle="dropdown-menu"]');
 
 	function handleClick(e) {
-		if (e.target.tagName.toLowerCase() === 'a' &&
+		if ((e.target.tagName.toLowerCase() === 'a' || e.target.tagName.toLowerCase()=== 'button') &&
 			e.target.getAttribute('data-toggle') !== 'dropdown-menu') {
 
 			if (e.target.href === '#' ||
@@ -48,6 +49,15 @@ function DropdownMenu(element) {
 	}
 
 	function handleKeydown(e) {
+		var element = getRootElement(e.target);
+		var toggleElement = element.querySelector('[data-toggle="dropdown-menu"]');
+		var isExpanded = element.classList.contains('o-dropdown-menu--expanded');
+                
+                // Shift-tabbing back out should also close the menu
+		if (isExpanded && e.which === TAB) {
+                        if (e.shiftKey) return dispatchEvent(toggleElement, 'click');
+		}
+
 		// Handle up arrow, down arrow, escape, and space keys for elements that
 		// are not inputs and textareas
 		if (!matchKeys.test(e.which) || /input|textarea/i.test(e.target.tagName)) return;
@@ -55,10 +65,6 @@ function DropdownMenu(element) {
 		e.preventDefault();
 		e.stopPropagation();
 
-		var element = getRootElement(e.target);
-		var toggleElement = element.querySelector('[data-toggle="dropdown-menu"]');
-
-		var isExpanded = element.classList.contains('o-dropdown-menu--expanded');
 
 		// Toggle the menu: if not expanded, keys other than esc will expand it;
 		// if expanded, esc will collapse it.
@@ -198,7 +204,7 @@ function collapseAll() {
 		if (!element.classList.contains('o-dropdown-menu--expanded')) continue;
 
 		element.classList.remove('o-dropdown-menu--expanded');
-		toggleElement.removeAttribute('aria-expanded');
+                toggleElement.setAttribute('aria-expanded', 'false');
 		dispatchEvent(element, 'oDropdownMenu.collapse');
 	}
 }

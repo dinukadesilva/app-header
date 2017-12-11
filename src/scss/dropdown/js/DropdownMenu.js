@@ -55,7 +55,7 @@ function DropdownMenu(element) {
                 
                 // Shift-tabbing back out should also close the menu
 		if (isExpanded && e.which === TAB) {
-                        if (e.which === TAB && e.shiftKey) return dispatchEvent(toggleElement, 'click');
+                        if (e.shiftKey) return dispatchEvent(toggleElement, 'click');
 		}
 
 		// Handle up arrow, down arrow, escape, and space keys for elements that

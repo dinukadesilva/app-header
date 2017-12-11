@@ -1,3 +1,19 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.15...v2.1.0) (2017-12-11)
+
+
+### Bug Fixes
+
+* dropdown also closes on shift-tab ([ecefbba](https://github.com/Pearson-Higher-Ed/app-header/commit/ecefbba))
+* shiftKey only with TAB present, derp ([5929576](https://github.com/Pearson-Higher-Ed/app-header/commit/5929576))
+
+
+### Features
+
+* internationalise home and help alt texts ([f6a5afd](https://github.com/Pearson-Higher-Ed/app-header/commit/f6a5afd))
+
+
+
 <a name="2.0.15"></a>
 ## [2.0.15](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.13...v2.0.15) (2017-11-29)
 

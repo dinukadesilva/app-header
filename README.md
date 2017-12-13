@@ -46,6 +46,57 @@ var AppHeader = require('@pearson-components/app-header');
 var appHeader = new AppHeader(element, options);
 ```
 
+
+### Via CDN
+
+This component is published to NPM and is therefore available via unkpg.com.  This allows teams to be able to consume the component through a
+simple script include.  Below is an example which allows a basic App-Header to appear on the page.
+
+```
+<html>
+  <head>
+    <script type="text/javascript" src="https://unpkg.com/@pearson-components/app-header@2.1.0/build/dist.app-header.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var element = document.getElementsByTagName('body');
+        var config = {
+          session: 'session',
+          user: {givenName: 'Bender'},
+          mode: 'Basic',
+          onLogin: function () { alert('You signed in'); },
+          onLogout: function () { alert('Buh-bye'); }
+        };
+
+        document.dispatchEvent(new CustomEvent('o.DOMContentLoaded', {
+          detail: {
+            element: element,
+            config: config
+          }
+        }));
+      });
+    </script>
+  </head>
+  <body>
+    <script>
+      if (document.body.children[0].nodeName !== 'svg') {
+        var pe_ajax = new XMLHttpRequest();
+        pe_ajax.open("GET", "https://unpkg.com/pearson-elements@1.14.9/dist/icons/p-icons-sprite-1.1.svg", true);
+        pe_ajax.responseType = "document";
+        pe_ajax.onload = function(e) {
+          document.body.insertBefore(
+            pe_ajax.responseXML.documentElement,
+            document.body.childNodes[0]
+          );
+        }
+        pe_ajax.send();
+      }
+
+      document.dispatchEvent(new CustomEvent('DOMContentLoaded'));
+    </script>
+  </body>
+</html>
+```
+
 ### Configuration
 
 Configuration properties may be passed as an object argument (preferred) to the constructor or defined in a configuration
@@ -233,7 +284,7 @@ By default, the header's `z-index` property is set to 1000. This value can be ch
 
 ## Changing the header.template
 
-If you make changes to the header.template file, the template generator needs to be run (manually). 
+If you make changes to the header.template file, the template generator needs to be run (manually).
 
 ```
 node bin/gen-template srcFile endFile

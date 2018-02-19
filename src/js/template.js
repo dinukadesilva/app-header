@@ -20,14 +20,14 @@ function template (data, handlers, translate) {
         if (data.mode === 'Basic' || data.mode === 'Legacy Course') {
           elementOpen("a", null, null, "href", data.links.home)
             elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
-              elementOpen("img", null, ["alt", "home"], "src", images.logoLarge)
+              elementOpen("img", null, null, "src", images.logoLarge, "alt", translate('Pearson - Home'))
               elementClose("img")
             elementClose("div")
           elementClose("a")
         }
         if (data.mode ==='Signed Out' || data.mode === 'Integration') {
           elementOpen("div", null, ["class", "o-header__logo o-header__logo--pearson"])
-            elementOpen("img", null, ["alt", "home"], "src", images.logoLarge)
+            elementOpen("img", null, null, "src", images.logoLarge, "alt", translate('Pearson - Home'))
             elementClose("img")
           elementClose("div")
         }
@@ -42,7 +42,7 @@ function template (data, handlers, translate) {
             if (!data.help) {
               elementOpen("a", null, ["href", "#", "id", "header-nav-link"], "onclick", function ($event) {handlers.handleHelpNavItemClick($event)})
                 elementOpen("i")
-                  elementOpen("img", null, ["class", "hover-image", "alt", "help"], "src", images.helpHoverNormal)
+                  elementOpen("img", null, ["class", "hover-image"], "src", images.helpHoverNormal, "alt", translate('help'))
                   elementClose("img")
                 elementClose("i")
               elementClose("a")

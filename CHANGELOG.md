@@ -1,3 +1,13 @@
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.1.0...v2.1.1) (2018-02-19)
+
+
+### Bug Fixes
+
+* alt-text update ([99fb8d6](https://github.com/Pearson-Higher-Ed/app-header/commit/99fb8d6))
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.15...v2.1.0) (2017-12-11)
 
@@ -15,7 +25,12 @@
 
 
 <a name="2.0.15"></a>
-## [2.0.15](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.13...v2.0.15) (2017-11-29)
+## [2.0.15](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.14...v2.0.15) (2017-11-29)
+
+
+
+<a name="2.0.14"></a>
+## [2.0.14](https://github.com/Pearson-Higher-Ed/app-header/compare/v2.0.13...v2.0.14) (2017-11-13)
 
 
 ### Features

@@ -57,11 +57,11 @@
 									data-toggle="dropdown-menu"
 									aria-haspopup="true"
 									aria-expanded="false">
-									<span id="o-app-header-user-menu-label" class="o-app-header--sr-only">{translate('User account menu')}</span>
+									<span id="o-app-header-user-menu-label" class="o-app-header--sr-only">{translate('User account')}</span>
 									<span class="o-app-header__username o-app-header--truncate o-header__viewport-tablet--visible o-header__viewport-desktop--visible">{data.user.givenName}</span>
 									<span class="o-header__viewport-tablet--hidden o-header__viewport-desktop--hidden">
 										<i>
-											<img class="hover-image" src="{images.personHoverNormal}" alt="{translate('User account menu')}">
+											<img class="hover-image" src="{images.personHoverNormal}">
 										</i>
 									</span>
 								</button>

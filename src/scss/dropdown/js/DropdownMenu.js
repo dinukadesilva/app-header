@@ -52,7 +52,7 @@ function DropdownMenu(element) {
 		var element = getRootElement(e.target);
 		var toggleElement = element.querySelector('[data-toggle="dropdown-menu"]');
 		var isExpanded = element.classList.contains('o-dropdown-menu--expanded');
-                
+
                 // Shift-tabbing back out should also close the menu
 		if (isExpanded && e.which === TAB) {
                         if (e.shiftKey) return dispatchEvent(toggleElement, 'click');
@@ -188,7 +188,7 @@ function closeOnTab() {
 	var dropDownLinks = document.querySelectorAll('.o-app-header--truncate');
 	var lastDropDownLink = dropDownLinks[dropDownLinks.length - 1];
 
-	lastDropDownLink.addEventListener("keydown", function () {
+	lastDropDownLink.addEventListener("keydown", function (event) {
 		event.shiftKey ? null : collapseAll();
 	}, false);
 
